@@ -11,9 +11,13 @@ editor_options:
 This research website is maintained for the documentation of the project *'A Comparison of Bayesian Inference Tehcniques for Sparse Factor Models'*.
 
 # Writings
+[Research proposal](assets/proposal.pdf)
 
 # Derivations
+[MCMC and variational inference for sparse factor models](assets/derivation.pdf)
 
 # Implementation
+Code will go here.
 
 # Resources
+List any relevant papers read here.
