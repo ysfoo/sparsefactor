@@ -9,7 +9,7 @@ navbar:
     href: about.html
   right:
   - icon: fa-github
-    text: Source code
+    text: 
     href: https://github.com/ysfoo/sparsefactor
 output:
   workflowr::wflow_html:
