@@ -20,4 +20,8 @@ This research website is maintained for the documentation of the project *'A Com
 Code will go here.
 
 # Resources
-List any relevant papers read here.
+[Blei et al. (2017), *Variational Inference: A Review for Statisticians*](https://arxiv.org/abs/1601.00670) - outlines the general approach for variational inference.
+
+[Sharp et al. (2000), *A Comparison of Inference in Sparse Factor Analysis*](ftp://ftp.sanger.ac.uk/pub/rd/PEER/sparse_FA_manuscript.pdf) - MCMC and VB/EP approach for sparse factor models.
+
+[Buettner et al. (2017), *f-scLVM: scalable and versatile factor analysis for single-cell RNA-seq*]() - variational inference approach for annotated sparse factor models.
