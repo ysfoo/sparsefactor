@@ -10,10 +10,10 @@ editor_options:
 
 This research website is maintained for the documentation of the project *'A Comparison of Bayesian Inference Tehcniques for Sparse Factor Models'*.
 
-## Writings
+# Writings
 
-## Derivations
+# Derivations
 
-## Implementation
+# Implementation
 
-## Resources
+# Resources
