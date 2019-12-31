@@ -8,4 +8,12 @@ editor_options:
   chunk_output_type: console
 ---
 
-Welcome to my research website.
+This research website is maintained for the documentation of the project *'A Comparison of Bayesian Inference Tehcniques for Sparse Factor Models'*.
+
+## Writings
+
+## Derivations
+
+## Implementation
+
+## Resources
