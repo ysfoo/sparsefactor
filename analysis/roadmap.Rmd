@@ -23,9 +23,9 @@ To record progress, and to organise things to do (in italics).
 
 # Variational inference
 - Derive the coordinate ascent approach for a mean-field approximation. See Section 3 of the derivation.
-- *Implement the coordiante ascent approach.*
+- *Implement the coordinate ascent approach.*
 - *Demonstrate that variational approximates may be inadequate in the case of multiple modes in close proximity.*
-- *Address the issue of multiple modes via a Monte Carlo approach to variational inferencec combined with a relabelling algorithm.*
+- *Address the issue of multiple modes via a Monte Carlo approach to variational inference combined with a relabelling algorithm.*
 
 # Evaluation
 - *Calculate the predictive accuracy and mean probability of the connectivity matrix $\mathbf{Z}$ under the marginal posterior distribution.*
