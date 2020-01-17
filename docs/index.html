@@ -438,10 +438,10 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomysfoosparsefactortreead72bdf47544540c967e5526ea624cb06337d139targetblankad72bdfa"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/ysfoo/sparsefactor/tree/ad72bdf47544540c967e5526ea624cb06337d139" target="_blank">ad72bdf</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomysfoosparsefactortree0bae9af1e6241739effa5c4541e0bc851221f193targetblank0bae9afa"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/ysfoo/sparsefactor/tree/0bae9af1e6241739effa5c4541e0bc851221f193" target="_blank">0bae9af</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomysfoosparsefactortreead72bdf47544540c967e5526ea624cb06337d139targetblankad72bdfa" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomysfoosparsefactortree0bae9af1e6241739effa5c4541e0bc851221f193targetblank0bae9afa" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -498,6 +498,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/ysfoo/sparsefactor/blob/0bae9af1e6241739effa5c4541e0bc851221f193/analysis/index.Rmd" target="_blank">0bae9af</a>
+</td>
+<td>
+Yong See Foo
+</td>
+<td>
+2020-01-17
+</td>
+<td>
+Added more references
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/ysfoo/sparsefactor/2d18d1fc6f14c87763351967f8eac83d86f52449/docs/index.html" target="_blank">2d18d1f</a>
+</td>
+<td>
+Yong See Foo
+</td>
+<td>
+2020-01-17
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -763,6 +797,7 @@ Start workflowr project.
 <p>This research website is maintained for the documentation of the project <em>‘A Comparison of Bayesian Inference Tehcniques for Sparse Factor Models’</em>.</p>
 <div id="writings" class="section level1">
 <h1>Writings</h1>
+<p><em>To do: Write up a brief, non-technical description of the approach.</em></p>
 <ul>
 <li><p><a href="assets/proposal.pdf">Research proposal</a></p></li>
 <li><p><a href="roadmap.html">Project roadmap</a></p></li>
@@ -774,19 +809,34 @@ Start workflowr project.
 </div>
 <div id="implementation" class="section level1">
 <h1>Implementation</h1>
-<p>Code will go here.</p>
+<p><em>To do: Link to Gibbs sampler, and include any results (eg plots).</em></p>
 </div>
 <div id="resources" class="section level1">
 <h1>Resources</h1>
-<ol style="list-style-type: decimal">
+<div id="variational-inference-techniques" class="section level2">
+<h2>Variational inference techniques</h2>
+<ul>
 <li><p><a href="https://arxiv.org/abs/1601.00670">Blei et al. (2017), <em>Variational Inference: A Review for Statisticians</em></a> - outlines the general approach for variational inference.</p></li>
+<li><p><a href="https://arxiv.org/abs/1401.0118">Ranganath et al. (2013), <em>Black Box Variational Inference</em></a> - utilises stochastic optimization for variational inference in place of traditional, derivation-heavy coordinate ascent.</p></li>
+<li><p><a href="https://arxiv.org/abs/1905.04062">Ruiz and Titsias (2019), <em>A Contrastive Divergence for Combining Variational Inference and MCMC</em></a> - incorporates MCMC into inform the parameter updates, to obtain better approximations of the posterior distribution.</p></li>
+</ul>
+</div>
+<div id="sparse-factor-analysis" class="section level2">
+<h2>Sparse factor analysis</h2>
+<ul>
 <li><p><a href="ftp://ftp.sanger.ac.uk/pub/rd/PEER/sparse_FA_manuscript.pdf">Sharp et al. (2000), <em>A Comparison of Inference in Sparse Factor Analysis</em></a> - MCMC and VB/EP approaches for sparse factor models.</p></li>
 <li><p><a href="https://www.ncbi.nlm.nih.gov/pubmed/29115968">Buettner et al. (2017), <em>f-scLVM: scalable and versatile factor analysis for single-cell RNA-seq</em></a> - variational inference approach for annotated sparse factor models.</p></li>
 <li><p><a href="https://www.ncbi.nlm.nih.gov/pubmed/29925568">Argelaguet et al. (2018), <em>Multi‐Omics Factor Analysis — a framework for unsupervised integration of multi‐omics data sets</em></a> - variational inference approach for sparse factor models consisting of multiple views which share the same experiments and latent factors.</p></li>
 <li><p><a href="https://arxiv.org/abs/1802.06931">Wang and Stephens (2018), <em>Empirical Bayes Matrix Factorization</em></a> - generalises some matrix factorisation methods under a framework which utilises estimates prior distributions according to observed data.</p></li>
+</ul>
+</div>
+<div id="labelsign-switching" class="section level2">
+<h2>Label/sign-switching</h2>
+<ul>
 <li><p><a href="https://www.jstor.org/stable/2680622">Stephens (2000), <em>Dealing with label switching in mixture models</em></a> - a decision theoretic approach to address inaccurate summaries of the posterior distribution, as samples may correspond to different, but equivalent modes.</p></li>
 <li><p><a href="https://www.ncbi.nlm.nih.gov/pubmed/28290110">Erosheva and Curtis (2017), <em>Dealing with Reflection Invariance in Bayesian Factor Analysis</em></a> - addresses failure modes of MCMC sampling due to signflip symmetries in factor analysis.</p></li>
-</ol>
+</ul>
+</div>
 </div>
 
 
