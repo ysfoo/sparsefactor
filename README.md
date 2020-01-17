@@ -1,5 +1,3 @@
 # sparsefactor
 
-A [workflowr][] project.
-
-[workflowr]: https://github.com/jdblischak/workflowr
+[Documentation](https://ysfoo.github.io/sparsefactor)
