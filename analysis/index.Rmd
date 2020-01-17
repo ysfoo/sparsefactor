@@ -11,7 +11,9 @@ editor_options:
 This research website is maintained for the documentation of the project *'A Comparison of Bayesian Inference Tehcniques for Sparse Factor Models'*.
 
 # Writings
-[Research proposal](assets/proposal.pdf)
+- [Research proposal](assets/proposal.pdf)
+
+- [Project roadmap](roadmap.html)
 
 # Derivations
 [MCMC and variational inference for sparse factor models](assets/derivation.pdf)
@@ -20,8 +22,16 @@ This research website is maintained for the documentation of the project *'A Com
 Code will go here.
 
 # Resources
-[Blei et al. (2017), *Variational Inference: A Review for Statisticians*](https://arxiv.org/abs/1601.00670) - outlines the general approach for variational inference.
+1. [Blei et al. (2017), *Variational Inference: A Review for Statisticians*](https://arxiv.org/abs/1601.00670) - outlines the general approach for variational inference.
 
-[Sharp et al. (2000), *A Comparison of Inference in Sparse Factor Analysis*](ftp://ftp.sanger.ac.uk/pub/rd/PEER/sparse_FA_manuscript.pdf) - MCMC and VB/EP approach for sparse factor models.
+2. [Sharp et al. (2000), *A Comparison of Inference in Sparse Factor Analysis*](ftp://ftp.sanger.ac.uk/pub/rd/PEER/sparse_FA_manuscript.pdf) - MCMC and VB/EP approaches for sparse factor models.
 
-[Buettner et al. (2017), *f-scLVM: scalable and versatile factor analysis for single-cell RNA-seq*]() - variational inference approach for annotated sparse factor models.
+3. [Buettner et al. (2017), *f-scLVM: scalable and versatile factor analysis for single-cell RNA-seq*](https://www.ncbi.nlm.nih.gov/pubmed/29115968) - variational inference approach for annotated sparse factor models.
+
+4. [Argelaguet et al. (2018), *Multi‐Omics Factor Analysis — a framework for unsupervised integration of multi‐omics data sets*](https://www.ncbi.nlm.nih.gov/pubmed/29925568) - variational inference approach for sparse factor models consisting of multiple views which share the same experiments and latent factors.
+
+5. [Wang and Stephens (2018), *Empirical Bayes Matrix Factorization*](https://arxiv.org/abs/1802.06931) - generalises some matrix factorisation methods under a framework which utilises estimates prior distributions according to observed data.
+
+6. [Stephens (2000), *Dealing with label switching in mixture models*](https://www.jstor.org/stable/2680622) - a decision theoretic approach to address inaccurate summaries of the posterior distribution, as samples may correspond to different, but equivalent modes.
+
+7. [Erosheva and Curtis (2017), *Dealing with Reflection Invariance in Bayesian Factor Analysis*](https://www.ncbi.nlm.nih.gov/pubmed/28290110) - addresses failure modes of MCMC sampling due to signflip symmetries in factor analysis.
