@@ -4,7 +4,7 @@
 
 Rcpp::StringVector modString(Rcpp::StringVector myStringV)
 {
-  if(myStringV.size() > 1){
+  if(myStringV.size() > 1) {
     myStringV[1] = "Rcpp";
   }
   return myStringV;

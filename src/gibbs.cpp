@@ -5,6 +5,7 @@
 #include <gsl/gsl_sf_exp.h>
 #include <gsl/gsl_math.h>
 #include <cmath>
+#include "relabel.h"
 
 using namespace Rcpp;
 
@@ -27,6 +28,7 @@ void sample_alpha(arma::mat &lmat, arma::umat &zmat, arma::vec &alphavec,
 
 double calc_pz(arma::uword i, arma::mat &ymat, arma::umat &zmat, arma::mat &fmat,
                double tau, arma::vec &alphavec);
+
 // [[Rcpp::export]]
 List gibbs(int n_iter,
                  arma::mat &ymat,
@@ -91,11 +93,13 @@ List gibbs(int n_iter,
         alphas.row(i) = alphavec.t();
     }
 
-    return List::create(Named("lmat")=lmats,
+    List samples =  List::create(Named("lmat")=lmats,
                         Named("fmat")=fmats,
                         Named("zmat")=zmats,
                         Named("tau")=taus,
                         Named("alpha")=alphas);
+
+    return samples;
 }
 
 void initialise(arma::mat &ymat, arma::vec &pivec,

@@ -1,5 +1,5 @@
 simulate.data <- function(lmat=NULL, tauvec=NULL, fmat=NULL, zmat=NULL, alphavec=NULL,
-                          G=20, N=10, K=4, pivec=NULL, taushape=1, taurate=1, alphashape=1, alpharate=1) {
+                          G=20, N=10, K=4, pivec=NULL, taushape=1, taurate=0.1, alphashape=1, alpharate=1) {
     # infer dimensions
     if(!is.null(lmat)) {
         ldim <- dim(lmat)

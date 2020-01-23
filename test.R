@@ -4,7 +4,8 @@ library(gplots)
 library(sparsefactor)
 
 # source('code/data_simulation.R')
-# sourceCpp("code/gibbs.cpp")
+sourceCpp("code/gibbs.cpp")
+sourceCpp("src/relabel.cpp")
 
 set.seed(2020)
 data <- simulate.data(K=4, N=100, G=20,
@@ -19,6 +20,7 @@ samples2 <- gibbs(10000, data$ymat, c(rep(0.5, 2), rep(0.5, 2)),
                   1, 1, 1, 1, seed=2020)
 toc()
 
+rs <- relabel(samples1, TRUE, TRUE)
 
 heatmap.2(aaply(samples1$zmat[1001:10000,,], c(2,3), mean), dendrogram='none',
           Rowv=FALSE, Colv=FALSE,trace='none')
@@ -38,5 +40,11 @@ trace.plot(samples1$lmat[,11,1], samples1$lmat[,11,2], 1001)
 
 
 trace.plot(samples1$fmat[,1,1], start=1001)
+
+ys <- array(0, c(5000, 20, 100))
+for(i in 5001:10000) {
+    ys[i-5000,,] <- samples1$lmat[i,,] %*% samples1$fmat[i,,]
+}
+ymean <- aaply(ys, c(2,3), mean)
 
 df <- data.frame(lapply(samples1, function(x) I(alply(x, 1))))

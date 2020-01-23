@@ -22,3 +22,7 @@ rcpp_hello_world <- function() {
     .Call(`_sparsefactor_rcpp_hello_world`)
 }
 
+relabel <- function(samples, sign_switch, label_switch, to_clone = TRUE) {
+    .Call(`_sparsefactor_relabel`, samples, sign_switch, label_switch, to_clone)
+}
+
