@@ -438,10 +438,10 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomysfoosparsefactortree12f14cd0724b8bb814d6bf5c24e6f0764c280fcftargetblank12f14cda"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/ysfoo/sparsefactor/tree/12f14cd0724b8bb814d6bf5c24e6f0764c280fcf" target="_blank">12f14cd</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomysfoosparsefactortree637a6c70a02748c157c8e7f006f5c4f78886e16dtargetblank637a6c7a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/ysfoo/sparsefactor/tree/637a6c70a02748c157c8e7f006f5c4f78886e16d" target="_blank">637a6c7</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomysfoosparsefactortree12f14cd0724b8bb814d6bf5c24e6f0764c280fcftargetblank12f14cda" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomysfoosparsefactortree637a6c70a02748c157c8e7f006f5c4f78886e16dtargetblank637a6c7a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -508,6 +508,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/ysfoo/sparsefactor/blob/637a6c70a02748c157c8e7f006f5c4f78886e16d/analysis/index.Rmd" target="_blank">637a6c7</a>
+</td>
+<td>
+Yong See Foo
+</td>
+<td>
+2020-01-27
+</td>
+<td>
+wflow_publish(c(“analysis/index.Rmd”))
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/ysfoo/sparsefactor/54f73f03ca7c9049c0d724c525936064b92719bc/docs/index.html" target="_blank">54f73f0</a>
+</td>
+<td>
+Yong See Foo
+</td>
+<td>
+2020-01-27
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1011,17 +1045,17 @@ Start workflowr project.
 <p>This research website is maintained for the documentation of the project <em>‘A Comparison of Bayesian Inference Techniques for Sparse Factor Models’</em>.</p>
 <div id="project-description" class="section level1">
 <h1>Project description</h1>
-<p>With the rise of high-dimensional data, various dimension reduction techniques have emerged, with the aim of identifying underlying structures which govern the data. One of these techniques is <em>factor analysis</em>, an approach which aims to discover latent variables that explain the data. Given a large number of observations, each consisting of a large number of attributes each, factor analysis seeks to quantify the associations between the attributes and the latent factors, and also the weight of each factor for each observation. Dimension reduction achieved by having a number of latent factors that is far smaller than the number of attributes/observations.</p>
+<p>With the rise of high-dimensional data, various dimension reduction techniques have emerged, with the aim of identifying underlying structures which govern the data. One of these techniques is <em>factor analysis</em>, an approach which aims to discover latent variables that explain the data. Given a large number of observations, each consisting of a large number of attributes, factor analysis seeks to quantify the associations between these attributes and the latent factors, and also the weight of each factor for each observation. Dimension reduction is achieved by having a number of latent factors that is far smaller than the number of attributes/observations.</p>
 <p>Moreover, if it is desired for some factors to govern only a small subset of attributes, the approach is then known as <em>sparse factor analysis</em>. This is because the matrix connecting the attributes to the factors will contain a significant proportion of zeros, making this loading matrix a sparse matrix.</p>
-<p>One specific application of sparse factor models is the analysis of gene expression data. Biological theory expects that the gene expression levels are regulated by transcription factors, a complex procedure which is difficult to observe. Sparse factor analysis is an appropriate approach to analyse these transcription factors, as each transcription factor is responsible for regulating only a small subset of genes. In the case of successful inference, the gene regulatory network may then be observed.</p>
+<p>One specific application of sparse factor models is the analysis of gene expression data. Biological theory expects that gene expression levels are regulated by transcription factors, a complex procedure which is difficult to observe directly. Sparse factor analysis is an appropriate approach to analyse these transcription factors, as each transcription factor is responsible for regulating only a small subset of genes. In the case of successful inference, the gene regulatory network may then be observed.</p>
 <p>The gene expression level of gene <span class="math inline">\(i\)</span> of individual <span class="math inline">\(j\)</span> can be modelled as <span class="math display">\[y_{ij} = \sum_{k=1}^K l_{ik}f_{kj} + e_{ij},\]</span> where <span class="math inline">\(l_{ik}\)</span> is the regulation strength of factor <span class="math inline">\(k\)</span> on gene <span class="math inline">\(i\)</span>, <span class="math inline">\(f_{kj}\)</span> is the activation weight of factor <span class="math inline">\(k\)</span> for individual <span class="math inline">\(j\)</span>, and <span class="math inline">\(e_{ij}\)</span> is a noise term. To achieve sparsity, <span class="math inline">\(l_{ik}\)</span> is set to zero if gene <span class="math inline">\(i\)</span> is not regulated by factor <span class="math inline">\(k\)</span>. Other details of the mathematical model are documented in the <a href="assets/derivation.pdf">derivation</a>.</p>
 <p>Following a Bayesian approach, the posterior distributions of the variables of interest (e.g. <span class="math inline">\(l_{ik}\)</span> and <span class="math inline">\(f_{kj}\)</span>) are intractable to calculate directly. Two techniques are investigated:</p>
 <ol style="list-style-type: decimal">
-<li><p><strong>Markov Chain Monte Carlo (MCMC).</strong> The posterior distribution is approximated by simulating samples from a Markov chain which converges to the desired distribution. When successful, this accurately captures the distribution, yet is known to be a computationally intensive approach.</p></li>
-<li><p><strong>Variational Inference (VI).</strong> As the posterior distribution involves complex dependencies between the model variables, we instead search for an approximate distribution from a family of much simpler distributions. This optimisation problem is computationally more efficient to solve, at the cost of accuracy due to use of simpler distributions.</p></li>
+<li><p><strong>Markov Chain Monte Carlo (MCMC).</strong> The posterior distribution is approximated by simulating samples from a Markov chain which converges to the desired distribution. When successful, the target distribution will be accurately caputred, but this approach is known to be computationally intensive.</p></li>
+<li><p><strong>Variational Inference (VI).</strong> As the posterior distribution involves complex dependencies between the model variables, we instead search for an approximate distribution from a family of much simpler distributions. Solving this optimisation problem is computationally more efficient than MCMC, at the cost of fidelity due to the use of simpler distributions.</p></li>
 </ol>
 <p>The main goal of this project is to compare the performance of these two techniques, in terms of accuracy and computational efficiency. It is expected that VI should have an advantage of being the faster approach without sacrificing too much accuracy.</p>
-<p>We also observe that the posterior distribution contains a large number of <em>equivalent modes</em>. This is because the roles of the factors are interchangeable, and also because the signs of the variables <span class="math inline">\(l_{ik}\)</span> and <span class="math inline">\(f_{kj}\)</span> may flipped without changing the model. These symmetries indicate that there are many probable yet equivalent combinations of variables, thus the presence of equivalent modes. This is also known as <em>model non-identifiability</em>. As an extension, we seek to demonstrate that this is an issue for both approaches, and attempt to address this issue in order to improve inference. See <a href="gibbs.html">here</a> for preliminary work.</p>
+<p>We also observe that the posterior distribution contains a large number of <em>equivalent modes</em>. This is because the roles of the factors are interchangeable, and also because the signs of the variables <span class="math inline">\(l_{ik}\)</span> and <span class="math inline">\(f_{kj}\)</span> may be flipped together without changing the model. These symmetries indicate that there are many probable yet equivalent combinations of variables, thus the presence of equivalent modes. This is also known as <em>model non-identifiability</em>. As an extension, we seek to demonstrate that this is an issue for both approaches, and attempt to address this issue in order to improve inference. See <a href="gibbs.html">here</a> for preliminary work.</p>
 </div>
 <div id="writings" class="section level1">
 <h1>Writings</h1>
