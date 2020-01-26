@@ -9,10 +9,9 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
-<meta name="author" content="Yong See Foo" />
 
 
-<title>Project Roadmap</title>
+<title>Dealing with label and sign switching in multimodal samples</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <script src="site_libs/elevate-section-attrs-2.0/elevate-section-attrs.js"></script>
@@ -21,9 +20,6 @@
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
-<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
-<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
-<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
@@ -255,69 +251,6 @@ $(document).ready(function () {
 
 
 
-<style type="text/css">
-
-#TOC {
-  margin: 25px 0px 20px 0px;
-}
-@media (max-width: 768px) {
-#TOC {
-  position: relative;
-  width: 100%;
-}
-}
-
-@media print {
-.toc-content {
-  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
-  float: right;
-}
-}
-
-.toc-content {
-  padding-left: 30px;
-  padding-right: 40px;
-}
-
-div.main-container {
-  max-width: 1200px;
-}
-
-div.tocify {
-  width: 20%;
-  max-width: 260px;
-  max-height: 85%;
-}
-
-@media (min-width: 768px) and (max-width: 991px) {
-  div.tocify {
-    width: 25%;
-  }
-}
-
-@media (max-width: 767px) {
-  div.tocify {
-    width: 100%;
-    max-width: none;
-  }
-}
-
-.tocify ul, .tocify li {
-  line-height: 20px;
-}
-
-.tocify-subheader .tocify-item {
-  font-size: 0.90em;
-}
-
-.tocify .list-group-item {
-  border-radius: 0px;
-}
-
-
-</style>
-
-
 
 </head>
 
@@ -325,16 +258,6 @@ div.tocify {
 
 
 <div class="container-fluid main-container">
-
-
-<!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row-fluid">
-<div class="col-xs-12 col-sm-4 col-md-3">
-<div id="TOC" class="tocify">
-</div>
-</div>
-
-<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -383,9 +306,8 @@ div.section {
 
 
 
-<h1 class="title toc-ignore">Project Roadmap</h1>
-<h4 class="author">Yong See Foo</h4>
-<h4 class="date">25 January, 2020</h4>
+<h1 class="title toc-ignore">Dealing with label and sign switching in multimodal samples</h1>
+<h4 class="date">26 January, 2020</h4>
 
 </div>
 
@@ -410,7 +332,7 @@ div.section {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2020-01-25
+<strong>Last updated:</strong> 2020-01-26
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
@@ -434,7 +356,7 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 </div>
 <div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
 <div class="panel-body">
-<p>The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
+<p>The R Markdown is untracked by Git. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
 </div>
 </div>
 </div>
@@ -532,8 +454,10 @@ Untracked files:
     Untracked:  src/lap.h
 
 Unstaged changes:
+    Modified:   DESCRIPTION
     Modified:   R/RcppExports.R
     Modified:   R/gibbs.R
+    Modified:   analysis/index.Rmd
     Modified:   analysis/license.md
     Modified:   analysis/roadmap.Rmd
     Modified:   sparsefactor.Rproj
@@ -555,191 +479,62 @@ Note that any generated files, e.g. HTML, png, CSS, etc., are not included in t
 <hr>
 </div>
 <div id="versions" class="tab-pane fade">
-
 <p>
-These are the previous versions of the R Markdown and HTML files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view them.
+There are no past versions. Publish this analysis with <code>wflow_publish()</code> to start tracking its development.
 </p>
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-File
-</th>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-<th>
-Message
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/ysfoo/sparsefactor/189fddc4d027d0fbb3e7b47558a6745e5b890848/docs/roadmap.html" target="_blank">189fddc</a>
-</td>
-<td>
-Yong See Foo
-</td>
-<td>
-2020-01-17
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/ysfoo/sparsefactor/blob/6a2abb4f57008981a2cfe066d1ed5a2042c9e5cc/analysis/roadmap.Rmd" target="_blank">6a2abb4</a>
-</td>
-<td>
-Yong See Foo
-</td>
-<td>
-2020-01-17
-</td>
-<td>
-fixed typos
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/ysfoo/sparsefactor/73d1e03f4099333d8f75ab5aaa4ea0acf811d41e/docs/roadmap.html" target="_blank">73d1e03</a>
-</td>
-<td>
-Yong See Foo
-</td>
-<td>
-2020-01-17
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/ysfoo/sparsefactor/blob/a23020bb82866a0f405e3dfe167409aec4594221/analysis/roadmap.Rmd" target="_blank">a23020b</a>
-</td>
-<td>
-Yong See Foo
-</td>
-<td>
-2020-01-17
-</td>
-<td>
-Added toc for project roadmap
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/ysfoo/sparsefactor/2d18d1fc6f14c87763351967f8eac83d86f52449/docs/roadmap.html" target="_blank">2d18d1f</a>
-</td>
-<td>
-Yong See Foo
-</td>
-<td>
-2020-01-17
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/ysfoo/sparsefactor/blob/ad72bdf47544540c967e5526ea624cb06337d139/analysis/roadmap.Rmd" target="_blank">ad72bdf</a>
-</td>
-<td>
-Yong See Foo
-</td>
-<td>
-2020-01-17
-</td>
-<td>
-Added project roadmap
-</td>
-</tr>
-</tbody>
-</table>
-</div>
 <hr>
 </div>
 </div>
 </div>
-<p>To record progress, and to organise things to do (in italics).</p>
-<div id="model" class="section level1">
-<h1>Model</h1>
-<ul>
-<li>Explore possible model specifications for sparse factor analysis in existing literature.</li>
-<li>Specify the distributions of the sparse factor model. See Section 1 of the <a href="assets/derivation.pdf">derivation</a>.</li>
-</ul>
-</div>
-<div id="mcmc" class="section level1">
-<h1>MCMC</h1>
-<ul>
-<li>Derive collapsed Gibbs sampling, where the regulatory weights <span class="math inline">\(\mathbf{L}\)</span> are marginalised out of the conditional distribution of the connectivity matrix <span class="math inline">\(\mathbf{Z}\)</span>. See Section 2.1 of the derivation.</li>
-<li>Implement collapsed Gibbs sampling.</li>
-<li><em>Apply a relabelling algorithm to address label/sign-switching.</em></li>
-<li><em>Use Empirical Bayes to estimate the sparsity hyperparameters <span class="math inline">\(\boldsymbol{\pi}\)</span>.</em></li>
-<li><em>Demonstrate the need of relabelling, and the use of Empirical Bayes.</em></li>
-</ul>
-</div>
-<div id="variational-inference" class="section level1">
-<h1>Variational inference</h1>
-<ul>
-<li>Derive the coordinate ascent approach for a mean-field approximation. See Section 3 of the derivation.</li>
-<li><em>Implement the coordinate ascent approach.</em></li>
-<li><em>Demonstrate that variational approximates may be inadequate in the case of multiple modes in close proximity.</em></li>
-<li><em>Address the issue of multiple modes via a Monte Carlo approach to variational inference combined with a relabelling algorithm.</em></li>
-</ul>
-</div>
-<div id="evaluation" class="section level1">
-<h1>Evaluation</h1>
-<ul>
-<li><em>Calculate the predictive accuracy and mean probability of the connectivity matrix <span class="math inline">\(\mathbf{Z}\)</span> under the marginal posterior distribution.</em></li>
-<li><em>For simulated datasets, investigate evaluation methods (especially for the weights and factors) used in existing literature.</em></li>
-<li><em>For real datasets, investigate evaluation methods (either by fill-in, or by ground truth) used in existing literature.</em></li>
-</ul>
-</div>
-<div id="presentation" class="section level1">
-<h1>Presentation</h1>
-<p>(due 10 Feb)</p>
-</div>
-<div id="poster" class="section level1">
-<h1>Poster</h1>
-<p>(due 14 Feb)</p>
-</div>
-<div id="report" class="section level1">
-<h1>Report</h1>
-<p>(due 28 Feb)</p>
-</div>
-<div id="blog-post" class="section level1">
-<h1>Blog post</h1>
-<p>(due 28 Feb)</p>
+<p>We first simulate gene expression data across 40 genes for 12 individuals. This data is explained by 2 sparse factors (<span class="math inline">\(\pi_1=\pi_2=0.2\)</span>) and 2 dense factors (<span class="math inline">\(\pi_3=\pi_4=0.8\)</span>). A sparse factor regulates a gene with probability 0.2, whereas a dense factor regulates a gene with probability 0.8. The gene-specific precision of the Gaussian noise is simulated from <span class="math inline">\(\text{Gamma}{(1,0.1)}\)</span>. For details of the model, see Section 1 of the <a href="assets/derivation.pdf">derivation</a>.</p>
+<pre class="r"><code>set.seed(0)
+K &lt;- 4 # number of factors
+N &lt;- 12 # number of individuals
+G &lt;- 40 # number of genes
+data &lt;- simulate.data(K=K, N=N, G=G,
+                      pivec=c(rep(0.2, 2), rep(0.8, 2)),
+                      alphavec=rep(1, 4),
+                      taushape=1, taurate=0.1)</code></pre>
+<p>A Gibbs sampler is used to simulate the posterior. 50,000 samples are simulated, the first 10,000 of which are discarded as a burn-in.</p>
+<pre class="r"><code>N.TOT &lt;- 50000
+N.BURN &lt;- 10000
+samples &lt;- burn.thin(gibbs(N.TOT, data$ymat,
+                            pivec=c(rep(0.2, 2), rep(0.8, 2)),
+                            ptaushape=1, ptaurate=1,
+                            palphashape=1, palpharate=1, seed=0),
+                      burn=N.BURN, thin=1)</code></pre>
+<pre><code>19.254 sec elapsed</code></pre>
+<p>To assess whether the sampler has converged to a stationary distribution, we look at trace plots of the simulated samples. As an example, here are the trace plots for the factor activations for individual 2:</p>
+<pre class="r"><code>j &lt;- 2 # individual 2
+for(k in 1:K) {
+    vec = samples$fmat[,k,j]
+    plot(0, 0, xlab=&quot;iteration&quot;, type=&quot;n&quot;, ylab=paste0(&quot;fmat[,&quot;,k,&quot;,&quot;,j,&quot;]&quot;),
+         xlim=c(N.BURN + 1, N.TOT), ylim=c(min(vec), max(vec)))
+    lines((N.BURN+1):N.TOT, vec, type=&quot;l&quot;)
+}</code></pre>
+<p><img src="figure/gibbs.Rmd/unnamed-chunk-4-1.png" width="864" style="display: block; margin: auto;" /></p>
+<p>For both factors 1 and 2, the simulated values appear to be a mixture of: (i) values sampled around a local mode around 2, (ii) values sampled around a local mode around -2, and (iii) values sampled around a local mode near 0, with comparatively larger variance.</p>
+<p>The behaviour occurs due to the <em>non-identifiability</em> of the model. The gene expression level of gene <span class="math inline">\(i\)</span> of individual <span class="math inline">\(j\)</span> is modelled as <span class="math display">\[y_{ij} = \sum_{k=1}^K l_{ik}f_{kj} + e_{ij},\]</span> where <span class="math inline">\(l_{ik}\)</span> is the regulation strength of factor <span class="math inline">\(k\)</span> on gene <span class="math inline">\(i\)</span>, <span class="math inline">\(f_{kj}\)</span> is the activation weight of factor <span class="math inline">\(k\)</span> for individual <span class="math inline">\(j\)</span>, and <span class="math inline">\(e_{ij}\)</span> is a noise term. For a fixed <span class="math inline">\(k\)</span>, note that flipping the signs of <span class="math inline">\(l_{ik}\)</span> and <span class="math inline">\(f_{kj}\)</span> (for all <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span>) does not change the model. This explains the presence of two equivalent modes around 2 and -2 in the first two trace plots. This is an example of <em>sign switching</em>. If we take the mean across all samples, the estimated mean will be shrunk towards 0 due to the presence of the two modes. Thus, to obtain more accurate posterior summaries, it is desirable for only one of these modes to be present.</p>
+<p>We can therefore deduce that <span class="math inline">\(f_{1,2}\)</span> and <span class="math inline">\(f_{2,2}\)</span> should have means near 0 and 2 (or equivalent, -2), in either order. However, in the trace plots, factor 1 and factor 2 both have samples simulated around both modes. This occurs because the roles of factor 1 and factor 2 are swapped at certain iterations of sampling. This is an example of <em>label-switching</em>: for fixed <span class="math inline">\(k\)</span> and <span class="math inline">\(k&#39;\)</span>, if <span class="math inline">\(l_{ik}\)</span> is swapped with <span class="math inline">\(l_{ik&#39;}\)</span> and <span class="math inline">\(f_{kj}\)</span> is swapped with <span class="math inline">\(f_{k&#39;j}\)</span> (for all <span class="math inline">\(i\)</span> and all <span class="math inline">\(j\)</span>), the model does not change. This happens for <span class="math inline">\(k=1,\,k&#39;=2\)</span>, and also for <span class="math inline">\(k=3,\,k&#39;=4\)</span>.</p>
+<p>To undo label and sign switching, a relabelling algorithm is used. The intuition is that each sample is relabelled (i.e. signs and labels are switched) such that the sampled distribution of each entry resembles a normal distribution, hence having only one mode. After relabelling, the trace plots are as follows:</p>
+<pre class="r"><code>relabelled &lt;- relabel(samples)</code></pre>
+<pre><code>35.531 sec elapsed</code></pre>
+<pre class="r"><code>for(k in 1:K) {
+    vec = relabelled$fmat[,k,j]
+    plot(0, 0, xlab=&quot;iteration&quot;, type=&quot;n&quot;, ylab=paste0(&quot;fmat[,&quot;,k,&quot;,&quot;,j,&quot;]&quot;),
+         xlim=c(N.BURN + 1, N.TOT), ylim=c(min(vec), max(vec)))
+    lines((N.BURN+1):N.TOT, vec, type=&quot;l&quot;)
+}</code></pre>
+<p><img src="figure/gibbs.Rmd/unnamed-chunk-5-1.png" width="864" style="display: block; margin: auto;" /></p>
+<p>The switching behaviour seems to be mostly removed. This is confirmed by the fact that the posterior densities appear to be unimodal:</p>
+<pre class="r"><code>for(k in 1:K) {
+    plot(density(relabelled$fmat[,k,j]), main=&quot;&quot;, ylab=paste0(&quot;fmat[,&quot;,k,&quot;,&quot;,j,&quot;]&quot;))
+}</code></pre>
+<p><img src="figure/gibbs.Rmd/unnamed-chunk-6-1.png" width="864" style="display: block; margin: auto;" /></p>
+<p>Unfortunately, this relabelling algorithm is not always successful. For example, some switching behaviour remains for the factor activations of individual 1 (especially in factor 3):</p>
+<pre class="r"><code>j &lt;- 1</code></pre>
+<p><img src="figure/gibbs.Rmd/unnamed-chunk-7-1.png" width="864" style="display: block; margin: auto;" /></p>
+<p>Further investigation is needed to determine whether this is caused by a flawed implementation, or an inherent deficiency of the method.</p>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -765,15 +560,16 @@ locale:
 attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
+other attached packages:
+[1] tictoc_1.0       sparsefactor_1.0
+
 loaded via a namespace (and not attached):
  [1] workflowr_1.6.0 Rcpp_1.0.3      rprojroot_1.3-2 digest_0.6.23  
  [5] later_1.0.0     R6_2.4.1        backports_1.1.5 git2r_0.26.1   
- [9] magrittr_1.5    evaluate_0.14   stringi_1.4.3   rlang_0.4.2    
-[13] fs_1.3.1        promises_1.1.0  whisker_0.4     rmarkdown_2.0  
-[17] tools_3.6.1     stringr_1.4.0   glue_1.3.1      httpuv_1.5.2   
-[21] xfun_0.11       yaml_2.2.0      compiler_3.6.1  htmltools_0.4.0
-[25] knitr_1.26     </code></pre>
-</div>
+ [9] magrittr_1.5    evaluate_0.14   stringi_1.4.5   rlang_0.4.3    
+[13] fs_1.3.1        promises_1.1.0  rmarkdown_2.0   tools_3.6.1    
+[17] stringr_1.4.0   glue_1.3.1      httpuv_1.5.2    xfun_0.11      
+[21] yaml_2.2.0      compiler_3.6.1  htmltools_0.4.0 knitr_1.26     </code></pre>
 </div>
 
 
@@ -792,8 +588,6 @@ footer is added to webpages before the MathJax javascript. -->
 
 
 
-</div>
-</div>
 
 </div>
 
@@ -826,32 +620,6 @@ $(document).ready(function () {
 
 <!-- code folding -->
 
-<script>
-$(document).ready(function ()  {
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = true;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

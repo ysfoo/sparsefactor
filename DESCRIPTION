@@ -1,12 +1,11 @@
 Package: sparsefactor
 Type: Package
-Title: What the Package Does in One 'Title Case' Line
+Title: Bayesian Inference Techniques for Sparse Factor Models
 Version: 1.0
 Date: 2020-01-19
-Author: Your Name
-Maintainer: Your Name <your@email.com>
-Description: One paragraph description of what the package does as one
-       or more full sentences.
+Author: Yong See Foo [aut, cre]
+Maintainer: Yong See Foo <fooy1@student.unimelb.edu.au>
+Description: This packages provides two approaches to inference for sparse factor models: Gibbs sampling and variational inference. Additionally, a relabelling algorithm is implemented for the Gibbs sampler to address issues which arise from label switching and sign switching.
 License: GPL (>= 2)
 Imports: 
     Rcpp (>= 1.0.3),

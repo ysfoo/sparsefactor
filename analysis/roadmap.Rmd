@@ -1,6 +1,8 @@
 ---
 title: "Project Roadmap"
 site: workflowr::wflow_site
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+author: "Yong See Foo"
 output:
   workflowr::wflow_html:
     toc: true

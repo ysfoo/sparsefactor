@@ -1,6 +1,4 @@
 #include <RcppArmadillo.h>
-#include <gsl/gsl_rng.h>
-#include <gsl/gsl_randist.h>
 #include <gsl/gsl_sf_log.h>
 #include <gsl/gsl_sf_exp.h>
 #include <gsl/gsl_math.h>
@@ -93,11 +91,11 @@ List gibbs(int n_iter,
         alphas.row(i) = alphavec.t();
     }
 
-    List samples =  List::create(Named("lmat")=lmats,
-                        Named("fmat")=fmats,
-                        Named("zmat")=zmats,
-                        Named("tau")=taus,
-                        Named("alpha")=alphas);
+    List samples = List::create(Named("lmat")=lmats,
+                                Named("fmat")=fmats,
+                                Named("zmat")=zmats,
+                                Named("tau")=taus,
+                                Named("alpha")=alphas);
 
     return samples;
 }

@@ -38,27 +38,19 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// rcpp_hello_world
-List rcpp_hello_world();
-RcppExport SEXP _sparsefactor_rcpp_hello_world() {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(rcpp_hello_world());
-    return rcpp_result_gen;
-END_RCPP
-}
 // relabel
-List relabel(List samples, bool sign_switch, bool label_switch, bool to_clone);
-RcppExport SEXP _sparsefactor_relabel(SEXP samplesSEXP, SEXP sign_switchSEXP, SEXP label_switchSEXP, SEXP to_cloneSEXP) {
+List relabel(List samples, bool sign_switch, bool label_switch, bool print_action, bool print_cost, bool to_clone);
+RcppExport SEXP _sparsefactor_relabel(SEXP samplesSEXP, SEXP sign_switchSEXP, SEXP label_switchSEXP, SEXP print_actionSEXP, SEXP print_costSEXP, SEXP to_cloneSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< List >::type samples(samplesSEXP);
     Rcpp::traits::input_parameter< bool >::type sign_switch(sign_switchSEXP);
     Rcpp::traits::input_parameter< bool >::type label_switch(label_switchSEXP);
+    Rcpp::traits::input_parameter< bool >::type print_action(print_actionSEXP);
+    Rcpp::traits::input_parameter< bool >::type print_cost(print_costSEXP);
     Rcpp::traits::input_parameter< bool >::type to_clone(to_cloneSEXP);
-    rcpp_result_gen = Rcpp::wrap(relabel(samples, sign_switch, label_switch, to_clone));
+    rcpp_result_gen = Rcpp::wrap(relabel(samples, sign_switch, label_switch, print_action, print_cost, to_clone));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -66,8 +58,7 @@ END_RCPP
 static const R_CallMethodDef CallEntries[] = {
     {"_sparsefactor_gibbs", (DL_FUNC) &_sparsefactor_gibbs, 11},
     {"_sparsefactor_myFunction", (DL_FUNC) &_sparsefactor_myFunction, 1},
-    {"_sparsefactor_rcpp_hello_world", (DL_FUNC) &_sparsefactor_rcpp_hello_world, 0},
-    {"_sparsefactor_relabel", (DL_FUNC) &_sparsefactor_relabel, 4},
+    {"_sparsefactor_relabel", (DL_FUNC) &_sparsefactor_relabel, 6},
     {NULL, NULL, 0}
 };
 

@@ -18,11 +18,7 @@ myFunction <- function(x) {
     .Call(`_sparsefactor_myFunction`, x)
 }
 
-rcpp_hello_world <- function() {
-    .Call(`_sparsefactor_rcpp_hello_world`)
-}
-
-relabel <- function(samples, sign_switch, label_switch, to_clone = TRUE) {
-    .Call(`_sparsefactor_relabel`, samples, sign_switch, label_switch, to_clone)
+relabel <- function(samples, sign_switch = TRUE, label_switch = TRUE, print_action = FALSE, print_cost = FALSE, to_clone = TRUE) {
+    .Call(`_sparsefactor_relabel`, samples, sign_switch, label_switch, print_action, print_cost, to_clone)
 }
 
