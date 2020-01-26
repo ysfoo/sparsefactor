@@ -22,7 +22,7 @@ This research website is maintained for the documentation of the project *'A Com
 [MCMC and variational inference for sparse factor models](assets/derivation.pdf)
 
 # Implementation
-*To do: Link to Gibbs sampler, and include any results (eg plots).*
+[Dealing with label and sign switching in multimodal samples](gibbs.html)
 
 # Resources
 
