@@ -12,7 +12,7 @@ This research website is maintained for the documentation of the project *'A Com
 
 # Writings
 
-With the rise of high-dimensional data, various *dimension reduction* techniques have emerged to identify underlying structures behind the data. One of these techniques is *factor analysis*, an approach which aims to discover latent variables that explain the data. Given a large number of observations, each consisting of a large number of attributes each, factor analysis seeks to quantify the associations between the attributes and the latent factors, and also the weight of each factor for each observation. Dimension reduction achieved by having a number of latent factors that is far smaller than the number of attributes/observations.
+With the rise of high-dimensional data, various dimension reduction techniques have emerged, with the aim of identifying underlying structures which govern the data. One of these techniques is *factor analysis*, an approach which aims to discover latent variables that explain the data. Given a large number of observations, each consisting of a large number of attributes each, factor analysis seeks to quantify the associations between the attributes and the latent factors, and also the weight of each factor for each observation. Dimension reduction achieved by having a number of latent factors that is far smaller than the number of attributes/observations.
 
 Moreover, if it is desired for some factors to govern only a small subset of attributes, the approach is then known as *sparse factor analysis*. This is because the matrix connecting the attributes to the factors will contain a significant proportion of zeros, making this loading matrix a sparse matrix.
 
