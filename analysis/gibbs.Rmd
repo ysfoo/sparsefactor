@@ -1,5 +1,5 @@
 ---
-title: "Dealing with label and sign switching in multimodal samples"
+title: "Dealing with model non-identifiability issues when sampling"
 output:
   workflowr::wflow_html:
     toc: false
@@ -64,7 +64,7 @@ where $l_{ik}$ is the regulation strength of factor $k$ on gene $i$, $f_{kj}$ is
 
 We can therefore deduce that $f_{1,2}$ and $f_{2,2}$ should have means near 0 and 2 (or equivalent, -2), in either order. However, in the trace plots, factor 1 and factor 2 both have samples simulated around both modes. This occurs because the roles of factor 1 and factor 2 are swapped at certain iterations of sampling. This is an example of *label-switching*: for fixed $k$ and $k'$, if $l_{ik}$ is swapped with $l_{ik'}$ and $f_{kj}$ is swapped with $f_{k'j}$ (for all $i$ and all $j$), the model does not change. This happens for $k=1,\,k'=2$, and also for $k=3,\,k'=4$.
 
-To undo label and sign switching, a relabelling algorithm is used. The intuition is that each sample is relabelled (i.e. signs and labels are switched) such that the sampled distribution of each entry resembles a normal distribution, hence having only one mode. After relabelling, the trace plots are as follows:
+To undo label and sign switching, a relabelling algorithm is used. The intuition is that each sample is relabelled (i.e. signs and labels are switched) such that the sampled distribution of each entry resembles a normal distribution, hence having only one mode. For details of this algorithm, see section 2.2 of the derivation. After relabelling, the trace plots are as follows:
 
 ```{r, echo=-c(1,3,4), fig.height=6, fig.width=9}
 tic()
@@ -88,7 +88,7 @@ for(k in 1:K) {
 }
 ```
 
-Unfortunately, this relabelling algorithm is not always successful. For example, some switching behaviour remains for the factor activations of individual 1 (especially in factor 3):
+Unfortunately, this relabelling algorithm is not always successful. For example, some switching behaviour remains for the factor activations of individual 1 (especially factor 3):
 
 ```{r, echo=-1, fig.height=6, fig.width=9}
 par(mfrow=c(2,2), mar=c(4,4,1,1.5))
