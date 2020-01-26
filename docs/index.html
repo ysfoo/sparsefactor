@@ -407,7 +407,7 @@ div.section {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2020-01-17
+<strong>Last updated:</strong> 2020-01-26
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 2 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
@@ -438,28 +438,49 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomysfoosparsefactortree6a2abb4f57008981a2cfe066d1ed5a2042c9e5cctargetblank6a2abb4a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/ysfoo/sparsefactor/tree/6a2abb4f57008981a2cfe066d1ed5a2042c9e5cc" target="_blank">6a2abb4</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomysfoosparsefactortree331c0cd4bbbf64eafc938c399a3bca2fc2003f16targetblank331c0cda"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/ysfoo/sparsefactor/tree/331c0cd4bbbf64eafc938c399a3bca2fc2003f16" target="_blank">331c0cd</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomysfoosparsefactortree6a2abb4f57008981a2cfe066d1ed5a2042c9e5cctargetblank6a2abb4a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomysfoosparsefactortree331c0cd4bbbf64eafc938c399a3bca2fc2003f16targetblank331c0cda" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
 </p>
 <pre><code>
 Ignored files:
+    Ignored:    .RData
     Ignored:    .Rproj.user/
+    Ignored:    .ipynb_checkpoints/
+    Ignored:    src/RcppExports.o
+    Ignored:    src/gibbs.o
+    Ignored:    src/lap.o
+    Ignored:    src/modString.o
+    Ignored:    src/myFunction.o
+    Ignored:    src/relabel.o
+    Ignored:    src/sparsefactor.so
 
 Untracked files:
-    Untracked:  code/data_simulation.R
-    Untracked:  code/gibbs.R
-    Untracked:  code/gibbs.cpp
+    Untracked:  .Rbuildignore
+    Untracked:  Rplots.pdf
+    Untracked:  analysis/gibbs.Rmd
+    Untracked:  code/
     Untracked:  papers/
+    Untracked:  src/lap.cpp
+    Untracked:  src/lap.h
 
 Unstaged changes:
+    Modified:   DESCRIPTION
+    Modified:   R/RcppExports.R
+    Modified:   R/gibbs.R
     Modified:   analysis/license.md
-    Deleted:    code/README.md
+    Modified:   analysis/roadmap.Rmd
     Modified:   sparsefactor.Rproj
+    Modified:   src/RcppExports.cpp
+    Modified:   src/gibbs.cpp
+    Deleted:    src/rcpp_hello_world.cpp
+    Modified:   src/relabel.cpp
+    Modified:   src/relabel.h
+    Modified:   test.R
 
 </code></pre>
 <p>
@@ -498,6 +519,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/ysfoo/sparsefactor/blob/331c0cd4bbbf64eafc938c399a3bca2fc2003f16/analysis/index.Rmd" target="_blank">331c0cd</a>
+</td>
+<td>
+Yong See Foo
+</td>
+<td>
+2020-01-26
+</td>
+<td>
+analysis/gibbs.Rmd
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/ysfoo/sparsefactor/189fddc4d027d0fbb3e7b47558a6745e5b890848/docs/index.html" target="_blank">189fddc</a>
+</td>
+<td>
+Yong See Foo
+</td>
+<td>
+2020-01-17
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -843,7 +898,7 @@ Start workflowr project.
 </div>
 <div id="implementation" class="section level1">
 <h1>Implementation</h1>
-<p><em>To do: Link to Gibbs sampler, and include any results (eg plots).</em></p>
+<p><a href="gibbs.html">Dealing with label and sign switching in multimodal samples</a></p>
 </div>
 <div id="resources" class="section level1">
 <h1>Resources</h1>
