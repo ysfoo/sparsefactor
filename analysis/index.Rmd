@@ -10,9 +10,7 @@ editor_options:
 
 This research website is maintained for the documentation of the project *'A Comparison of Bayesian Inference Techniques for Sparse Factor Models'*.
 
-# Writings
-
-## Project description
+# Project description
 
 With the rise of high-dimensional data, various dimension reduction techniques have emerged, with the aim of identifying underlying structures which govern the data. One of these techniques is *factor analysis*, an approach which aims to discover latent variables that explain the data. Given a large number of observations, each consisting of a large number of attributes each, factor analysis seeks to quantify the associations between the attributes and the latent factors, and also the weight of each factor for each observation. Dimension reduction achieved by having a number of latent factors that is far smaller than the number of attributes/observations.
 
@@ -34,7 +32,7 @@ The main goal of this project is to compare the performance of these two techniq
 
 We also observe that the posterior distribution contains a large number of *equivalent modes*. This is because the roles of the factors are interchangeable, and also because the signs of the variables $l_{ik}$ and $f_{kj}$ may flipped without changing the model. These symmetries indicate that there are many probable yet equivalent combinations of variables, thus the presence of equivalent modes. This is also known as *model non-identifiability*. As an extension, we seek to demonstrate that this is an issue for both approaches, and attempt to address this issue in order to improve inference. See [here](gibbs.html) for preliminary work.
 
-## Additional writings
+# Writings
 
 - [Research proposal](assets/proposal.pdf)
 
