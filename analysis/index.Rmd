@@ -12,6 +12,8 @@ This research website is maintained for the documentation of the project *'A Com
 
 # Writings
 
+## Project description
+
 With the rise of high-dimensional data, various dimension reduction techniques have emerged, with the aim of identifying underlying structures which govern the data. One of these techniques is *factor analysis*, an approach which aims to discover latent variables that explain the data. Given a large number of observations, each consisting of a large number of attributes each, factor analysis seeks to quantify the associations between the attributes and the latent factors, and also the weight of each factor for each observation. Dimension reduction achieved by having a number of latent factors that is far smaller than the number of attributes/observations.
 
 Moreover, if it is desired for some factors to govern only a small subset of attributes, the approach is then known as *sparse factor analysis*. This is because the matrix connecting the attributes to the factors will contain a significant proportion of zeros, making this loading matrix a sparse matrix.
@@ -20,15 +22,19 @@ One specific application of sparse factor models is the analysis of gene express
 
  The gene expression level of gene $i$ of individual $j$ can be modelled as
 \[y_{ij} = \sum_{k=1}^K l_{ik}f_{kj} + e_{ij},\]
-where $l_{ik}$ is the regulation strength of factor $k$ on gene $i$, $f_{kj}$ is the activation weight of factor $k$ for individual $j$, and \(e_{ij}\) is a noise term. To achieve sparsity, $l_{ik}$ is set to zero if gene $i$ is not regulated by factor $k$.
+where $l_{ik}$ is the regulation strength of factor $k$ on gene $i$, $f_{kj}$ is the activation weight of factor $k$ for individual $j$, and \(e_{ij}\) is a noise term. To achieve sparsity, $l_{ik}$ is set to zero if gene $i$ is not regulated by factor $k$. Other details of the mathematical model are documented in the [derivation](assets/derivation.pdf).
 
 Following a Bayesian approach, the posterior distributions of the variables of interest (e.g. $l_{ik}$ and $f_{kj}$) are intractable to calculate directly. Two techniques are investigated:
+
 1. **Markov Chain Monte Carlo (MCMC).** The posterior distribution is approximated by simulating samples from a Markov chain which converges to the desired distribution. When successful, this accurately captures the distribution, yet is known to be a computationally intensive approach.
+
 2. **Variational Inference (VI).** As the posterior distribution involves complex dependencies between the model variables, we instead search for an approximate distribution from a family of much simpler distributions. This optimisation problem is computationally more efficient to solve, at the cost of accuracy due to use of simpler distributions.
 
 The main goal of this project is to compare the performance of these two techniques, in terms of accuracy and computational efficiency. It is expected that VI should have an advantage of being the faster approach without sacrificing too much accuracy.
 
-We also observe that the posterior distribution contains a large number of *equivalent modes*. This is because the roles of the factors are interchangeable, and also because the signs of the variables $l_{ik}$ and $f_{kj}$ may flipped without changing the model. These symmetries indicate that there are many probable yet equivalent combinations of variables, thus the presence of equivalent modes. This is also known as *model non-identifiability*. As an extension, we seek to demonstrate that this is an issue for both approaches, and attempt to address this issue in order to improve inference.
+We also observe that the posterior distribution contains a large number of *equivalent modes*. This is because the roles of the factors are interchangeable, and also because the signs of the variables $l_{ik}$ and $f_{kj}$ may flipped without changing the model. These symmetries indicate that there are many probable yet equivalent combinations of variables, thus the presence of equivalent modes. This is also known as *model non-identifiability*. As an extension, we seek to demonstrate that this is an issue for both approaches, and attempt to address this issue in order to improve inference. See [here](gibbs.html) for preliminary work.
+
+## Additional writings
 
 - [Research proposal](assets/proposal.pdf)
 
