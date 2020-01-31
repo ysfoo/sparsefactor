@@ -1,14 +1,12 @@
+// [[Rcpp::depends(RcppArmadillo)]]
+// [[Rcpp::depends(RcppGSL)]]
+
 #include <RcppArmadillo.h>
-#include <gsl/gsl_sf_log.h>
-#include <gsl/gsl_sf_exp.h>
 #include <gsl/gsl_math.h>
 #include <cmath>
 #include "relabel.h"
 
 using namespace Rcpp;
-
-// [[Rcpp::depends(RcppArmadillo)]]
-// [[Rcpp::depends(RcppGSL)]]
 
 void initialise(arma::mat &ymat, arma::vec &pivec, arma::umat &zmat,
                 arma::mat &fmat, arma::vec &tauvec, arma::vec &alphavec);
@@ -28,14 +26,11 @@ double calc_pz(arma::uword i, arma::mat &ymat, arma::umat &zmat, arma::mat &fmat
                double tau, arma::vec &alphavec);
 
 // [[Rcpp::export]]
-List gibbs(int n_iter,
-                 arma::mat &ymat,
-                 arma::vec &pivec,
-                 double ptaushape, double ptaurate,
-                 double palphashape, double palpharate,
-                 bool sign_switch=true, bool label_switch=true,
-                 int seed=-1,
-                 bool debug=false) {
+List gibbs(int n_iter, arma::mat &ymat, arma::vec &pivec,
+           double ptaushape, double ptaurate,
+           double palphashape, double palpharate,
+           bool sign_switch=true, bool label_switch=true,
+           int seed=-1) {
 
     // set random seed
     if(seed != -1) {
@@ -122,7 +117,7 @@ void initialise(arma::mat &ymat, arma::vec &pivec,
     arma::mat ols_lmat = ymat * fmat_t * arma::inv_sympd(fmat * fmat_t);
     arma::mat res = ymat - ols_lmat * fmat;
     tauvec = (N - K) / sum(res % res, 1);
-    arma::mat tmp = (var(ols_lmat, 0, 0));
+    arma::mat tmp = 1 / var(ols_lmat, 0, 0);
     alphavec = arma::conv_to<arma::vec>::from(tmp);
 }
 

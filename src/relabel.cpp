@@ -106,7 +106,7 @@ List relabel(List samples, bool sign_switch=true, bool label_switch=true,
 
 double update_lap(arma::mat &nus, arma::umat &sigmas, int t, bool sign_switch,
                   arma::cube &lmats, arma::cube &fmats, arma::ucube &zmats,
-                  arma::mat &ml, arma::mat &sl, arma::mat &mf, arma::mat &sf, arma::mat &pz) {
+                  arma::mat &ml, arma::mat &sl, arma::mat &mf, arma::mat &sf, arma::mat &pz, bool print_mat) {
     arma::mat lmat = lmats.row(t);
     arma::mat fmat = fmats.row(t);
     arma::umat zmat = zmats.row(t);
@@ -165,7 +165,6 @@ double update_lap(arma::mat &nus, arma::umat &sigmas, int t, bool sign_switch,
         // Rcout << '\n';
     }
 
-    // TODO: call lap
     cost = 0;
     if(lapjv_internal(K, costmat, x, y)) Rcerr << "error when solving LAP\n";
     // Rcout << "by row: ";
