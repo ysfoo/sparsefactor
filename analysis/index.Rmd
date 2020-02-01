@@ -14,7 +14,7 @@ This research website is maintained for the documentation of the project *'A Com
 
 With the rise of high-dimensional data, various dimension reduction techniques have emerged, with the aim of identifying underlying structures which govern the data. One of these techniques is *factor analysis*, an approach which aims to discover latent variables (factors) that explain the data. Given a large number of observations, each consisting of a large number of attributes, factor analysis seeks to quantify the associations between these attributes and some factors, and also the weight of each factor for each observation. Dimension reduction is achieved by having a number of factors that is far smaller than the number of attributes/observations.
 
-Moreover, if it is desired for some factors to govern only a small subset of attributes, the approach is then known as *sparse factor analysis*. This is because the matrix connecting the attributes to the factors will contain a significant proportion of zeros, making this loading matrix a sparse matrix.
+If it is desired for some factors to govern only a small subset of attributes, the approach is then known as *sparse factor analysis*. This is because the matrix connecting the attributes to the factors will contain a significant proportion of zeros, making this loading matrix a sparse matrix.
 
 One specific application of sparse factor models is the analysis of gene expression data. Biological theory expects that gene expression levels to be regulated by different mechanisms, which may be difficult to observe directly. Sparse factor analysis is an appropriate approach to analyse these processes, as most mechanisms (e.g. transcription factors) are each responsible for regulating only a small subset of genes. Successful inference may then shed light on the underlying gene regulatory network.
 
@@ -30,7 +30,7 @@ Following a Bayesian approach, the posterior distributions of the parameters of 
 
 The main goal of this project is to compare the performance of these two techniques, in terms of accuracy and computational efficiency. It is expected that VI should have an advantage of being the faster approach without sacrificing too much accuracy.
 
-We also observe that the posterior distribution contains a large number of *equivalent modes*. This is because the roles of the factors are interchangeable, and also because the signs of the parameters $l_{ik}$ and $f_{kj}$ may be flipped together without changing the model. These symmetries indicate that there are many probable yet equivalent combinations of variables, thus the presence of equivalent modes. This is also known as *model non-identifiability*. As an extension, we seek to demonstrate that this is an issue for both approaches, and attempt to address this issue in order to improve inference. See [here](gibbs.html) for preliminary work.
+We also observe that the posterior distribution contains a large number of *equivalent modes*. This is because the roles of the factors are interchangeable, and also because the signs of the parameters $l_{ik}$ and $f_{kj}$ (for some fixed $k$) may be flipped together without changing the model. These symmetries indicate that there are many probable yet equivalent combinations of variables, thus the presence of equivalent modes. This is also known as *model non-identifiability*. As an extension, we seek to demonstrate that this is an issue for both approaches, and attempt to address this issue in order to improve inference. See [here](gibbs.html) for preliminary work.
 
 # Writings
 
