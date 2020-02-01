@@ -26,7 +26,7 @@ To record progress, and to organise things to do (in italics).
 # Variational inference
 - Derive the coordinate ascent approach for a mean-field approximation. See Section 3 of the derivation.
 - *Implement the coordinate ascent approach.*
-- *Demonstrate that variational approximates may be inadequate in the case of multiple modes in close proximity.*
+- *Demonstrate that variational approximations may be inadequate in the case of multiple modes in close proximity.*
 - *Address the issue of multiple modes via a Monte Carlo approach to variational inference combined with a relabelling algorithm.*
 
 # Evaluation

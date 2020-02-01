@@ -12,25 +12,25 @@ This research website is maintained for the documentation of the project *'A Com
 
 # Project description
 
-With the rise of high-dimensional data, various dimension reduction techniques have emerged, with the aim of identifying underlying structures which govern the data. One of these techniques is *factor analysis*, an approach which aims to discover latent variables that explain the data. Given a large number of observations, each consisting of a large number of attributes, factor analysis seeks to quantify the associations between these attributes and the latent factors, and also the weight of each factor for each observation. Dimension reduction is achieved by having a number of latent factors that is far smaller than the number of attributes/observations.
+With the rise of high-dimensional data, various dimension reduction techniques have emerged, with the aim of identifying underlying structures which govern the data. One of these techniques is *factor analysis*, an approach which aims to discover latent variables (factors) that explain the data. Given a large number of observations, each consisting of a large number of attributes, factor analysis seeks to quantify the associations between these attributes and the factors, and also the weight of each factor for each observation. Dimension reduction is achieved by having a number of factors that is far smaller than the number of attributes/observations.
 
 Moreover, if it is desired for some factors to govern only a small subset of attributes, the approach is then known as *sparse factor analysis*. This is because the matrix connecting the attributes to the factors will contain a significant proportion of zeros, making this loading matrix a sparse matrix.
 
-One specific application of sparse factor models is the analysis of gene expression data. Biological theory expects that gene expression levels are regulated by transcription factors, a complex procedure which is difficult to observe directly. Sparse factor analysis is an appropriate approach to analyse these transcription factors, as each transcription factor is responsible for regulating only a small subset of genes. In the case of successful inference, the gene regulatory network may then be observed.
+One specific application of sparse factor models is the analysis of gene expression data. Biological theory expects that gene expression levels to be regulated by different mechanisms, which may be difficult to observe directly. Sparse factor analysis is an appropriate approach to analyse these processes, as most mechanisms (e.g. transcription factors) are each responsible for regulating only a small subset of genes. Successful inference may then shed light on the underlying gene regulatory network.
 
  The gene expression level of gene $i$ of individual $j$ can be modelled as
 \[y_{ij} = \sum_{k=1}^K l_{ik}f_{kj} + e_{ij},\]
 where $l_{ik}$ is the regulation strength of factor $k$ on gene $i$, $f_{kj}$ is the activation weight of factor $k$ for individual $j$, and \(e_{ij}\) is a noise term. To achieve sparsity, $l_{ik}$ is set to zero if gene $i$ is not regulated by factor $k$. Other details of the mathematical model are documented in the [derivation](assets/derivation.pdf).
 
-Following a Bayesian approach, the posterior distributions of the variables of interest (e.g. $l_{ik}$ and $f_{kj}$) are intractable to calculate directly. Two techniques are investigated:
+Following a Bayesian approach, the posterior distributions of the parameters of interest (e.g. $l_{ik}$ and $f_{kj}$) are intractable to calculate directly. Two techniques are investigated:
 
 1. **Markov Chain Monte Carlo (MCMC).** The posterior distribution is approximated by simulating samples from a Markov chain which converges to the desired distribution. When successful, the target distribution will be accurately caputred, but this approach is known to be computationally intensive.
 
-2. **Variational Inference (VI).** As the posterior distribution involves complex dependencies between the model variables, we instead search for an approximate distribution from a family of much simpler distributions. Solving this optimisation problem is computationally more efficient than MCMC, at the cost of fidelity due to the use of simpler distributions.
+2. **Variational Inference (VI).** As the posterior distribution involves complex dependencies between the model parameters, we instead search for an approximate distribution from a family of much simpler distributions. Solving this optimisation problem is computationally more efficient than MCMC, at the cost of fidelity due to the use of simpler distributions.
 
 The main goal of this project is to compare the performance of these two techniques, in terms of accuracy and computational efficiency. It is expected that VI should have an advantage of being the faster approach without sacrificing too much accuracy.
 
-We also observe that the posterior distribution contains a large number of *equivalent modes*. This is because the roles of the factors are interchangeable, and also because the signs of the variables $l_{ik}$ and $f_{kj}$ may be flipped together without changing the model. These symmetries indicate that there are many probable yet equivalent combinations of variables, thus the presence of equivalent modes. This is also known as *model non-identifiability*. As an extension, we seek to demonstrate that this is an issue for both approaches, and attempt to address this issue in order to improve inference. See [here](gibbs.html) for preliminary work.
+We also observe that the posterior distribution contains a large number of *equivalent modes*. This is because the roles of the factors are interchangeable, and also because the signs of the parameters $l_{ik}$ and $f_{kj}$ may be flipped together without changing the model. These symmetries indicate that there are many probable yet equivalent combinations of variables, thus the presence of equivalent modes. This is also known as *model non-identifiability*. As an extension, we seek to demonstrate that this is an issue for both approaches, and attempt to address this issue in order to improve inference. See [here](gibbs.html) for preliminary work.
 
 # Writings
 
@@ -60,7 +60,7 @@ We also observe that the posterior distribution contains a large number of *equi
 
 - [Buettner et al. (2017), *f-scLVM: scalable and versatile factor analysis for single-cell RNA-seq*](https://www.ncbi.nlm.nih.gov/pubmed/29115968) - variational inference approach for annotated sparse factor models.
 
-- [Argelaguet et al. (2018), *Multi‐Omics Factor Analysis — a framework for unsupervised integration of multi‐omics data sets*](https://www.ncbi.nlm.nih.gov/pubmed/29925568) - variational inference approach for sparse factor models consisting of multiple views which share the same experiments and latent factors.
+- [Argelaguet et al. (2018), *Multi‐Omics Factor Analysis — a framework for unsupervised integration of multi‐omics data sets*](https://www.ncbi.nlm.nih.gov/pubmed/29925568) - variational inference approach for sparse factor models consisting of multiple views which share the same experiments and latent variables.
 
 - [Wang and Stephens (2018), *Empirical Bayes Matrix Factorization*](https://arxiv.org/abs/1802.06931) - generalises some matrix factorisation methods under a framework which utilises estimates prior distributions according to observed data.
 
@@ -69,3 +69,5 @@ We also observe that the posterior distribution contains a large number of *equi
 - [Stephens (2000), *Dealing with label switching in mixture models*](https://www.jstor.org/stable/2680622) - a decision theoretic approach to address inaccurate summaries of the posterior distribution, as samples may correspond to different, but equivalent modes.
 
 - [Erosheva and Curtis (2017), *Dealing with Reflection Invariance in Bayesian Factor Analysis*](https://www.ncbi.nlm.nih.gov/pubmed/28290110) - addresses failure modes of MCMC sampling due to signflip symmetries in factor analysis.
+
+- [Jonker and Volgenant (1987), "A shortest augmenting path algorithm for dense and sparse linear assignment problems"](https://link.springer.com/article/10.1007/BF02278710) - solves the linear assignment problem, which arises when assigning locally optimal permutations to undo label switching.

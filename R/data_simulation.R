@@ -8,14 +8,14 @@ simulate.data <- function(lmat=NULL, tauvec=NULL, fmat=NULL, zmat=NULL, alphavec
     }
     if(!is.null(tauvec)) G <- length(tauvec)
     if(!is.null(fmat)) {
-        ldim <- dim(lmat)
-        K <- ldim[1]
-        N <- ldim[2]
+        fdim <- dim(fmat)
+        K <- fdim[1]
+        N <- fdim[2]
     }
     if(!is.null(zmat)) {
         zdim <- dim(zmat)
-        G <- ldim[1]
-        K <- ldim[2]
+        G <- zdim[1]
+        K <- zdim[2]
     }
     if(!is.null(alphavec)) K <- length(alphavec)
     if(!is.null(pivec)) K <- length(pivec)
