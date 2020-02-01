@@ -13,8 +13,8 @@
 
 <title>Dealing with model non-identifiability issues when sampling</title>
 
+<script src="site_libs/header-attrs-2.1/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
-<script src="site_libs/elevate-section-attrs-2.0/elevate-section-attrs.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -307,7 +307,7 @@ div.section {
 
 
 <h1 class="title toc-ignore">Dealing with model non-identifiability issues when sampling</h1>
-<h4 class="date">27 January, 2020</h4>
+<h4 class="date">01 February, 2020</h4>
 
 </div>
 
@@ -332,7 +332,7 @@ div.section {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2020-01-27
+<strong>Last updated:</strong> 2020-02-01
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
@@ -423,10 +423,10 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomysfoosparsefactortreeb73af403939d523a49ee3a204d87166b7be144d9targetblankb73af40a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/ysfoo/sparsefactor/tree/b73af403939d523a49ee3a204d87166b7be144d9" target="_blank">b73af40</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomysfoosparsefactortree51f485533af826bdc8089762fa34fb39817d5f14targetblank51f4855a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/ysfoo/sparsefactor/tree/51f485533af826bdc8089762fa34fb39817d5f14" target="_blank">51f4855</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomysfoosparsefactortreeb73af403939d523a49ee3a204d87166b7be144d9targetblankb73af40a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomysfoosparsefactortree51f485533af826bdc8089762fa34fb39817d5f14targetblank51f4855a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -434,10 +434,12 @@ Great! You are using Git for version control. Tracking code development and conn
 <pre><code>
 Ignored files:
     Ignored:    .RData
+    Ignored:    .Rhistory
     Ignored:    .Rproj.user/
     Ignored:    .ipynb_checkpoints/
-    Ignored:    analysis/site_libs/
     Ignored:    src/RcppExports.o
+    Ignored:    src/cavi.o
+    Ignored:    src/digamma.o
     Ignored:    src/gibbs.o
     Ignored:    src/lap.o
     Ignored:    src/modString.o
@@ -448,17 +450,11 @@ Ignored files:
 Untracked files:
     Untracked:  .Rbuildignore
     Untracked:  Rplots.pdf
-    Untracked:  analysis/index.knit.md
-    Untracked:  analysis/index.utf8.md
     Untracked:  code/
     Untracked:  papers/
 
 Unstaged changes:
-    Modified:   analysis/index.Rmd
     Modified:   sparsefactor.Rproj
-    Modified:   src/relabel.cpp
-    Modified:   src/relabel.h
-    Modified:   test.R
 
 </code></pre>
 <p>
@@ -497,6 +493,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/ysfoo/sparsefactor/blob/51f485533af826bdc8089762fa34fb39817d5f14/analysis/gibbs.Rmd" target="_blank">51f4855</a>
+</td>
+<td>
+Yong See Foo
+</td>
+<td>
+2020-02-01
+</td>
+<td>
+wflow_publish(c(“analysis/index.Rmd”, “analysis/gibbs.Rmd”,
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/ysfoo/sparsefactor/678960a2931d3e5cbe7da20559cc1b58edf491bf/docs/gibbs.html" target="_blank">678960a</a>
+</td>
+<td>
+Yong See Foo
+</td>
+<td>
+2020-01-27
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -589,7 +619,7 @@ samples &lt;- burn.thin(gibbs(N.TOT, data$ymat,
                             ptaushape=1, ptaurate=1,
                             palphashape=1, palpharate=1, seed=0),
                       burn=N.BURN, thin=1)</code></pre>
-<pre><code>40.932 sec elapsed</code></pre>
+<pre><code>39.912 sec elapsed</code></pre>
 <p>To assess whether the sampler has converged to a stationary distribution, we look at trace plots of the simulated samples. As an example, here are the trace plots for the factor activations for individual 2:</p>
 <pre class="r"><code>j &lt;- 2 # individual 2
 for(k in 1:K) {
@@ -638,10 +668,10 @@ Yong See Foo
 </div>
 <p>For both factors 1 and 2, the simulated values appear to be a mixture of: (i) values sampled around a local mode around 2, (ii) values sampled around a local mode around -2, and (iii) values sampled around a local mode near 0, with comparatively larger variance.</p>
 <p>The behaviour occurs due to the <em>non-identifiability</em> of the model. The gene expression level of gene <span class="math inline">\(i\)</span> of individual <span class="math inline">\(j\)</span> is modelled as <span class="math display">\[y_{ij} = \sum_{k=1}^K l_{ik}f_{kj} + e_{ij},\]</span> where <span class="math inline">\(l_{ik}\)</span> is the regulation strength of factor <span class="math inline">\(k\)</span> on gene <span class="math inline">\(i\)</span>, <span class="math inline">\(f_{kj}\)</span> is the activation weight of factor <span class="math inline">\(k\)</span> for individual <span class="math inline">\(j\)</span>, and <span class="math inline">\(e_{ij}\)</span> is a noise term. For a fixed <span class="math inline">\(k\)</span>, note that flipping the signs of <span class="math inline">\(l_{ik}\)</span> and <span class="math inline">\(f_{kj}\)</span> (for all <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span>) does not change the model. This explains the presence of two equivalent modes around 2 and -2 in the first two trace plots. This is an example of <em>sign switching</em>. If we take the mean across all samples, the estimated mean will be shrunk towards 0 due to the presence of the two modes. Thus, to obtain more accurate posterior summaries, it is desirable for only one of these modes to be present.</p>
-<p>We can therefore deduce that <span class="math inline">\(f_{1,2}\)</span> and <span class="math inline">\(f_{2,2}\)</span> should have means near 0 and 2 (or equivalent, -2), in either order. However, in the trace plots, factor 1 and factor 2 both have samples simulated around both modes. This occurs because the roles of factor 1 and factor 2 are swapped at certain iterations of sampling. This is an example of <em>label-switching</em>: for fixed <span class="math inline">\(k\)</span> and <span class="math inline">\(k&#39;\)</span>, if <span class="math inline">\(l_{ik}\)</span> is swapped with <span class="math inline">\(l_{ik&#39;}\)</span> and <span class="math inline">\(f_{kj}\)</span> is swapped with <span class="math inline">\(f_{k&#39;j}\)</span> (for all <span class="math inline">\(i\)</span> and all <span class="math inline">\(j\)</span>), the model does not change. This happens for <span class="math inline">\(k=1,\,k&#39;=2\)</span>, and also for <span class="math inline">\(k=3,\,k&#39;=4\)</span>.</p>
-<p>To undo label and sign switching, a relabelling algorithm is used. The intuition is that each sample is relabelled (i.e. signs and labels are switched) such that the sampled distribution of each entry resembles a normal distribution, hence having only one mode. For details of this algorithm, see section 2.2 of the derivation. After relabelling, the trace plots are as follows:</p>
+<p>We can therefore deduce that <span class="math inline">\(f_{1,2}\)</span> and <span class="math inline">\(f_{2,2}\)</span> should have means near 0 and 2 (or equivalently, -2), in either order. However, in the trace plots, factor 1 and factor 2 both have samples simulated around both modes. This occurs because the roles of factor 1 and factor 2 are swapped at certain iterations of sampling. This is an example of <em>label-switching</em>: for fixed <span class="math inline">\(k\)</span> and <span class="math inline">\(k&#39;\)</span>, if <span class="math inline">\(l_{ik}\)</span> is swapped with <span class="math inline">\(l_{ik&#39;}\)</span> and <span class="math inline">\(f_{kj}\)</span> is swapped with <span class="math inline">\(f_{k&#39;j}\)</span> (for all <span class="math inline">\(i\)</span> and all <span class="math inline">\(j\)</span>), the model does not change. This happens for <span class="math inline">\(k=1,\,k&#39;=2\)</span>, and also for <span class="math inline">\(k=3,\,k&#39;=4\)</span>.</p>
+<p>To undo label and sign switching, a relabelling algorithm is used. The intuition is that each sample is relabelled (i.e. signs and labels are switched) such that the sampled distribution of each entry resembles a normal distribution, hence having only one mode. For details of this algorithm, see Section 2.2 of the derivation. After relabelling, the trace plots are as follows:</p>
 <pre class="r"><code>relabelled &lt;- relabel(samples)</code></pre>
-<pre><code>72.767 sec elapsed</code></pre>
+<pre><code>116.853 sec elapsed</code></pre>
 <pre class="r"><code>for(k in 1:K) {
     vec = relabelled$fmat[,k,j]
     plot(0, 0, xlab=&quot;iteration&quot;, type=&quot;n&quot;, ylab=paste0(&quot;fmat[,&quot;,k,&quot;,&quot;,j,&quot;]&quot;),
@@ -807,9 +837,9 @@ loaded via a namespace (and not attached):
  [1] Rcpp_1.0.3      rprojroot_1.3-2 digest_0.6.23   later_1.0.0    
  [5] R6_2.4.1        backports_1.1.5 git2r_0.26.1    magrittr_1.5   
  [9] evaluate_0.14   stringi_1.4.5   rlang_0.4.3     fs_1.3.1       
-[13] promises_1.1.0  whisker_0.4     rmarkdown_2.0   tools_3.6.1    
-[17] stringr_1.4.0   glue_1.3.1      httpuv_1.5.2    xfun_0.11      
-[21] yaml_2.2.0      compiler_3.6.1  htmltools_0.4.0 knitr_1.26     </code></pre>
+[13] promises_1.1.0  whisker_0.4     rmarkdown_2.1   tools_3.6.1    
+[17] stringr_1.4.0   glue_1.3.1      httpuv_1.5.2    xfun_0.12      
+[21] yaml_2.2.0      compiler_3.6.1  htmltools_0.4.0 knitr_1.27     </code></pre>
 </div>
 
 
