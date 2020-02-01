@@ -13,12 +13,11 @@ void initialise(arma::mat &ymat, arma::vec &pivec,
                 arma::mat &fmeans, arma::mat &fsigs, arma::mat &zmeans,
                 arma::vec &taushapes, arma::vec &taurates,
                 arma::vec &alphashapes, arma::vec &alpharates);
-void update_l(arma::mat &ymat, arma::mat &lmeans, arma::mat &lsigs,
-              arma::mat &fmeans, arma::mat &fsigs, arma::mat &zmeans,
-              arma::vec &taushapes, arma::vec &taurates,
-              arma::vec &alphashapes, arma::vec &alpharates);
-void update_z(arma::vec &pivec, arma::mat &lmeans, arma::mat &lsigs,
-              arma::mat &zmeans, arma::vec &alphashapes, arma::vec &alpharates);
+void update_lz(arma::mat &ymat, arma::vec &pivec,
+               arma::mat &lmeans, arma::mat &lsigs,
+               arma::mat &fmeans, arma::mat &fsigs, arma::mat &zmeans,
+               arma::vec &taushapes, arma::vec &taurates,
+               arma::vec &alphashapes, arma::vec &alpharates);
 void update_f(arma::mat &ymat, arma::mat &lmeans, arma::mat &lsigs,
               arma::mat &fmeans, arma::mat &fsigs, arma::mat &zmeans,
               arma::vec &taushapes, arma::vec &taurates);
@@ -29,6 +28,14 @@ void update_tau(arma::mat &ymat, arma::mat &lmeans, arma::mat &lsigs,
 void update_alpha(arma::mat &lmeans, arma::mat &lsigs, arma::mat &zmeans,
                   arma::vec &alphashapes, arma::vec &alpharates,
                   double palphashape, double palpharate);
+
+// unused
+void update_l(arma::mat &ymat, arma::mat &lmeans, arma::mat &lsigs,
+              arma::mat &fmeans, arma::mat &fsigs, arma::mat &zmeans,
+              arma::vec &taushapes, arma::vec &taurates,
+              arma::vec &alphashapes, arma::vec &alpharates);
+void update_z(arma::vec &pivec, arma::mat &lmeans, arma::mat &lsigs,
+              arma::mat &zmeans, arma::vec &alphashapes, arma::vec &alpharates);
 
 // [[Rcpp::export]]
 List cavi(arma::mat &ymat, arma::vec &pivec,
@@ -72,32 +79,34 @@ List cavi(arma::mat &ymat, arma::vec &pivec,
     initialise(ymat, pivec, lmeans, lsigs, fmeans, fsigs, zmeans,
                taushapes, taurates, alphashapes, alpharates);
 
+    List params;
     int iter = 0;
     while(iter++ < max_iter) {
-        update_l(ymat, lmeans, lsigs, fmeans, fsigs, zmeans,
+        if(debug) {
+            Rcout << "iter " << iter << "\nlmeans\n" << lmeans << "zmeans\n" << zmeans << "fmeans\n" << fmeans;
+        }
+        update_lz(ymat, pivec, lmeans, lsigs, fmeans, fsigs, zmeans,
                  taushapes, taurates, alphashapes, alpharates);
-        update_z(pivec, lmeans, lsigs, zmeans, alphashapes, alpharates);
         update_f(ymat, lmeans, lsigs, fmeans, fsigs,
                  zmeans, taushapes, taurates);
         update_tau(ymat, lmeans, lsigs, fmeans, fsigs, zmeans,
                    taushapes, taurates, ptaushape, ptaurate);
         update_alpha(lmeans, lsigs, zmeans, alphashapes, alpharates,
                      palphashape, palpharate);
-        Rcout << "iter " << iter << "\n";
-        Rcout << zmeans;
+        // Rcout << "iter " << iter << "\n" << zmeans;
     }
 
-    List samples = List::create(Named("lmean")=lmeans,
-                                Named("lsig")=lsigs,
-                                Named("fmean")=fmeans,
-                                Named("fsig")=fsigs,
-                                Named("zmean")=zmeans,
-                                Named("taushape")=taushapes,
-                                Named("taurate")=taurates,
-                                Named("alphashape")=alphashapes,
-                                Named("alpharate")=alpharates);
+    params = List::create(Named("lmean")=lmeans,
+                          Named("lsig")=lsigs,
+                          Named("fmean")=fmeans,
+                          Named("fsig")=fsigs,
+                          Named("zmean")=zmeans,
+                          Named("taushape")=taushapes,
+                          Named("taurate")=taurates,
+                          Named("alphashape")=alphashapes,
+                          Named("alpharate")=alpharates);
 
-    return samples;
+    return params;
 }
 
 void initialise(arma::mat &ymat, arma::vec &pivec,
@@ -115,7 +124,7 @@ void initialise(arma::mat &ymat, arma::vec &pivec,
 
     // initialise z and alphashape
     for(int k = 0; k < K; k++) {
-        zmeans.col(k).fill(pivec(k));
+        zmeans.col(k).fill(0.5);
         alphashapes(k) = 0.5 * G * pivec(k);
     }
 
@@ -133,45 +142,41 @@ void initialise(arma::mat &ymat, arma::vec &pivec,
     alpharates = alphashapes / alphaest;
 }
 
-void update_l(arma::mat &ymat, arma::mat &lmeans, arma::mat &lsigs,
-              arma::mat &fmeans, arma::mat &fsigs, arma::mat &zmeans,
-              arma::vec &taushapes, arma::vec &taurates,
-              arma::vec &alphashapes, arma::vec &alpharates) {
+void update_lz(arma::mat &ymat, arma::vec &pivec,
+               arma::mat &lmeans, arma::mat &lsigs,
+               arma::mat &fmeans, arma::mat &fsigs, arma::mat &zmeans,
+               arma::vec &taushapes, arma::vec &taurates,
+               arma::vec &alphashapes, arma::vec &alpharates) {
     // define dimensions
     arma::uword G = ymat.n_rows;
     arma::uword N = ymat.n_cols;
     arma::uword K = lmeans.n_cols;
+
+    arma::mat poff = arma::repmat(arma::log(1 - pivec.t()), G, 1);
 
     arma::vec ff_bar = N * arma::diagvec(fsigs) + arma::sum(arma::square(fmeans), 1);
     arma::vec tau_bar = taushapes / taurates;
     lsigs = 1 / (tau_bar * ff_bar.t()
                  + arma::repmat((alphashapes / alpharates).t(), G, 1));
 
-    arma::mat res = ymat - ((lmeans % zmeans) * fmeans);
-
+    arma::vec tmpvec;
+    arma::vec pon, pmax;
+    double tmp;
     for(arma::uword k : arma::randperm(K)) {
-        lmeans.col(k) = ((res + (lmeans.col(k) % zmeans.col(k)) * fmeans.row(k))
-                          * fmeans.row(k).t()) % (tau_bar % lsigs.col(k));
+        tmpvec = arma::zeros<arma::vec>(G);
+        for(arma::uword k1 = 0; k1 < K; k1++) {
+            if(k1 == k) continue;
+            tmpvec += (N * fsigs(k, k1) + arma::accu(fmeans.row(k) % fmeans.row(k1))) * (lmeans.col(k1) % zmeans.col(k1));
+        }
+        lmeans.col(k) = tau_bar % lsigs.col(k) % (ymat * fmeans.row(k).t() - tmpvec);
+
+        tmp = digammal(alphashapes(k)) - log(2 * M_PI * alpharates(k));
+        tmpvec = arma::square(lmeans.col(k)) / lsigs.col(k) + tmp;
+        pon = log(pivec(k)) + 0.5 * (arma::log(lsigs.col(k)) + tmpvec);
+        pmax = arma::max(poff.col(k), pon);
+        zmeans.col(k) = arma::exp(pon - pmax - arma::log(arma::exp(poff.col(k) - pmax)
+                                                             + arma::exp(pon - pmax)));
     }
-}
-
-void update_z(arma::vec &pivec, arma::mat &lmeans, arma::mat &lsigs,
-              arma::mat &zmeans, arma::vec &alphashapes, arma::vec &alpharates) {
-    // define dimensions
-    arma::uword G = lmeans.n_rows;
-    arma::uword K = pivec.n_elem;
-
-    arma::mat poff = arma::repmat(1 - pivec.t(), G, 1);
-    arma::rowvec tmpvec(K);
-    for(int k = 0; k < K; k++) {
-        tmpvec(k) = digammal(alphashapes(k)) - log(2 * M_PI * alpharates(k));
-    }
-
-    arma::mat tmp = arma::square(lmeans) / lsigs + arma::repmat(tmpvec, G, 1);
-    arma::mat pon = arma::repmat(pivec.t(), G, 1) % arma::sqrt(lsigs) % arma::exp(tmp / 2);
-
-    zmeans = pon / (pon + poff);
-    zmeans.replace(arma::datum::nan, 1); // because pon entry is inf
 }
 
 void update_f(arma::mat &ymat, arma::mat &lmeans, arma::mat &lsigs,
@@ -236,4 +241,49 @@ void update_alpha(arma::mat &lmeans, arma::mat &lsigs, arma::mat &zmeans,
 
 double calc_elbo() {
     return 0;
+}
+
+// unused
+void update_l(arma::mat &ymat, arma::mat &lmeans, arma::mat &lsigs,
+              arma::mat &fmeans, arma::mat &fsigs, arma::mat &zmeans,
+              arma::vec &taushapes, arma::vec &taurates,
+              arma::vec &alphashapes, arma::vec &alpharates) {
+    // define dimensions
+    arma::uword G = ymat.n_rows;
+    arma::uword N = ymat.n_cols;
+    arma::uword K = lmeans.n_cols;
+
+    arma::vec ff_bar = N * arma::diagvec(fsigs) + arma::sum(arma::square(fmeans), 1);
+    arma::vec tau_bar = taushapes / taurates;
+    lsigs = 1 / (tau_bar * ff_bar.t()
+                     + arma::repmat((alphashapes / alpharates).t(), G, 1));
+
+    arma::vec tmpvec;
+    for(arma::uword k : arma::randperm(K)) {
+        tmpvec = arma::zeros<arma::vec>(G);
+        for(arma::uword k1 = 0; k1 < K; k1++) {
+            if(k1 == k) continue;
+            tmpvec += (N * fsigs(k, k1) + arma::accu(fmeans.row(k) % fmeans.row(k1))) * (lmeans.col(k1) % zmeans.col(k1));
+        }
+        lmeans.col(k) = tau_bar % lsigs.col(k) % (ymat * fmeans.row(k).t() - tmpvec);
+    }
+}
+
+void update_z(arma::vec &pivec, arma::mat &lmeans, arma::mat &lsigs,
+              arma::mat &zmeans, arma::vec &alphashapes, arma::vec &alpharates) {
+    // define dimensions
+    arma::uword G = lmeans.n_rows;
+    arma::uword K = pivec.n_elem;
+
+    arma::mat poff = arma::repmat(arma::log(1 - pivec.t()), G, 1);
+    arma::rowvec tmpvec(K);
+    for(int k = 0; k < K; k++) {
+        tmpvec(k) = digammal(alphashapes(k)) - log(2 * M_PI * alpharates(k));
+    }
+
+    arma::mat tmp = arma::square(lmeans) / lsigs + arma::repmat(tmpvec, G, 1);
+    arma::mat pon = arma::repmat(arma::log(pivec.t()), G, 1) + 0.5 * (arma::log(lsigs) + tmp) ;
+
+    arma::mat pmax = arma::max(poff, pon);
+    zmeans = arma::exp(pon - pmax - arma::log(arma::exp(poff - pmax) + arma::exp(pon - pmax)));
 }
