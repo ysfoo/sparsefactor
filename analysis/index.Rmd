@@ -64,10 +64,10 @@ We also observe that the posterior distribution contains a large number of *equi
 
 - [Wang and Stephens (2018), *Empirical Bayes Matrix Factorization*](https://arxiv.org/abs/1802.06931) - generalises some matrix factorisation methods under a framework which utilises estimates prior distributions according to observed data.
 
-## Label/sign-switching
+## Model non-identifiability
 
 - [Stephens (2000), *Dealing with label switching in mixture models*](https://www.jstor.org/stable/2680622) - a decision theoretic approach to address inaccurate summaries of the posterior distribution, as samples may correspond to different, but equivalent modes.
 
 - [Erosheva and Curtis (2017), *Dealing with Reflection Invariance in Bayesian Factor Analysis*](https://www.ncbi.nlm.nih.gov/pubmed/28290110) - addresses failure modes of MCMC sampling due to signflip symmetries in factor analysis.
 
-- [Jonker and Volgenant (1987), "A shortest augmenting path algorithm for dense and sparse linear assignment problems"](https://link.springer.com/article/10.1007/BF02278710) - solves the linear assignment problem, which arises when assigning locally optimal permutations to undo label switching.
+- [Jonker and Volgenant (1987), *A shortest augmenting path algorithm for dense and sparse linear assignment problems*](https://link.springer.com/article/10.1007/BF02278710) - solves the linear assignment problem, which arises when assigning locally optimal permutations to undo label switching.
