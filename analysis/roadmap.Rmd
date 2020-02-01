@@ -31,7 +31,7 @@ To record progress, and to organise things to do (in italics).
 # Evaluation
 - *Calculate the predictive accuracy and mean probability of the connectivity matrix $\mathbf{Z}$ under the marginal posterior distribution.*
 - *Relabel inference results to match with the true (simulated) parameters.*
-- *Calculate the RRMSE of the parameter estimates of \mathbf{L}, \mathbf{F}, and \mathbf{LF}.*
+- *Calculate the RRMSE of the parameter estimates of $\mathbf{L}$, $\mathbf{F}$, and $\mathbf{LF}$.*
 - *Investigate the performance of both methods on real data.*
 
 # Presentation
