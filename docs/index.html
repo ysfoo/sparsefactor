@@ -438,10 +438,10 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomysfoosparsefactortreed672bf3080d60d11d13fd010299412525407a52ftargetblankd672bf3a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/ysfoo/sparsefactor/tree/d672bf3080d60d11d13fd010299412525407a52f" target="_blank">d672bf3</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomysfoosparsefactortreebe61dc31e820ea14bc87715bcd6528eaf4e02d95targetblankbe61dc3a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/ysfoo/sparsefactor/tree/be61dc31e820ea14bc87715bcd6528eaf4e02d95" target="_blank">be61dc3</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomysfoosparsefactortreed672bf3080d60d11d13fd010299412525407a52ftargetblankd672bf3a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomysfoosparsefactortreebe61dc31e820ea14bc87715bcd6528eaf4e02d95targetblankbe61dc3a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -508,6 +508,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/ysfoo/sparsefactor/blob/be61dc31e820ea14bc87715bcd6528eaf4e02d95/analysis/index.Rmd" target="_blank">be61dc3</a>
+</td>
+<td>
+Yong See Foo
+</td>
+<td>
+2020-02-01
+</td>
+<td>
+wflow_publish(c(“analysis/index.Rmd”))
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/ysfoo/sparsefactor/edd68b0b52c66a380f07c5b48c76c8491bfb6874/docs/index.html" target="_blank">edd68b0</a>
+</td>
+<td>
+Yong See Foo
+</td>
+<td>
+2020-02-01
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1114,7 +1148,7 @@ Start workflowr project.
 <div id="project-description" class="section level1">
 <h1>Project description</h1>
 <p>With the rise of high-dimensional data, various dimension reduction techniques have emerged, with the aim of identifying underlying structures which govern the data. One of these techniques is <em>factor analysis</em>, an approach which aims to discover latent variables (factors) that explain the data. Given a large number of observations, each consisting of a large number of attributes, factor analysis seeks to quantify the associations between these attributes and some factors, and also the weight of each factor for each observation. Dimension reduction is achieved by having a number of factors that is far smaller than the number of attributes/observations.</p>
-<p>Moreover, if it is desired for some factors to govern only a small subset of attributes, the approach is then known as <em>sparse factor analysis</em>. This is because the matrix connecting the attributes to the factors will contain a significant proportion of zeros, making this loading matrix a sparse matrix.</p>
+<p>If it is desired for some factors to govern only a small subset of attributes, the approach is then known as <em>sparse factor analysis</em>. This is because the matrix connecting the attributes to the factors will contain a significant proportion of zeros, making this loading matrix a sparse matrix.</p>
 <p>One specific application of sparse factor models is the analysis of gene expression data. Biological theory expects that gene expression levels to be regulated by different mechanisms, which may be difficult to observe directly. Sparse factor analysis is an appropriate approach to analyse these processes, as most mechanisms (e.g. transcription factors) are each responsible for regulating only a small subset of genes. Successful inference may then shed light on the underlying gene regulatory network.</p>
 <p>The gene expression level of gene <span class="math inline">\(i\)</span> of individual <span class="math inline">\(j\)</span> can be modelled as <span class="math display">\[y_{ij} = \sum_{k=1}^K l_{ik}f_{kj} + e_{ij},\]</span> where <span class="math inline">\(l_{ik}\)</span> is the regulation strength of factor <span class="math inline">\(k\)</span> on gene <span class="math inline">\(i\)</span>, <span class="math inline">\(f_{kj}\)</span> is the activation weight of factor <span class="math inline">\(k\)</span> for individual <span class="math inline">\(j\)</span>, and <span class="math inline">\(e_{ij}\)</span> is a noise term. To achieve sparsity, <span class="math inline">\(l_{ik}\)</span> is set to zero if gene <span class="math inline">\(i\)</span> is not regulated by factor <span class="math inline">\(k\)</span>. Other details of the mathematical model are documented in the <a href="assets/derivation.pdf">derivation</a>.</p>
 <p>Following a Bayesian approach, the posterior distributions of the parameters of interest (e.g. <span class="math inline">\(l_{ik}\)</span> and <span class="math inline">\(f_{kj}\)</span>) are intractable to calculate directly. Two techniques are investigated:</p>
@@ -1123,7 +1157,7 @@ Start workflowr project.
 <li><p><strong>Variational Inference (VI).</strong> As the posterior distribution involves complex dependencies between the model parameters, we instead search for an approximate distribution from a family of much simpler distributions. Solving this optimisation problem is computationally more efficient than MCMC, at the cost of fidelity due to the use of simpler distributions.</p></li>
 </ol>
 <p>The main goal of this project is to compare the performance of these two techniques, in terms of accuracy and computational efficiency. It is expected that VI should have an advantage of being the faster approach without sacrificing too much accuracy.</p>
-<p>We also observe that the posterior distribution contains a large number of <em>equivalent modes</em>. This is because the roles of the factors are interchangeable, and also because the signs of the parameters <span class="math inline">\(l_{ik}\)</span> and <span class="math inline">\(f_{kj}\)</span> may be flipped together without changing the model. These symmetries indicate that there are many probable yet equivalent combinations of variables, thus the presence of equivalent modes. This is also known as <em>model non-identifiability</em>. As an extension, we seek to demonstrate that this is an issue for both approaches, and attempt to address this issue in order to improve inference. See <a href="gibbs.html">here</a> for preliminary work.</p>
+<p>We also observe that the posterior distribution contains a large number of <em>equivalent modes</em>. This is because the roles of the factors are interchangeable, and also because the signs of the parameters <span class="math inline">\(l_{ik}\)</span> and <span class="math inline">\(f_{kj}\)</span> (for some fixed <span class="math inline">\(k\)</span>) may be flipped together without changing the model. These symmetries indicate that there are many probable yet equivalent combinations of variables, thus the presence of equivalent modes. This is also known as <em>model non-identifiability</em>. As an extension, we seek to demonstrate that this is an issue for both approaches, and attempt to address this issue in order to improve inference. See <a href="gibbs.html">here</a> for preliminary work.</p>
 </div>
 <div id="writings" class="section level1">
 <h1>Writings</h1>
