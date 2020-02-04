@@ -2,8 +2,6 @@
 #include "relabel.h"
 #include "lap.h"
 
-#define EPS 1e-8
-
 using namespace Rcpp;
 
 // [[Rcpp::depends(RcppArmadillo)]]
@@ -11,7 +9,9 @@ using namespace Rcpp;
 
 // [[Rcpp::export]]
 List relabel(List samples, bool sign_switch=true, bool label_switch=true,
-             bool print_action=false, bool print_cost=false, bool to_clone=true) {
+             bool p_every=false, bool use_l=true, double tol=1e-6,
+             bool print_action=false, bool print_cost=false,
+             bool to_clone=true) {
     if(!(sign_switch || label_switch)) return samples;
 
     if(to_clone) samples = clone(samples);
@@ -21,6 +21,7 @@ List relabel(List samples, bool sign_switch=true, bool label_switch=true,
     arma::ucube zmats = samples["zmat"];
     arma::mat taus = samples["tau"];
     arma::mat alphas = samples["alpha"];
+    arma::vec times = samples["time"];
 
     // define dimensions
     arma::uword G = lmats.n_cols;
@@ -40,13 +41,13 @@ List relabel(List samples, bool sign_switch=true, bool label_switch=true,
         }
     }
 
-    double prev_cost = 1, curr_cost = 0;
+    double prev_cost = 2 * tol, curr_cost = 0;
     arma::mat ml(G, K), sl(G, K), mf(K, N), sf(K, N), pz(G, K);
     int n = 0;
-    while(abs(prev_cost - curr_cost) > EPS) {
+    while(fabs(prev_cost - curr_cost) >= tol) {
         // get MLEs
         ml.zeros();
-        sl.fill(EPS); // in case of a sample size of 1
+        sl.zeros();
         mf.zeros();
         sf.zeros();
         pz.zeros();
@@ -64,18 +65,26 @@ List relabel(List samples, bool sign_switch=true, bool label_switch=true,
             sf = sf + arma::square((arma::mat(fmats.row(t)).each_col() % nus.row(t).t()).rows(sigmas.row(t)) - mf);
         }
         sl = sl / pz;
-        sl.replace(arma::datum::inf, 0);
+        sl.replace(arma::datum::nan, 0);
         sf /= T;
         pz /= T;
+
+        if(!p_every) {
+            for(int k = 0; k < K; k++) {
+                pz.col(k).fill(arma::mean(pz.col(k)));
+            }
+        }
 
         // get nu and sigma
         prev_cost = curr_cost;
         curr_cost = 0;
         for(int t = 0; t < T; t++) {
             curr_cost += (label_switch
-                          ? update_lap(nus, sigmas, t, sign_switch, lmats, fmats, zmats,
+                          ? update_lap(nus, sigmas, t, use_l, sign_switch,
+                                       lmats, fmats, zmats,
                                        ml, sl, mf, sf, pz)
-                          : update_nolap(nus, t, lmats, fmats, zmats,
+                          : update_nolap(nus, t, use_l,
+                                         lmats, fmats, zmats,
                                          ml, sl, mf, sf));
         }
         if(print_cost) Rcout << "iter " << n++ << ": " << curr_cost << '\n';
@@ -101,12 +110,109 @@ List relabel(List samples, bool sign_switch=true, bool label_switch=true,
                         Named("fmat")=fmats,
                         Named("zmat")=zmats,
                         Named("tau")=taus,
-                        Named("alpha")=alphas);
+                        Named("alpha")=alphas,
+                        Named("time")=times);
 }
 
-double update_lap(arma::mat &nus, arma::umat &sigmas, int t, bool sign_switch,
+// [[Rcpp::export]]
+List relabel_truth(List truth, arma::mat &mf, arma::mat &sf, arma::mat &pz,
+                   bool sign_switch=true, bool print_mat=false) {
+    truth = clone(truth);
+    arma::mat lmat = truth["lmat"];
+    arma::mat fmat = truth["fmat"];
+    arma::umat zmat = truth["zmat"];
+    arma::vec tauvec = truth["tauvec"];
+    arma::vec alphavec = truth["alphavec"];
+
+    // define dimensions
+    arma::uword G = lmat.n_rows;
+    arma::uword N = fmat.n_cols;
+    arma::uword K = fmat.n_rows;
+
+    arma::uvec sig(K);
+    arma::vec nu(K);
+
+    cost_t** costmat = new cost_t*[K];
+    arma::mat tmpnus(K, K);
+    for(int k = 0; k < K; k++) costmat[k] = new cost_t[K];
+    int* x = new int[K];
+    int* y = new int[K];
+
+    cost_t BAD = LARGE / (K + 1);
+
+    double cost, pcost, ncost;
+    arma::vec pvec, nvec;
+    if(print_mat) Rcout << "cost matrix:\n";
+    for(int k = 0; k < K; k++) {
+        for(int s = 0; s < K; s++) {
+            costmat[k][s] = 0;
+            cost = pcost = ncost = 0;
+            for(int i = 0; i < G; i++) {
+                if(pz(i, k) == 0) {
+                    if(zmat(i, s) == 1) {
+                        costmat[k][s] = BAD;
+                        break;
+                    }
+                } else if(zmat(i, s) == 1) {
+                    cost -= log(pz(i, k));
+                } else if(pz(i, k) == 1) {
+                    costmat[k][s] = BAD;
+                    break;
+                } else {
+                    cost -= log(1 - pz(i, k));
+                }
+            }
+            if(costmat[k][s] >= BAD) continue;
+            pcost += arma::accu(arma::square(fmat.row(s) - mf.row(k)) / sf.row(k));
+            ncost += arma::accu(arma::square(fmat.row(s) + mf.row(k)) / sf.row(k));
+            if(sign_switch && (ncost < pcost)) {
+                tmpnus(k, s) = -1;
+                costmat[k][s] = ncost + arma::accu(arma::log(sf.row(k))) + cost;
+            } else {
+                tmpnus(k, s) = 1;
+                costmat[k][s] = pcost + arma::accu(arma::log(sf.row(k))) + cost;
+            }
+        }
+        if(print_mat) {
+            for(int s = 0; s < K; s++) {
+                Rcout << costmat[k][s] << ' ';
+            }
+            Rcout << '\n';
+        }
+    }
+
+    cost = 0;
+    if(lapjv_internal(K, costmat, x, y)) Rcerr << "error when solving LAP\n";
+    if(print_mat) Rcout << "by row: ";
+    for(int k = 0; k < K; k++) {
+        if(print_mat) Rcout << x[k] << ' ';
+        sig(k) = x[k];
+        nu(x[k]) = tmpnus(k, x[k]);
+        cost += costmat[k][x[k]];
+    }
+    if(print_mat) Rcout << '\n';
+
+    for(int k = 0; k < K; k++) delete[] costmat[k];
+    delete[] costmat;
+    delete[] x;
+    delete[] y;
+
+    lmat = (lmat.each_row() % nu.t()).cols(sig);
+    fmat = (fmat.each_col() % nu).rows(sig);
+    zmat = zmat.cols(sig);
+    alphavec = alphavec.elem(sig);
+
+    return List::create(Named("lmat")=lmat,
+                        Named("fmat")=fmat,
+                        Named("zmat")=zmat,
+                        Named("tauvec")=tauvec,
+                        Named("alphavec")=alphavec);
+}
+
+double update_lap(arma::mat &nus, arma::umat &sigmas, int t, bool use_l, bool sign_switch,
                   arma::cube &lmats, arma::cube &fmats, arma::ucube &zmats,
-                  arma::mat &ml, arma::mat &sl, arma::mat &mf, arma::mat &sf, arma::mat &pz, bool print_mat) {
+                  arma::mat &ml, arma::mat &sl, arma::mat &mf, arma::mat &sf, arma::mat &pz,
+                  bool print_mat) {
     arma::mat lmat = lmats.row(t);
     arma::mat fmat = fmats.row(t);
     arma::umat zmat = zmats.row(t);
@@ -124,26 +230,33 @@ double update_lap(arma::mat &nus, arma::umat &sigmas, int t, bool sign_switch,
     // calculate cost matrix
     double cost, pcost, ncost;
     arma::vec pvec, nvec;
-    // Rcout << "cost matrix " << t << ":\n";
+    if(print_mat) Rcout << "cost matrix " << t << ":\n";
     for(int k = 0; k < K; k++) {
         for(int s = 0; s < K; s++) {
             costmat[k][s] = 0;
             cost = pcost = ncost = 0;
-            pvec = arma::square(lmat.col(s) - ml.col(k)) / sl.col(k) + arma::log(sl.col(k));
-            nvec = arma::square(lmat.col(s) + ml.col(k)) / sl.col(k) + arma::log(sl.col(k));
-
+            if(use_l) {
+                pvec = arma::square(lmat.col(s) - ml.col(k)) / sl.col(k) + arma::log(sl.col(k));
+                nvec = arma::square(lmat.col(s) + ml.col(k)) / sl.col(k) + arma::log(sl.col(k));
+            }
             for(int i = 0; i < G; i++) {
-                if(sl(i, k) == 0) {
+                if(pz(i, k) == 0) {
                     if(zmat(i, s) == 1) {
                         costmat[k][s] = BAD;
                         break;
                     }
                 } else if(zmat(i, s) == 1) {
-                    pcost += pvec(i);
-                    ncost += nvec(i);
+                    if(use_l) {
+                        // ignoring sl = 0
+                        if(pvec(i) < arma::datum::inf) {
+                            pcost += pvec(i);
+                            ncost += nvec(i);
+                        }
+                    }
                     cost -= log(pz(i, k));
                 } else if(pz(i, k) == 1) {
                     costmat[k][s] = BAD;
+                    break;
                 } else {
                     cost -= log(1 - pz(i, k));
                 }
@@ -159,22 +272,24 @@ double update_lap(arma::mat &nus, arma::umat &sigmas, int t, bool sign_switch,
                 costmat[k][s] = pcost + arma::accu(arma::log(sf.row(k))) + cost;
             }
         }
-        for(int s = 0; s < K; s++) {
-            // Rcout << costmat[k][s] << ' ';
+        if(print_mat) {
+            for(int s = 0; s < K; s++) {
+                Rcout << costmat[k][s] << ' ';
+            }
+            Rcout << '\n';
         }
-        // Rcout << '\n';
     }
 
     cost = 0;
     if(lapjv_internal(K, costmat, x, y)) Rcerr << "error when solving LAP\n";
-    // Rcout << "by row: ";
+    if(print_mat) Rcout << "by row: ";
     for(int k = 0; k < K; k++) {
-        // Rcout << x[k] << ' ';
+        if(print_mat) Rcout << x[k] << ' ';
         sigmas(t, k) = x[k];
         nus(t, x[k]) = tmpnus(k, x[k]);
         cost += costmat[k][x[k]];
     }
-    // Rcout << '\n';
+    if(print_mat) Rcout << '\n';
 
     for(int k = 0; k < K; k++) delete[] costmat[k];
     delete[] costmat;
@@ -184,7 +299,7 @@ double update_lap(arma::mat &nus, arma::umat &sigmas, int t, bool sign_switch,
     return cost;
 }
 
-double update_nolap(arma::mat &nus, int t,
+double update_nolap(arma::mat &nus, int t, bool use_l,
                     arma::cube &lmats, arma::cube &fmats, arma::ucube &zmats,
                     arma::mat &ml, arma::mat &sl, arma::mat &mf, arma::mat &sf) {
     arma::mat lmat = lmats.row(t);
@@ -193,14 +308,19 @@ double update_nolap(arma::mat &nus, int t,
     arma::mat tmpmat;
 
     arma::uword K = lmat.n_cols;
+    arma::vec pcost, ncost;
 
-    tmpmat = arma::square(lmat - ml) % zmat / sl;
-    arma::vec pcost = (arma::sum(tmpmat.replace(arma::datum::nan, 0), 0).t()
-                       + arma::sum(arma::square(fmat - mf) / sf, 1));
-    tmpmat = arma::square(lmat + ml) % zmat / sl;
-    arma::vec ncost = (arma::sum(tmpmat.replace(arma::datum::nan, 0), 0).t()
-                       + arma::sum(arma::square(fmat + mf) / sf, 1));
-
+    if(use_l) {
+        tmpmat = arma::square(lmat - ml) % zmat / sl;
+        pcost = (arma::sum(tmpmat.replace(arma::datum::nan, 0), 0).t()
+                               + arma::sum(arma::square(fmat - mf) / sf, 1));
+        tmpmat = arma::square(lmat + ml) % zmat / sl;
+        ncost = (arma::sum(tmpmat.replace(arma::datum::nan, 0), 0).t()
+                               + arma::sum(arma::square(fmat + mf) / sf, 1));
+    } else {
+        pcost = arma::sum(arma::square(fmat - mf) / sf, 1);
+        ncost = arma::sum(arma::square(fmat + mf) / sf, 1);
+    }
     double cost = 0;
     for(int k = 0; k < K; k++) {
         if(pcost(k) < ncost(k)) {
@@ -212,7 +332,9 @@ double update_nolap(arma::mat &nus, int t,
         }
     }
 
-    cost += (arma::accu(arma::log(sl.replace(0, 1)) % zmat)
-             + arma::accu(arma::log(sf)));
+    if(use_l) {
+        cost += (arma::accu(arma::log(sl.replace(0, 1)) % zmat)
+                     + arma::accu(arma::log(sf)));
+    } else cost += arma::accu(arma::log(sf));
     return cost;
 }

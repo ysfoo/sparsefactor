@@ -1,5 +1,6 @@
 simulate.data <- function(lmat=NULL, tauvec=NULL, fmat=NULL, zmat=NULL, alphavec=NULL,
-                          G=20, N=10, K=4, pivec=NULL, taushape=1, taurate=0.1, alphashape=1, alpharate=1) {
+                          G=20, N=10, K=4, pivec=NULL, snr=NULL,
+                          taushape=100, taurate=1, alphashape=1, alpharate=1) {
     # infer dimensions
     if(!is.null(lmat)) {
         ldim <- dim(lmat)
@@ -32,11 +33,20 @@ simulate.data <- function(lmat=NULL, tauvec=NULL, fmat=NULL, zmat=NULL, alphavec
     }
     if(is.null(fmat)) fmat <- matrix(rnorm(K * N), nrow=K, ncol=N)
 
+    lf <- lmat %*% fmat
+
     # simulate tau
-    if(is.null(tauvec)) tauvec <- rgamma(G, taushape, taurate)
+    if(is.null(tauvec)) {
+        if(is.null(snr)) tauvec <- rgamma(G, taushape, taurate)
+        else {
+            tauvec <- snr / rowVars(lf)
+            tau.na <- !is.finite(tauvec)
+            tauvec[tau.na] <- rgamma(sum(tau.na), taushape, taurate)
+        }
+    }
 
     # simulate y
-    ymat <- lmat %*% fmat + t(sapply(tauvec, function(tau) rnorm(N, 0, 1 / sqrt(tau))))
+    ymat <- lf + t(sapply(tauvec, function(tau) rnorm(N, 0, 1 / sqrt(tau))))
 
     return (list(ymat=ymat, lmat=lmat, fmat=fmat, zmat=zmat, tauvec=tauvec, alphavec=alphavec))
 }

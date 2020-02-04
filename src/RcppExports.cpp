@@ -7,8 +7,8 @@
 using namespace Rcpp;
 
 // cavi
-List cavi(arma::mat& ymat, arma::vec& pivec, double ptaushape, double ptaurate, double palphashape, double palpharate, int max_iter, int seed, bool debug);
-RcppExport SEXP _sparsefactor_cavi(SEXP ymatSEXP, SEXP pivecSEXP, SEXP ptaushapeSEXP, SEXP ptaurateSEXP, SEXP palphashapeSEXP, SEXP palpharateSEXP, SEXP max_iterSEXP, SEXP seedSEXP, SEXP debugSEXP) {
+List cavi(arma::mat& ymat, arma::vec& pivec, double ptaushape, double ptaurate, double palphashape, double palpharate, int check, int save, int max_iter, double tol, int seed, bool debug);
+RcppExport SEXP _sparsefactor_cavi(SEXP ymatSEXP, SEXP pivecSEXP, SEXP ptaushapeSEXP, SEXP ptaurateSEXP, SEXP palphashapeSEXP, SEXP palpharateSEXP, SEXP checkSEXP, SEXP saveSEXP, SEXP max_iterSEXP, SEXP tolSEXP, SEXP seedSEXP, SEXP debugSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -18,66 +18,77 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< double >::type ptaurate(ptaurateSEXP);
     Rcpp::traits::input_parameter< double >::type palphashape(palphashapeSEXP);
     Rcpp::traits::input_parameter< double >::type palpharate(palpharateSEXP);
+    Rcpp::traits::input_parameter< int >::type check(checkSEXP);
+    Rcpp::traits::input_parameter< int >::type save(saveSEXP);
     Rcpp::traits::input_parameter< int >::type max_iter(max_iterSEXP);
+    Rcpp::traits::input_parameter< double >::type tol(tolSEXP);
     Rcpp::traits::input_parameter< int >::type seed(seedSEXP);
     Rcpp::traits::input_parameter< bool >::type debug(debugSEXP);
-    rcpp_result_gen = Rcpp::wrap(cavi(ymat, pivec, ptaushape, ptaurate, palphashape, palpharate, max_iter, seed, debug));
+    rcpp_result_gen = Rcpp::wrap(cavi(ymat, pivec, ptaushape, ptaurate, palphashape, palpharate, check, save, max_iter, tol, seed, debug));
     return rcpp_result_gen;
 END_RCPP
 }
 // gibbs
-List gibbs(int n_iter, arma::mat& ymat, arma::vec& pivec, double ptaushape, double ptaurate, double palphashape, double palpharate, bool sign_switch, bool label_switch, int seed);
-RcppExport SEXP _sparsefactor_gibbs(SEXP n_iterSEXP, SEXP ymatSEXP, SEXP pivecSEXP, SEXP ptaushapeSEXP, SEXP ptaurateSEXP, SEXP palphashapeSEXP, SEXP palpharateSEXP, SEXP sign_switchSEXP, SEXP label_switchSEXP, SEXP seedSEXP) {
+List gibbs(int n_samples, arma::mat& ymat, arma::vec& pivec, double ptaushape, double ptaurate, double palphashape, double palpharate, int burn_in, int thin, int seed);
+RcppExport SEXP _sparsefactor_gibbs(SEXP n_samplesSEXP, SEXP ymatSEXP, SEXP pivecSEXP, SEXP ptaushapeSEXP, SEXP ptaurateSEXP, SEXP palphashapeSEXP, SEXP palpharateSEXP, SEXP burn_inSEXP, SEXP thinSEXP, SEXP seedSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< int >::type n_iter(n_iterSEXP);
+    Rcpp::traits::input_parameter< int >::type n_samples(n_samplesSEXP);
     Rcpp::traits::input_parameter< arma::mat& >::type ymat(ymatSEXP);
     Rcpp::traits::input_parameter< arma::vec& >::type pivec(pivecSEXP);
     Rcpp::traits::input_parameter< double >::type ptaushape(ptaushapeSEXP);
     Rcpp::traits::input_parameter< double >::type ptaurate(ptaurateSEXP);
     Rcpp::traits::input_parameter< double >::type palphashape(palphashapeSEXP);
     Rcpp::traits::input_parameter< double >::type palpharate(palpharateSEXP);
-    Rcpp::traits::input_parameter< bool >::type sign_switch(sign_switchSEXP);
-    Rcpp::traits::input_parameter< bool >::type label_switch(label_switchSEXP);
+    Rcpp::traits::input_parameter< int >::type burn_in(burn_inSEXP);
+    Rcpp::traits::input_parameter< int >::type thin(thinSEXP);
     Rcpp::traits::input_parameter< int >::type seed(seedSEXP);
-    rcpp_result_gen = Rcpp::wrap(gibbs(n_iter, ymat, pivec, ptaushape, ptaurate, palphashape, palpharate, sign_switch, label_switch, seed));
-    return rcpp_result_gen;
-END_RCPP
-}
-// myFunction
-Rcpp::StringVector myFunction(Rcpp::StringVector x);
-RcppExport SEXP _sparsefactor_myFunction(SEXP xSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::StringVector >::type x(xSEXP);
-    rcpp_result_gen = Rcpp::wrap(myFunction(x));
+    rcpp_result_gen = Rcpp::wrap(gibbs(n_samples, ymat, pivec, ptaushape, ptaurate, palphashape, palpharate, burn_in, thin, seed));
     return rcpp_result_gen;
 END_RCPP
 }
 // relabel
-List relabel(List samples, bool sign_switch, bool label_switch, bool print_action, bool print_cost, bool to_clone);
-RcppExport SEXP _sparsefactor_relabel(SEXP samplesSEXP, SEXP sign_switchSEXP, SEXP label_switchSEXP, SEXP print_actionSEXP, SEXP print_costSEXP, SEXP to_cloneSEXP) {
+List relabel(List samples, bool sign_switch, bool label_switch, bool p_every, bool use_l, double tol, bool print_action, bool print_cost, bool to_clone);
+RcppExport SEXP _sparsefactor_relabel(SEXP samplesSEXP, SEXP sign_switchSEXP, SEXP label_switchSEXP, SEXP p_everySEXP, SEXP use_lSEXP, SEXP tolSEXP, SEXP print_actionSEXP, SEXP print_costSEXP, SEXP to_cloneSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< List >::type samples(samplesSEXP);
     Rcpp::traits::input_parameter< bool >::type sign_switch(sign_switchSEXP);
     Rcpp::traits::input_parameter< bool >::type label_switch(label_switchSEXP);
+    Rcpp::traits::input_parameter< bool >::type p_every(p_everySEXP);
+    Rcpp::traits::input_parameter< bool >::type use_l(use_lSEXP);
+    Rcpp::traits::input_parameter< double >::type tol(tolSEXP);
     Rcpp::traits::input_parameter< bool >::type print_action(print_actionSEXP);
     Rcpp::traits::input_parameter< bool >::type print_cost(print_costSEXP);
     Rcpp::traits::input_parameter< bool >::type to_clone(to_cloneSEXP);
-    rcpp_result_gen = Rcpp::wrap(relabel(samples, sign_switch, label_switch, print_action, print_cost, to_clone));
+    rcpp_result_gen = Rcpp::wrap(relabel(samples, sign_switch, label_switch, p_every, use_l, tol, print_action, print_cost, to_clone));
+    return rcpp_result_gen;
+END_RCPP
+}
+// relabel_truth
+List relabel_truth(List truth, arma::mat& mf, arma::mat& sf, arma::mat& pz, bool sign_switch, bool print_mat);
+RcppExport SEXP _sparsefactor_relabel_truth(SEXP truthSEXP, SEXP mfSEXP, SEXP sfSEXP, SEXP pzSEXP, SEXP sign_switchSEXP, SEXP print_matSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< List >::type truth(truthSEXP);
+    Rcpp::traits::input_parameter< arma::mat& >::type mf(mfSEXP);
+    Rcpp::traits::input_parameter< arma::mat& >::type sf(sfSEXP);
+    Rcpp::traits::input_parameter< arma::mat& >::type pz(pzSEXP);
+    Rcpp::traits::input_parameter< bool >::type sign_switch(sign_switchSEXP);
+    Rcpp::traits::input_parameter< bool >::type print_mat(print_matSEXP);
+    rcpp_result_gen = Rcpp::wrap(relabel_truth(truth, mf, sf, pz, sign_switch, print_mat));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_sparsefactor_cavi", (DL_FUNC) &_sparsefactor_cavi, 9},
+    {"_sparsefactor_cavi", (DL_FUNC) &_sparsefactor_cavi, 12},
     {"_sparsefactor_gibbs", (DL_FUNC) &_sparsefactor_gibbs, 10},
-    {"_sparsefactor_myFunction", (DL_FUNC) &_sparsefactor_myFunction, 1},
-    {"_sparsefactor_relabel", (DL_FUNC) &_sparsefactor_relabel, 6},
+    {"_sparsefactor_relabel", (DL_FUNC) &_sparsefactor_relabel, 9},
+    {"_sparsefactor_relabel_truth", (DL_FUNC) &_sparsefactor_relabel_truth, 6},
     {NULL, NULL, 0}
 };
 
