@@ -30,8 +30,6 @@ Following a Bayesian approach, the posterior distributions of the parameters of 
 
 The main goal of this project is to compare the performance of these two techniques, in terms of accuracy and computational efficiency. It is expected that VI should have an advantage of being the faster approach without sacrificing too much accuracy.
 
-We also observe that the posterior distribution contains a large number of *equivalent modes*. This is because the roles of the factors are interchangeable, and also because the signs of the parameters $l_{ik}$ and $f_{kj}$ (for some fixed $k$) may be flipped together without changing the model. These symmetries indicate that there are many probable yet equivalent combinations of variables, thus the presence of equivalent modes. This is also known as *model non-identifiability*. As an extension, we seek to demonstrate that this is an issue for both approaches, and attempt to address this issue in order to improve inference. See [here](gibbs.html) for preliminary work.
-
 # Writings
 
 - [Research proposal](assets/proposal.pdf)
