@@ -42,7 +42,7 @@ We also observe that the posterior distribution contains a large number of *equi
 [MCMC and variational inference for sparse factor models](assets/derivation.pdf)
 
 # Implementation
-[Dealing with model non-identifiability issues when sampling](gibbs.html)
+*To do: include comparison results*
 
 # Resources
 
