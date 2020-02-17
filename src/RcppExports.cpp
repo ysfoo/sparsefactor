@@ -29,13 +29,13 @@ BEGIN_RCPP
 END_RCPP
 }
 // gibbs
-List gibbs(int n_samples, arma::mat& ymat, arma::vec& pivec, double ptaushape, double ptaurate, double palphashape, double palpharate, int burn_in, int thin, int seed);
-RcppExport SEXP _sparsefactor_gibbs(SEXP n_samplesSEXP, SEXP ymatSEXP, SEXP pivecSEXP, SEXP ptaushapeSEXP, SEXP ptaurateSEXP, SEXP palphashapeSEXP, SEXP palpharateSEXP, SEXP burn_inSEXP, SEXP thinSEXP, SEXP seedSEXP) {
+List gibbs(int n_samples, arma::mat& data, arma::vec& pivec, double ptaushape, double ptaurate, double palphashape, double palpharate, int burn_in, int thin, int seed);
+RcppExport SEXP _sparsefactor_gibbs(SEXP n_samplesSEXP, SEXP dataSEXP, SEXP pivecSEXP, SEXP ptaushapeSEXP, SEXP ptaurateSEXP, SEXP palphashapeSEXP, SEXP palpharateSEXP, SEXP burn_inSEXP, SEXP thinSEXP, SEXP seedSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< int >::type n_samples(n_samplesSEXP);
-    Rcpp::traits::input_parameter< arma::mat& >::type ymat(ymatSEXP);
+    Rcpp::traits::input_parameter< arma::mat& >::type data(dataSEXP);
     Rcpp::traits::input_parameter< arma::vec& >::type pivec(pivecSEXP);
     Rcpp::traits::input_parameter< double >::type ptaushape(ptaushapeSEXP);
     Rcpp::traits::input_parameter< double >::type ptaurate(ptaurateSEXP);
@@ -44,7 +44,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< int >::type burn_in(burn_inSEXP);
     Rcpp::traits::input_parameter< int >::type thin(thinSEXP);
     Rcpp::traits::input_parameter< int >::type seed(seedSEXP);
-    rcpp_result_gen = Rcpp::wrap(gibbs(n_samples, ymat, pivec, ptaushape, ptaurate, palphashape, palpharate, burn_in, thin, seed));
+    rcpp_result_gen = Rcpp::wrap(gibbs(n_samples, data, pivec, ptaushape, ptaurate, palphashape, palpharate, burn_in, thin, seed));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -68,18 +68,29 @@ BEGIN_RCPP
 END_RCPP
 }
 // relabel_truth
-List relabel_truth(List truth, arma::mat& mf, arma::mat& sf, arma::mat& pz, bool sign_switch, bool print_mat);
-RcppExport SEXP _sparsefactor_relabel_truth(SEXP truthSEXP, SEXP mfSEXP, SEXP sfSEXP, SEXP pzSEXP, SEXP sign_switchSEXP, SEXP print_matSEXP) {
+List relabel_truth(List truth, arma::mat& fmeans, arma::mat& fsigs, arma::mat& pz, bool sign_switch, bool print_mat);
+RcppExport SEXP _sparsefactor_relabel_truth(SEXP truthSEXP, SEXP fmeansSEXP, SEXP fsigsSEXP, SEXP pzSEXP, SEXP sign_switchSEXP, SEXP print_matSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< List >::type truth(truthSEXP);
-    Rcpp::traits::input_parameter< arma::mat& >::type mf(mfSEXP);
-    Rcpp::traits::input_parameter< arma::mat& >::type sf(sfSEXP);
+    Rcpp::traits::input_parameter< arma::mat& >::type fmeans(fmeansSEXP);
+    Rcpp::traits::input_parameter< arma::mat& >::type fsigs(fsigsSEXP);
     Rcpp::traits::input_parameter< arma::mat& >::type pz(pzSEXP);
     Rcpp::traits::input_parameter< bool >::type sign_switch(sign_switchSEXP);
     Rcpp::traits::input_parameter< bool >::type print_mat(print_matSEXP);
-    rcpp_result_gen = Rcpp::wrap(relabel_truth(truth, mf, sf, pz, sign_switch, print_mat));
+    rcpp_result_gen = Rcpp::wrap(relabel_truth(truth, fmeans, fsigs, pz, sign_switch, print_mat));
+    return rcpp_result_gen;
+END_RCPP
+}
+// test
+arma::mat test(arma::mat& data);
+RcppExport SEXP _sparsefactor_test(SEXP dataSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::mat& >::type data(dataSEXP);
+    rcpp_result_gen = Rcpp::wrap(test(data));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -89,6 +100,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_sparsefactor_gibbs", (DL_FUNC) &_sparsefactor_gibbs, 10},
     {"_sparsefactor_relabel", (DL_FUNC) &_sparsefactor_relabel, 9},
     {"_sparsefactor_relabel_truth", (DL_FUNC) &_sparsefactor_relabel_truth, 6},
+    {"_sparsefactor_test", (DL_FUNC) &_sparsefactor_test, 1},
     {NULL, NULL, 0}
 };
 

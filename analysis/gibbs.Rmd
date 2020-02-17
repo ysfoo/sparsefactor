@@ -31,15 +31,14 @@ data <- simulate.data(K=K, N=N, G=G,
 
 A Gibbs sampler is used to simulate the posterior. 50,000 samples are simulated, the first 10,000 of which are discarded as a burn-in.
 
-```{r, echo=-c(3,5)}
-N.TOT <- 50000
-N.BURN <- 10000
+```{r, echo=-c(2,4)}
+N.TOT <- 40000
 tic()
-samples <- burn.thin(gibbs(N.TOT, data$ymat,
-                            pivec=c(rep(0.2, 2), rep(0.8, 2)),
-                            ptaushape=1, ptaurate=1,
-                            palphashape=1, palpharate=1, seed=0),
-                      burn=N.BURN, thin=1)
+samples <- gibbs(N.TOT, data$ymat,
+                 pivec=c(rep(0.2, 2), rep(0.8, 2)),
+                 ptaushape=1, ptaurate=1,
+                 palphashape=1, palpharate=1,
+                 burn=10000, seed=0)
 toc()
 ```
 
@@ -51,8 +50,8 @@ j <- 2 # individual 2
 for(k in 1:K) {
     vec = samples$fmat[,k,j]
     plot(0, 0, xlab="iteration", type="n", ylab=paste0("fmat[,",k,",",j,"]"),
-         xlim=c(N.BURN + 1, N.TOT), ylim=c(min(vec), max(vec)))
-    lines((N.BURN+1):N.TOT, vec, type="l")
+         xlim=c(1, N.TOT), ylim=c(min(vec), max(vec)))
+    points(1:N.TOT, vec, pch=20, cex=0.5)
 }
 ```
 
@@ -74,8 +73,8 @@ par(mfrow=c(2,2), mar=c(4,4,1,1.5))
 for(k in 1:K) {
     vec = relabelled$fmat[,k,j]
     plot(0, 0, xlab="iteration", type="n", ylab=paste0("fmat[,",k,",",j,"]"),
-         xlim=c(N.BURN + 1, N.TOT), ylim=c(min(vec), max(vec)))
-    lines((N.BURN+1):N.TOT, vec, type="l")
+         xlim=c(1, N.TOT), ylim=c(min(vec), max(vec)))
+    points(1:N.TOT, vec, pch=20, cex=0.5)
 }
 ```
 
@@ -88,18 +87,5 @@ for(k in 1:K) {
 }
 ```
 
-Unfortunately, this relabelling algorithm is not always successful. For example, some switching behaviour remains for the factor activations of individual 1 (especially factor 3):
-
-```{r, echo=-1, fig.height=6, fig.width=9}
-par(mfrow=c(2,2), mar=c(4,4,1,1.5))
-j <- 1
-for(k in 1:K) {
-    vec = relabelled$fmat[,k,j]
-    plot(0, 0, xlab="iteration", type="n", ylab=paste0("fmat[,",k,",",j,"]"),
-         xlim=c(N.BURN + 1, N.TOT), ylim=c(min(vec), max(vec)))
-    lines((N.BURN+1):N.TOT, vec, type="l")
-}
-```
-
-Further investigation is needed to determine whether this is caused by a flawed implementation, or an inherent deficiency of the method.
+Unfortunately, this relabelling algorithm is not always successful. For example, some switching behaviour remains for factor 3. Further investigation is needed to determine whether this is caused by a flawed implementation, or an inherent deficiency of the method.
 

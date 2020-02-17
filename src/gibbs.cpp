@@ -5,7 +5,6 @@
 #include <Rcpp/Benchmark/Timer.h>
 #include <gsl/gsl_math.h>
 #include <cmath>
-#include "relabel.h"
 
 using namespace Rcpp;
 
@@ -28,7 +27,7 @@ double calc_pz(arma::uword i, arma::mat &ymat, arma::umat &zmat, arma::mat &fmat
                double tau, arma::vec &alphavec);
 
 // [[Rcpp::export]]
-List gibbs(int n_samples, arma::mat &ymat, arma::vec &pivec,
+List gibbs(int n_samples, arma::mat &data, arma::vec &pivec,
            double ptaushape, double ptaurate,
            double palphashape, double palpharate,
            int burn_in=0, int thin=1,
@@ -57,6 +56,13 @@ List gibbs(int n_samples, arma::mat &ymat, arma::vec &pivec,
         Rcerr << "Aborted: number of columns of ymat must be larger than size of pivec\n";
         return List::create();
     }
+
+    // handle NAs
+    arma::uvec na_idx = arma::find_nonfinite(data);
+    arma::mat ymat = data;
+    arma::umat namat = arma::zeros(G, N);
+    ymat.elem(na_idx).zeros();
+    namat.elem(na_idx).ones();
 
     // define parameters
     arma::cube lmats(n_samples, G, K);

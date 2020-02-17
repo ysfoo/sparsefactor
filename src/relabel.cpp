@@ -115,7 +115,7 @@ List relabel(List samples, bool sign_switch=true, bool label_switch=true,
 }
 
 // [[Rcpp::export]]
-List relabel_truth(List truth, arma::mat &mf, arma::mat &sf, arma::mat &pz,
+List relabel_truth(List truth, arma::mat &fmeans, arma::mat &fsigs, arma::mat &pz,
                    bool sign_switch=true, bool print_mat=false) {
     truth = clone(truth);
     arma::mat lmat = truth["lmat"];
@@ -134,11 +134,18 @@ List relabel_truth(List truth, arma::mat &mf, arma::mat &sf, arma::mat &pz,
 
     cost_t** costmat = new cost_t*[K];
     arma::mat tmpnus(K, K);
+    tmpnus.fill(1);
     for(int k = 0; k < K; k++) costmat[k] = new cost_t[K];
     int* x = new int[K];
     int* y = new int[K];
 
     cost_t BAD = LARGE / (K + 1);
+
+    arma::rowvec tnorms(K), snorms(K), tmpvec;
+    for(int k = 0; k < K; k++) {
+        tnorms(k) = arma::norm(fmat.row(k));
+        snorms(k) = arma::norm(fmeans.row(k));
+    }
 
     double cost, pcost, ncost;
     arma::vec pvec, nvec;
@@ -163,14 +170,15 @@ List relabel_truth(List truth, arma::mat &mf, arma::mat &sf, arma::mat &pz,
                 }
             }
             if(costmat[k][s] >= BAD) continue;
-            pcost += arma::accu(arma::square(fmat.row(s) - mf.row(k)) / sf.row(k));
-            ncost += arma::accu(arma::square(fmat.row(s) + mf.row(k)) / sf.row(k));
+            tmpvec = fmat.row(s) / tnorms(s) * snorms(k);
+            pcost += arma::accu(arma::square(tmpvec - fmeans.row(k)) / fsigs.row(k));
+            ncost += arma::accu(arma::square(tmpvec + fmeans.row(k)) / fsigs.row(k));
             if(sign_switch && (ncost < pcost)) {
                 tmpnus(k, s) = -1;
-                costmat[k][s] = ncost + arma::accu(arma::log(sf.row(k))) + cost;
+                costmat[k][s] = ncost + arma::accu(arma::log(fsigs.row(k))) + cost;
             } else {
                 tmpnus(k, s) = 1;
-                costmat[k][s] = pcost + arma::accu(arma::log(sf.row(k))) + cost;
+                costmat[k][s] = pcost + arma::accu(arma::log(fsigs.row(k))) + cost;
             }
         }
         if(print_mat) {

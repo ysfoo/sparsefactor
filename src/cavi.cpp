@@ -297,6 +297,11 @@ void update_lz(arma::mat &ymat, arma::vec &pivec,
         pmax = arma::max(poff.col(k), pon);
         zmeans.col(k) = arma::exp(pon - pmax - arma::log(arma::exp(poff.col(k) - pmax)
                                                              + arma::exp(pon - pmax)));
+        for(int i = 0; i < G; i++) {
+            if(!(zmeans(i, k) > -1)) {
+                Rcout << i << " " << lsigs(i, k) << " " << tmpvec(i) << '\n';
+            }
+        }
     }
 }
 
@@ -321,10 +326,6 @@ void update_f(arma::mat &ymat, arma::mat &lmeans, arma::mat &lsigs,
         }
     }
 
-    if(!ltaul_bar.is_symmetric()) {
-        // something went wrong
-        Rcout << zmeans << '\n';
-    }
     fsigs = arma::inv_sympd(ltaul_bar + arma::eye(K, K));
     fmeans = fsigs * (lmeans % zmeans).t() * (ymat.each_col() % tau_bar);
 }
