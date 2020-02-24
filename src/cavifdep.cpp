@@ -15,24 +15,24 @@ void initialise(arma::mat &ymat, arma::vec &pivec,
                 arma::mat &fmeans, arma::mat &fcovs, arma::mat &zmeans,
                 arma::vec &taushapes, arma::vec &taurates,
                 arma::vec &alphashapes, arma::vec &alpharates);
-void update_lz(arma::mat &ymat, arma::vec &pivec,
+void update_lz_fdep(arma::mat &ymat, arma::vec &pivec,
                arma::mat &lmeans, arma::mat &lsigs,
                arma::mat &fmeans, arma::mat &fcovs, arma::mat &zmeans,
                arma::vec &taushapes, arma::vec &taurates,
                arma::vec &alphashapes, arma::vec &alpharates,
                double ptaushape, double ptaurate,
                double palphashape, double palpharate);
-void update_f(arma::mat &ymat, arma::mat &lmeans, arma::mat &lsigs,
+void update_f_fdep(arma::mat &ymat, arma::mat &lmeans, arma::mat &lsigs,
               arma::mat &fmeans, arma::mat &fcovs, arma::mat &zmeans,
               arma::vec &taushapes, arma::vec &taurates);
-void update_tau(arma::mat &ymat, arma::mat &lmeans, arma::mat &lsigs,
+void update_tau_fdep(arma::mat &ymat, arma::mat &lmeans, arma::mat &lsigs,
                 arma::mat &fmeans, arma::mat &fcovs, arma::mat &zmeans,
                 arma::vec &taushapes, arma::vec &taurates,
                 double ptaushape, double ptaurate);
-void update_alpha(arma::mat &lmeans, arma::mat &lsigs, arma::mat &zmeans,
+void update_alpha_fdep(arma::mat &lmeans, arma::mat &lsigs, arma::mat &zmeans,
                   arma::vec &alphashapes, arma::vec &alpharates,
                   double palphashape, double palpharate);
-double calc_elbo(arma::mat &ymat, arma::vec &pivec,
+double calc_elbo_fdep(arma::mat &ymat, arma::vec &pivec,
                  arma::mat &lmeans, arma::mat &lsigs,
                  arma::mat &fmeans, arma::mat &fcovs, arma::mat &zmeans,
                  arma::vec &taushapes, arma::vec &taurates,
@@ -42,7 +42,7 @@ double calc_elbo(arma::mat &ymat, arma::vec &pivec,
 
 
 // [[Rcpp::export]]
-List cavi(arma::mat &ymat, arma::vec &pivec,
+List cavi_fdep(arma::mat &ymat, arma::vec &pivec,
           double ptaushape, double ptaurate,
           double palphashape, double palpharate,
           int check=100, int save=0,
@@ -114,25 +114,25 @@ List cavi(arma::mat &ymat, arma::vec &pivec,
     while((iter < max_iter) && (diff >= tol)) {
         iter++;
         if(iter % check == 0) {
-            prev = calc_elbo(ymat, pivec, lmeans, lsigs, fmeans, fcovs, zmeans,
+            prev = calc_elbo_fdep(ymat, pivec, lmeans, lsigs, fmeans, fcovs, zmeans,
                              taushapes, taurates, alphashapes, alpharates,
                              ptaushape, ptaurate, palphashape, palpharate);
         }
 
         // update parameters
-        update_lz(ymat, pivec, lmeans, lsigs, fmeans, fcovs, zmeans,
+        update_lz_fdep(ymat, pivec, lmeans, lsigs, fmeans, fcovs, zmeans,
                   taushapes, taurates, alphashapes, alpharates,
                   ptaushape, ptaurate, palphashape, palpharate);
-        update_f(ymat, lmeans, lsigs, fmeans, fcovs,
+        update_f_fdep(ymat, lmeans, lsigs, fmeans, fcovs,
                  zmeans, taushapes, taurates);
-        update_tau(ymat, lmeans, lsigs, fmeans, fcovs, zmeans,
+        update_tau_fdep(ymat, lmeans, lsigs, fmeans, fcovs, zmeans,
                    taushapes, taurates, ptaushape, ptaurate);
-        update_alpha(lmeans, lsigs, zmeans, alphashapes, alpharates,
+        update_alpha_fdep(lmeans, lsigs, zmeans, alphashapes, alpharates,
                      palphashape, palpharate);
 
         // for elbo convergence
         if(iter % check == 0) {
-            curr = calc_elbo(ymat, pivec, lmeans, lsigs, fmeans, fcovs, zmeans,
+            curr = calc_elbo_fdep(ymat, pivec, lmeans, lsigs, fmeans, fcovs, zmeans,
                              taushapes, taurates, alphashapes, alpharates,
                              ptaushape, ptaurate, palphashape, palpharate);
             diff = curr - prev;
@@ -142,7 +142,7 @@ List cavi(arma::mat &ymat, arma::vec &pivec,
         // save in-between parameters
         if(save && (iter % save == 0)) {
             if(iter % check) {
-                curr = calc_elbo(ymat, pivec, lmeans, lsigs, fmeans, fcovs, zmeans,
+                curr = calc_elbo_fdep(ymat, pivec, lmeans, lsigs, fmeans, fcovs, zmeans,
                                  taushapes, taurates, alphashapes, alpharates,
                                  ptaushape, ptaurate, palphashape, palpharate);
             }
@@ -165,7 +165,7 @@ List cavi(arma::mat &ymat, arma::vec &pivec,
 
     // final elbo
     if(iter % check) {
-        curr = calc_elbo(ymat, pivec, lmeans, lsigs, fmeans, fcovs, zmeans,
+        curr = calc_elbo_fdep(ymat, pivec, lmeans, lsigs, fmeans, fcovs, zmeans,
                          taushapes, taurates, alphashapes, alpharates,
                          ptaushape, ptaurate, palphashape, palpharate);
     }
@@ -260,7 +260,7 @@ void initialise(arma::mat &ymat, arma::vec &pivec,
     alpharates = alphashapes / alphaest;
 }
 
-void update_lz(arma::mat &ymat, arma::vec &pivec,
+void update_lz_fdep(arma::mat &ymat, arma::vec &pivec,
                arma::mat &lmeans, arma::mat &lsigs,
                arma::mat &fmeans, arma::mat &fcovs, arma::mat &zmeans,
                arma::vec &taushapes, arma::vec &taurates,
@@ -303,7 +303,7 @@ void update_lz(arma::mat &ymat, arma::vec &pivec,
     }
 }
 
-void update_f(arma::mat &ymat, arma::mat &lmeans, arma::mat &lsigs,
+void update_f_fdep(arma::mat &ymat, arma::mat &lmeans, arma::mat &lsigs,
               arma::mat &fmeans, arma::mat &fcovs, arma::mat &zmeans,
               arma::vec &taushapes, arma::vec &taurates) {
     // define dimensions
@@ -328,7 +328,7 @@ void update_f(arma::mat &ymat, arma::mat &lmeans, arma::mat &lsigs,
     fmeans = fcovs * (lmeans % zmeans).t() * (ymat.each_col() % tau_bar);
 }
 
-void update_tau(arma::mat &ymat, arma::mat &lmeans, arma::mat &lsigs,
+void update_tau_fdep(arma::mat &ymat, arma::mat &lmeans, arma::mat &lsigs,
                 arma::mat &fmeans, arma::mat &fcovs, arma::mat &zmeans,
                 arma::vec &taushapes, arma::vec &taurates,
                 double ptaushape, double ptaurate) {
@@ -352,14 +352,14 @@ void update_tau(arma::mat &ymat, arma::mat &lmeans, arma::mat &lsigs,
     taurates = ptaurate + 0.5 * yy - lfy_bar + 0.5 * lffl_bar;
 }
 
-void update_alpha(arma::mat &lmeans, arma::mat &lsigs, arma::mat &zmeans,
+void update_alpha_fdep(arma::mat &lmeans, arma::mat &lsigs, arma::mat &zmeans,
                   arma::vec &alphashapes, arma::vec &alpharates,
                   double palphashape, double palpharate) {
     alphashapes = palphashape + arma::sum(zmeans, 0).t() / 2;
     alpharates = palpharate + arma::sum(zmeans % (lsigs + arma::square(lmeans)), 0).t() / 2;
 }
 
-double calc_elbo(arma::mat &ymat, arma::vec &pivec,
+double calc_elbo_fdep(arma::mat &ymat, arma::vec &pivec,
                  arma::mat &lmeans, arma::mat &lsigs,
                  arma::mat &fmeans, arma::mat &fcovs, arma::mat &zmeans,
                  arma::vec &taushapes, arma::vec &taurates,

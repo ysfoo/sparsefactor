@@ -5,46 +5,34 @@
 #include <Rcpp/Benchmark/Timer.h>
 #include <gsl/gsl_math.h>
 #include <cmath>
-#include "gibbsfull.h"
 
 using namespace Rcpp;
 
-void initialise(arma::mat &ymat, arma::umat &vmat, arma::vec &pivec, arma::mat &lmat,
+void initialise_full(arma::mat &ymat, arma::vec &pivec, arma::mat &lmat,
                 arma::umat &zmat, arma::mat &fmat,
                 arma::vec &tauvec, arma::vec &alphavec);
 
-void sample_z(arma::mat &ymat, arma::umat &vmat, arma::vec &pivec, arma::umat &zmat,
+void sample_z_full(arma::mat &ymat, arma::vec &pivec, arma::umat &zmat,
               arma::mat &fmat, arma::vec &tauvec, arma::vec &alphavec);
-void sample_l(arma::mat &ymat, arma::umat &vmat, arma::mat &lmat, arma::umat &zmat,
+void sample_l_full(arma::mat &ymat, arma::mat &lmat, arma::umat &zmat,
               arma::mat &fmat, arma::vec &tauvec, arma::vec &alphavec);
-void sample_f(arma::mat &ymat, arma::umat &vmat, arma::mat &lmat, arma::mat &fmat,
+void sample_f_full(arma::mat &ymat, arma::mat &lmat, arma::mat &fmat,
               arma::vec &tauvec);
-void sample_tau(arma::mat &ymat, arma::umat &vmat, arma::mat &lmat, arma::mat &fmat,
+void sample_tau_full(arma::mat &ymat, arma::mat &lmat, arma::mat &fmat,
                 arma::vec &tauvec, double ptaushape, double ptaurate);
-void sample_alpha(arma::mat &lmat, arma::umat &zmat, arma::vec &alphavec,
+void sample_alpha_full(arma::mat &lmat, arma::umat &zmat, arma::vec &alphavec,
                   double palphashape, double palpharate);
 
-double calc_pz(arma::uword i, arma::mat &ymat, arma::umat &vmat, arma::umat &zmat, arma::mat &fmat,
+double calc_pz_full(arma::uword i, arma::mat &ymat, arma::umat &zmat, arma::mat &fmat,
                double tau, arma::vec &alphavec);
 
 
-// [[Rcpp::export]]
-List gibbs(int n_samples, arma::mat &data, arma::vec &pivec,
+List gibbs_full(int n_samples, arma::mat &ymat, arma::vec &pivec,
            double ptaushape, double ptaurate,
            double palphashape, double palpharate,
            int burn_in=0, int thin=1,
            int seed=-1) {
     Timer timer;
-
-    // handle NAs
-    arma::uvec na_idx = arma::find_nonfinite(data);
-    if(na_idx.n_elem == 0) return gibbs_full(n_samples, data, pivec,
-                                             ptaushape, ptaurate, palphashape, palpharate,
-                                             burn_in, thin, seed);
-    arma::mat ymat = data;
-    arma::umat vmat = arma::ones<arma::umat>(arma::size(data));
-    ymat.elem(na_idx).zeros();
-    vmat.elem(na_idx).zeros();
 
     // set random seed
     if(seed != -1) {
@@ -54,8 +42,8 @@ List gibbs(int n_samples, arma::mat &data, arma::vec &pivec,
     }
 
     // define dimensions
-    arma::uword G = data.n_rows;
-    arma::uword N = data.n_cols;
+    arma::uword G = ymat.n_rows;
+    arma::uword N = ymat.n_cols;
     arma::uword K = pivec.n_elem;
 
     int N_TOT = n_samples * thin + burn_in;
@@ -84,16 +72,16 @@ List gibbs(int n_samples, arma::mat &data, arma::vec &pivec,
     arma::vec alphavec(K);
 
     // l does not need to be initialised
-    initialise(ymat, vmat, pivec, lmat, zmat, fmat, tauvec, alphavec);
+    initialise_full(ymat, pivec, lmat, zmat, fmat, tauvec, alphavec);
 
     // sample
     int ii = 0;
     for(arma::uword i = 0; i < N_TOT; i++) {
-        sample_z(ymat, vmat, pivec, zmat, fmat, tauvec, alphavec);
-        sample_l(ymat, vmat, lmat, zmat, fmat, tauvec, alphavec);
-        sample_f(ymat, vmat, lmat, fmat, tauvec);
-        sample_tau(ymat, vmat, lmat, fmat, tauvec, ptaushape, ptaurate);
-        sample_alpha(lmat, zmat, alphavec, palphashape, palpharate);
+        sample_z_full(ymat, pivec, zmat, fmat, tauvec, alphavec);
+        sample_l_full(ymat, lmat, zmat, fmat, tauvec, alphavec);
+        sample_f_full(ymat, lmat, fmat, tauvec);
+        sample_tau_full(ymat, lmat, fmat, tauvec, ptaushape, ptaurate);
+        sample_alpha_full(lmat, zmat, alphavec, palphashape, palpharate);
 
         if((i >= burn_in) && ((i - burn_in + 1) % thin == 0)) {
             lmats.row(ii) = lmat;
@@ -116,7 +104,7 @@ List gibbs(int n_samples, arma::mat &data, arma::vec &pivec,
     return samples;
 }
 
-void initialise(arma::mat &ymat, arma::umat &vmat, arma::vec &pivec,
+void initialise_full(arma::mat &ymat, arma::vec &pivec,
                 arma::mat &lmat, arma::umat &zmat, arma::mat &fmat,
                 arma::vec &tauvec, arma::vec &alphavec) {
     // define dimensions
@@ -131,17 +119,16 @@ void initialise(arma::mat &ymat, arma::umat &vmat, arma::vec &pivec,
     zmat = arma::randu(G, K) < arma::repmat(pivec.t(), G, 1);
 
     // initialise lmat
+    arma::uvec zi_idx;
     arma::mat fz, fzt;
-    arma::uvec zi_idx, vi_idx;
     lmat.zeros();
     for(arma::uword i = 0; i < G; i++) {
-        vi_idx = arma::find(vmat.row(i));
         zi_idx = arma::find(zmat.row(i));
-
         if(zi_idx.n_elem == 0) continue;
-        fz = fmat(zi_idx, vi_idx);
+        fz = fmat.rows(zi_idx);
         fzt = fz.t();
-        lmat(arma::uvec({i}), zi_idx) = ymat(arma::uvec({i}), vi_idx) * fzt * inv_sympd(fz * fzt);
+
+        lmat(arma::uvec({i}), zi_idx) = ymat.row(i) * fzt * inv_sympd(fz * fzt);
     }
 
     // initialise alpha
@@ -156,8 +143,7 @@ void initialise(arma::mat &ymat, arma::umat &vmat, arma::vec &pivec,
 
     // initialise tau
     arma::mat res = ymat - lmat * fmat;
-    tauvec = (arma::sum(vmat, 1) - arma::sum(zmat, 1)) / sum(res % res % vmat, 1);
-
+    tauvec = (N - arma::sum(zmat, 1)) / sum(res % res, 1);
     // unused
     // arma::mat fmat_t = fmat.t();
     // lmat = ymat * fmat_t * arma::inv_sympd(fmat * fmat_t);
@@ -166,7 +152,7 @@ void initialise(arma::mat &ymat, arma::umat &vmat, arma::vec &pivec,
     // alphavec = arma::conv_to<arma::vec>::from(tmp);
 }
 
-void sample_z(arma::mat &ymat, arma::umat &vmat, arma::vec &pivec,
+void sample_z_full(arma::mat &ymat, arma::vec &pivec,
               arma::umat &zmat, arma::mat &fmat, arma::vec &tauvec, arma::vec &alphavec) {
     // define dimensions
     arma::uword G = ymat.n_rows;
@@ -175,44 +161,41 @@ void sample_z(arma::mat &ymat, arma::umat &vmat, arma::vec &pivec,
     for(arma::uword i = 0; i < G; i++) {
         for(arma::uword k : arma::randperm(K)) {
             zmat(i, k) = 0;
-            double pz0 = calc_pz(i, ymat, vmat, zmat, fmat, tauvec(i), alphavec) + log(1 - pivec(k));
+            double pz0 = calc_pz_full(i, ymat, zmat, fmat, tauvec(i), alphavec) + log(1 - pivec(k));
             zmat(i, k) = 1;
-            double pz1 = calc_pz(i, ymat, vmat, zmat, fmat, tauvec(i), alphavec) + log(pivec(k)) + 0.5 * log(alphavec(k) / 2 / M_SQRTPI);
+            double pz1 = calc_pz_full(i, ymat, zmat, fmat, tauvec(i), alphavec) + log(pivec(k)) + 0.5 * log(alphavec(k) / 2 / M_SQRTPI);
             double pmax = std::max(pz0, pz1);
             zmat(i, k) = arma::randu() < exp(pz1 - pmax - log(exp(pz0 - pmax) + exp(pz1 - pmax)));
         }
     }
 }
 
-double calc_pz(arma::uword i, arma::mat &ymat, arma::umat &vmat, arma::umat &zmat, arma::mat &fmat, double tau, arma::vec &alphavec) {
-    arma::uvec vi_idx = arma::find(vmat.row(i));
+double calc_pz_full(arma::uword i, arma::mat &ymat, arma::umat &zmat, arma::mat &fmat, double tau, arma::vec &alphavec) {
     arma::uvec zi_idx = arma::find(zmat.row(i));
     if(zi_idx.n_elem == 0) return 0;
 
-    arma::mat f_zi = fmat(zi_idx, vi_idx);
+    arma::mat f_zi = fmat.rows(zi_idx);
     arma::mat inv_lcov = tau * f_zi * f_zi.t() + arma::diagmat(alphavec.elem(zi_idx));
-    arma::vec lmean = tau * arma::inv_sympd(inv_lcov) * f_zi * ymat(arma::uvec({i}), vi_idx).t();
+    arma::vec lmean = tau * arma::inv_sympd(inv_lcov) * f_zi * ymat.row(i).t();
 
     return (arma::accu((lmean * lmean.t()) % inv_lcov) - arma::log_det(inv_lcov).real()) / 2;
 }
 
-void sample_l(arma::mat &ymat, arma::umat &vmat, arma::mat &lmat, arma::umat &zmat, arma::mat &fmat, arma::vec &tauvec, arma::vec &alphavec) {
+void sample_l_full(arma::mat &ymat, arma::mat &lmat, arma::umat &zmat, arma::mat &fmat, arma::vec &tauvec, arma::vec &alphavec) {
     // define dimensions
     arma::uword G = ymat.n_rows;
     arma::uword K = lmat.n_cols;
 
-    arma::uvec zi_idx, vi_idx;
+    arma::uvec zi_idx;
     arma::mat f_zi, lcov;
     arma::vec lmean;
 
     for(arma::uword i = 0; i < G; i++) {
         lmat.row(i).zeros();
-
-        vi_idx = arma::find(vmat.row(i));
-        zi_idx = arma::find(zmat.row(i));
+        arma::uvec zi_idx = arma::find(zmat.row(i));
         if(zi_idx.n_elem == 0) continue;
 
-        f_zi = fmat(zi_idx, vi_idx);
+        f_zi = fmat.rows(zi_idx);
         lcov = arma::inv_sympd(tauvec(i) * f_zi * f_zi.t() + arma::diagmat(alphavec.elem(zi_idx)));
         /*int K1 = lcov.n_rows;
         for(int k = 0; k < K1; k++) {
@@ -220,52 +203,41 @@ void sample_l(arma::mat &ymat, arma::umat &vmat, arma::mat &lmat, arma::umat &zm
                 lcov(k, kk) = lcov(kk, k);
             }
         }*/
-        lmean = tauvec(i) * lcov * f_zi * ymat(arma::uvec({i}), vi_idx).t();
+        lmean = tauvec(i) * lcov * f_zi * ymat.row(i).t();
         lmat(arma::uvec({i}), zi_idx) = arma::mvnrnd(lmean, lcov).t();
     }
 }
 
-void sample_f(arma::mat &ymat, arma::umat &vmat, arma::mat &lmat, arma::mat &fmat, arma::vec &tauvec) {
+void sample_f_full(arma::mat &ymat, arma::mat &lmat, arma::mat &fmat, arma::vec &tauvec) {
     // define dimensions
-    arma::uword G = ymat.n_rows;
     arma::uword N = ymat.n_cols;
     arma::uword K = lmat.n_cols;
 
-    arma::uvec vj_idx;
-    arma::mat lv, lt_tau, fcov;
-
-    arma::mat lt_tau_full = (lmat.each_col() % tauvec).t();
-    arma::mat fcov_full = arma::inv_sympd(lt_tau_full * lmat + arma::eye(K, K));
-    arma::mat fchol = arma::chol(fcov_full, "lower");
-
-    for(arma::uword j = 0; j < N; j++) {
-        vj_idx = arma::find(vmat.col(j));
-        if(vj_idx.n_elem == G) {
-            fmat.col(j) = fchol * arma::randn(K) + fcov_full * lt_tau_full * ymat.col(j);
-            continue;
+    arma::mat lt_tau = (lmat.each_col() % tauvec).t();
+    arma::mat fcov = arma::inv_sympd(lt_tau * lmat + arma::eye(K, K));
+    /*for(int k = 0; k < K; k++) {
+        for(int kk = 0; kk < k; kk++) {
+            fcov(k, kk) = fcov(kk, k);
         }
-        lv = lmat.rows(vj_idx);
-        lt_tau = (lv.each_col() % tauvec(vj_idx)).t();
-        fcov = arma::inv_sympd(lt_tau * lv + arma::eye(K, K));
-        fmat.col(j) = arma::mvnrnd(fcov * lt_tau * ymat(vj_idx, arma::uvec({j})), fcov);
-    }
+    }*/
+    fmat = arma::chol(fcov, "lower") * arma::randn(K, N) + fcov * lt_tau * ymat;
 }
 
-void sample_tau(arma::mat &ymat, arma::umat &vmat, arma::mat &lmat, arma::mat &fmat, arma::vec &tauvec,
+void sample_tau_full(arma::mat &ymat, arma::mat &lmat, arma::mat &fmat, arma::vec &tauvec,
                 double ptaushape, double ptaurate) {
     // define dimensions
     arma::uword N = ymat.n_cols;
     arma::uword G = lmat.n_rows;
 
-    arma::mat res = arma::square(ymat - lmat * fmat) % vmat;
+    arma::mat res = arma::square(ymat - lmat * fmat);
 
     for(arma::uword i = 0; i < G; i++) {
-        tauvec(i) = arma::randg(arma::distr_param(ptaushape + 0.5 * arma::accu(vmat.row(i)),
+        tauvec(i) = arma::randg(arma::distr_param(ptaushape + 0.5 * N,
                                 1.0 / (ptaurate + 0.5 * arma::accu(res.row(i)))));
     }
 }
 
-void sample_alpha(arma::mat &lmat, arma::umat &zmat, arma::vec &alphavec,
+void sample_alpha_full(arma::mat &lmat, arma::umat &zmat, arma::vec &alphavec,
                   double palphashape, double palpharate) {
     // define dimensions
     arma::uword K = lmat.n_cols;

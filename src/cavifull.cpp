@@ -42,19 +42,13 @@ double calc_elbo(arma::mat &ymat, arma::vec &pivec,
 
 
 // [[Rcpp::export]]
-List cavi(arma::mat &ymat, arma::vec &pivec,
+List cavi_full(arma::mat &ymat, arma::vec &pivec,
           double ptaushape, double ptaurate,
           double palphashape, double palpharate,
           int check=100, int save=0,
           int max_iter=5000, double tol=1e-14,
           int seed=-1) {
     Timer timer;
-
-    // exit if NAs are present
-    nite(data).n_elem) {
-        Rcerr << "Aborted: data contains non-finite entries\n";
-        return List::create();
-    }
 
     // set random seed
     if(seed != -1) {
@@ -81,7 +75,7 @@ List cavi(arma::mat &ymat, arma::vec &pivec,
     arma::mat lmeans(G, K);
     arma::mat lsigs(G, K);
     arma::mat fmeans(K, N);
-    arma::mat fcovs(K, K);
+    arma::mat fcovs(K, N);
     arma::mat zmeans(G, K);
     arma::vec taushapes(G);
     arma::vec taurates(G);
@@ -95,7 +89,7 @@ List cavi(arma::mat &ymat, arma::vec &pivec,
     arma::cube slmeans(M, G, K);
     arma::cube slsigs(M, G, K);
     arma::cube sfmeans(M, K, N);
-    arma::cube sfcovs(M, K, K);
+    arma::cube sfcovs(M, K, N);
     arma::cube szmeans(M, G, K);
     arma::mat staushapes(M, G);
     arma::mat staurates(M, G);
@@ -190,7 +184,7 @@ List cavi(arma::mat &ymat, arma::vec &pivec,
         slmeans.resize(m, G, K);
         slsigs.resize(m, G, K);
         sfmeans.resize(m, K, N);
-        sfcovs.resize(m, K, K);
+        sfcovs.resize(m, K, N);
         szmeans.resize(m, G, K);
         staushapes.resize(m, G);
         staurates.resize(m, G);
@@ -238,7 +232,7 @@ void initialise(arma::mat &ymat, arma::vec &pivec,
 
     // initialise f
     fmeans.randn();
-    fcovs.eye();
+    fcovs.ones();
 
     // initialise z and alphashape
     for(int k = 0; k < K; k++) {

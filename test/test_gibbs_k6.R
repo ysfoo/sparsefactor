@@ -7,8 +7,8 @@ library(plyr)
 S <- 5
 D <- 1
 K <- S + D
-N <- 100
-G <- 800
+N <- 20
+G <- 40
 set.seed(1)
 data <- simulate.data(K=K, N=N, G=G,
                       zmat = matrix(c(rep(1, 6 * G / 20), rep(0, 14 * G / 20),
@@ -18,11 +18,14 @@ data <- simulate.data(K=K, N=N, G=G,
                                       rep(0, 3 * G / 20), rep(1, 1 * G / 20), rep(0, 9 * G / 20), rep(1, 1 * G / 20), rep(0, 6 * G / 20),
                                       rep(1, G)),
                                     nrow=G, ncol=K),
-                      alphavec=rep(1, K), tauvec=rep(100, G))
+                      alphavec=rep(1, K), snr=1)
+
+data$ymat[1,1:2] <- NA
+data$ymat[10,2:3] <- NA
 
 tic()
-samples <- gibbs(20000, data$ymat, c(rep(0.1, S), rep(0.9, D)),
-                 1, 1, 1, 1, thin=10, burn_in=1000, seed=1)
+samples.update <- gibbs(5000, data$ymat, c(rep(0.1, S), rep(0.9, D)),
+                 1, 1, 1, 1, thin=1, burn_in=0, seed=1)
 toc()
 saveRDS(samples, "gibbs_k6.rds")
 
@@ -55,3 +58,4 @@ for(j in 1:4) {
     }
     dev.off()
 }
+

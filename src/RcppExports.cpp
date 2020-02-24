@@ -48,6 +48,26 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// gibbs_full
+List gibbs_full(int n_samples, arma::mat& ymat, arma::vec& pivec, double ptaushape, double ptaurate, double palphashape, double palpharate, int burn_in, int thin, int seed);
+RcppExport SEXP _sparsefactor_gibbs_full(SEXP n_samplesSEXP, SEXP ymatSEXP, SEXP pivecSEXP, SEXP ptaushapeSEXP, SEXP ptaurateSEXP, SEXP palphashapeSEXP, SEXP palpharateSEXP, SEXP burn_inSEXP, SEXP thinSEXP, SEXP seedSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< int >::type n_samples(n_samplesSEXP);
+    Rcpp::traits::input_parameter< arma::mat& >::type ymat(ymatSEXP);
+    Rcpp::traits::input_parameter< arma::vec& >::type pivec(pivecSEXP);
+    Rcpp::traits::input_parameter< double >::type ptaushape(ptaushapeSEXP);
+    Rcpp::traits::input_parameter< double >::type ptaurate(ptaurateSEXP);
+    Rcpp::traits::input_parameter< double >::type palphashape(palphashapeSEXP);
+    Rcpp::traits::input_parameter< double >::type palpharate(palpharateSEXP);
+    Rcpp::traits::input_parameter< int >::type burn_in(burn_inSEXP);
+    Rcpp::traits::input_parameter< int >::type thin(thinSEXP);
+    Rcpp::traits::input_parameter< int >::type seed(seedSEXP);
+    rcpp_result_gen = Rcpp::wrap(gibbs_full(n_samples, ymat, pivec, ptaushape, ptaurate, palphashape, palpharate, burn_in, thin, seed));
+    return rcpp_result_gen;
+END_RCPP
+}
 // relabel
 List relabel(List samples, bool sign_switch, bool label_switch, bool p_every, bool use_l, double tol, bool print_action, bool print_cost, bool to_clone);
 RcppExport SEXP _sparsefactor_relabel(SEXP samplesSEXP, SEXP sign_switchSEXP, SEXP label_switchSEXP, SEXP p_everySEXP, SEXP use_lSEXP, SEXP tolSEXP, SEXP print_actionSEXP, SEXP print_costSEXP, SEXP to_cloneSEXP) {
@@ -83,24 +103,13 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// test
-arma::mat test(arma::mat& data);
-RcppExport SEXP _sparsefactor_test(SEXP dataSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< arma::mat& >::type data(dataSEXP);
-    rcpp_result_gen = Rcpp::wrap(test(data));
-    return rcpp_result_gen;
-END_RCPP
-}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_sparsefactor_cavi", (DL_FUNC) &_sparsefactor_cavi, 12},
     {"_sparsefactor_gibbs", (DL_FUNC) &_sparsefactor_gibbs, 10},
+    {"_sparsefactor_gibbs_full", (DL_FUNC) &_sparsefactor_gibbs_full, 10},
     {"_sparsefactor_relabel", (DL_FUNC) &_sparsefactor_relabel, 9},
     {"_sparsefactor_relabel_truth", (DL_FUNC) &_sparsefactor_relabel_truth, 6},
-    {"_sparsefactor_test", (DL_FUNC) &_sparsefactor_test, 1},
     {NULL, NULL, 0}
 };
 

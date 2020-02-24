@@ -9,15 +9,15 @@ gibbs <- function(n_samples, data, pivec, ptaushape, ptaurate, palphashape, palp
     .Call(`_sparsefactor_gibbs`, n_samples, data, pivec, ptaushape, ptaurate, palphashape, palpharate, burn_in, thin, seed)
 }
 
+gibbs_full <- function(n_samples, ymat, pivec, ptaushape, ptaurate, palphashape, palpharate, burn_in = 0L, thin = 1L, seed = -1L) {
+    .Call(`_sparsefactor_gibbs_full`, n_samples, ymat, pivec, ptaushape, ptaurate, palphashape, palpharate, burn_in, thin, seed)
+}
+
 relabel <- function(samples, sign_switch = TRUE, label_switch = TRUE, p_every = FALSE, use_l = TRUE, tol = 1e-6, print_action = FALSE, print_cost = FALSE, to_clone = TRUE) {
     .Call(`_sparsefactor_relabel`, samples, sign_switch, label_switch, p_every, use_l, tol, print_action, print_cost, to_clone)
 }
 
 relabel_truth <- function(truth, fmeans, fsigs, pz, sign_switch = TRUE, print_mat = FALSE) {
     .Call(`_sparsefactor_relabel_truth`, truth, fmeans, fsigs, pz, sign_switch, print_mat)
-}
-
-test <- function(data) {
-    .Call(`_sparsefactor_test`, data)
 }
 

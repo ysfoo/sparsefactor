@@ -39,7 +39,7 @@ simulate.data <- function(lmat=NULL, tauvec=NULL, fmat=NULL, zmat=NULL, alphavec
     if(is.null(tauvec)) {
         if(is.null(snr)) tauvec <- rgamma(G, taushape, taurate)
         else {
-            tauvec <- snr / rowVars(lf)
+            tauvec <- snr / matrixStats::rowVars(lf)
             tau.na <- !is.finite(tauvec)
             tauvec[tau.na] <- rgamma(sum(tau.na), taushape, taurate)
         }

@@ -1,11 +1,19 @@
 #include <RcppArmadillo.h>
-#include "relabel.h"
 #include "lap.h"
 
 using namespace Rcpp;
 
 // [[Rcpp::depends(RcppArmadillo)]]
 // [[Rcpp::depends(RcppGSL)]]
+
+double update_lap(arma::mat &nus, arma::umat &sigmas,
+                  int t, bool use_l, bool sign_switch,
+                  arma::cube &lmats, arma::cube &fmats, arma::ucube &zmats,
+                  arma::mat &ml, arma::mat &sl, arma::mat &mf, arma::mat &sf, arma::mat &pz,
+                  bool print_mat=false);
+double update_nolap(arma::mat &nus, int t, bool use_l,
+                    arma::cube &lmats, arma::cube &fmats, arma::ucube &zmats,
+                    arma::mat &ml, arma::mat &sl, arma::mat &mf, arma::mat &sf);
 
 // [[Rcpp::export]]
 List relabel(List samples, bool sign_switch=true, bool label_switch=true,
