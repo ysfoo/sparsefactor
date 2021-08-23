@@ -26,7 +26,7 @@ void sample_alpha_full(arma::mat &lmat, arma::umat &zmat, arma::vec &alphavec,
 double calc_pz_full(arma::uword i, arma::mat &ymat, arma::umat &zmat, arma::mat &fmat,
                double tau, arma::vec &alphavec);
 
-
+// entry point for MCMC, assumes no NAs present
 List gibbs_full(int n_samples, arma::mat &ymat, arma::vec &pivec,
            double ptaushape, double ptaurate,
            double palphashape, double palpharate,

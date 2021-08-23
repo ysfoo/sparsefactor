@@ -29,7 +29,8 @@ double calc_pz(arma::uword i, arma::mat &ymat, arma::umat &vmat, arma::umat &zma
 
 
 // [[Rcpp::export]]
-List gibbs(int n_samples, arma::mat &data, arma::vec &pivec,
+// entry point for MCMC, handles NAs
+List gibbs(int n_samples, arma::mat ymat, arma::vec &pivec,
            double ptaushape, double ptaurate,
            double palphashape, double palpharate,
            int burn_in=0, int thin=1,
@@ -37,12 +38,11 @@ List gibbs(int n_samples, arma::mat &data, arma::vec &pivec,
     Timer timer;
 
     // handle NAs
-    arma::uvec na_idx = arma::find_nonfinite(data);
-    if(na_idx.n_elem == 0) return gibbs_full(n_samples, data, pivec,
+    arma::uvec na_idx = arma::find_nonfinite(ymat);
+    if(na_idx.n_elem == 0) return gibbs_full(n_samples, ymat, pivec,
                                              ptaushape, ptaurate, palphashape, palpharate,
                                              burn_in, thin, seed);
-    arma::mat ymat = data;
-    arma::umat vmat = arma::ones<arma::umat>(arma::size(data));
+    arma::umat vmat = arma::ones<arma::umat>(arma::size(ymat));
     ymat.elem(na_idx).zeros();
     vmat.elem(na_idx).zeros();
 
@@ -54,8 +54,8 @@ List gibbs(int n_samples, arma::mat &data, arma::vec &pivec,
     }
 
     // define dimensions
-    arma::uword G = data.n_rows;
-    arma::uword N = data.n_cols;
+    arma::uword G = ymat.n_rows;
+    arma::uword N = ymat.n_cols;
     arma::uword K = pivec.n_elem;
 
     int N_TOT = n_samples * thin + burn_in;
@@ -147,16 +147,12 @@ void initialise(arma::mat &ymat, arma::umat &vmat, arma::vec &pivec,
     // initialise alpha
     for(int k = 0; k < K; k++) {
         int n = arma::accu(zmat.col(k));
-        if(n <= 1) {
-            alphavec(k) = 1;
-            continue;
-        }
-        alphavec(k) = (n - 1) / arma::accu(arma::square(lmat.col(k) - arma::accu(lmat.col(k)) / n));
+        alphavec(k) = std::max(1, n - 1) / arma::accu(arma::square(lmat.col(k) - arma::accu(lmat.col(k)) / n));
     }
 
     // initialise tau
     arma::mat res = ymat - lmat * fmat;
-    tauvec = (arma::sum(vmat, 1) - arma::sum(zmat, 1)) / sum(res % res % vmat, 1);
+    tauvec = arma::clamp(arma::sum(vmat, 1) - arma::sum(zmat, 1), 1, N) / sum(res % res % vmat, 1);
 
     // unused
     // arma::mat fmat_t = fmat.t();

@@ -1,5 +1,5 @@
-#ifndef GIBBSFULL_H
-#define GIBBSFULL_H
+#ifndef CAVIFULL_H
+#define CAVIFULL_H
 
 #include <RcppArmadillo.h>
 using namespace Rcpp;

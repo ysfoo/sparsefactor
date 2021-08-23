@@ -9,6 +9,7 @@ Description: This packages provides two approaches to inference for sparse facto
 License: GPL (>= 2)
 Imports: 
     matrixStats,
+    plyr,
     Rcpp (>= 1.0.3),
     RcppArmadillo,
     RcppGSL,
