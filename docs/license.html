@@ -11,7 +11,7 @@
 
 
 
-<title>About</title>
+<title>license.knit.md</title>
 
 <script src="site_libs/header-attrs-2.10/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
@@ -29,6 +29,9 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
@@ -230,6 +233,69 @@ $(document).ready(function () {
 
 
 
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
 
 </head>
 
@@ -237,6 +303,16 @@ $(document).ready(function () {
 
 
 <div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -276,7 +352,6 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">About</h1>
 
 </div>
 
@@ -416,7 +491,7 @@ Note that any generated files, e.g. HTML, png, CSS, etc., are not included in t
 <div id="versions" class="tab-pane fade">
 
 <p>
-These are the previous versions of the repository in which changes were made to the R Markdown (<code>analysis/about.Rmd</code>) and HTML (<code>docs/about.html</code>) files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view the files as they were in that past version.
+These are the previous versions of the repository in which changes were made to the R Markdown (<code>analysis/license.Rmd</code>) and HTML (<code>docs/license.html</code>) files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view the files as they were in that past version.
 </p>
 <div class="table-responsive">
 <table class="table table-condensed table-hover">
@@ -445,24 +520,7 @@ Message
 Rmd
 </td>
 <td>
-<a href="https://github.com/ysfoo/sparsefactor/blob/b1c6ad9f6f53ef865b2162356da17d79391fa9ec/analysis/about.Rmd" target="_blank">b1c6ad9</a>
-</td>
-<td>
-Yong See Foo
-</td>
-<td>
-2021-08-24
-</td>
-<td>
-removed some outdated files
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/ysfoo/sparsefactor/b1c6ad9f6f53ef865b2162356da17d79391fa9ec/docs/about.html" target="_blank">b1c6ad9</a>
+<a href="https://github.com/ysfoo/sparsefactor/blob/b1c6ad9f6f53ef865b2162356da17d79391fa9ec/analysis/license.Rmd" target="_blank">b1c6ad9</a>
 </td>
 <td>
 Yong See Foo
@@ -479,109 +537,7 @@ removed some outdated files
 Rmd
 </td>
 <td>
-<a href="https://github.com/ysfoo/sparsefactor/blob/8fc06116736ffc5c78ffe8ff80ec87da5e7aefd7/analysis/about.Rmd" target="_blank">8fc0611</a>
-</td>
-<td>
-Yong See Foo
-</td>
-<td>
-2021-08-23
-</td>
-<td>
-moved files around
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/ysfoo/sparsefactor/8fc06116736ffc5c78ffe8ff80ec87da5e7aefd7/docs/about.html" target="_blank">8fc0611</a>
-</td>
-<td>
-Yong See Foo
-</td>
-<td>
-2021-08-23
-</td>
-<td>
-moved files around
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/ysfoo/sparsefactor/1eb8cb3b5adad2c4403fc0d2bcda6081371d3ec9/docs/about.html" target="_blank">1eb8cb3</a>
-</td>
-<td>
-Yong See Foo
-</td>
-<td>
-2020-01-23
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/ysfoo/sparsefactor/blob/7f41e77c1683770b5108df4e8f8fea82ed662e92/analysis/about.Rmd" target="_blank">7f41e77</a>
-</td>
-<td>
-Yong See Foo
-</td>
-<td>
-2020-01-23
-</td>
-<td>
-wflow_publish(“analysis/about.Rmd”)
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/ysfoo/sparsefactor/189fddc4d027d0fbb3e7b47558a6745e5b890848/docs/about.html" target="_blank">189fddc</a>
-</td>
-<td>
-Yong See Foo
-</td>
-<td>
-2020-01-17
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/ysfoo/sparsefactor/blob/6a2abb4f57008981a2cfe066d1ed5a2042c9e5cc/analysis/about.Rmd" target="_blank">6a2abb4</a>
-</td>
-<td>
-Yong See Foo
-</td>
-<td>
-2020-01-17
-</td>
-<td>
-fixed typos
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/ysfoo/sparsefactor/62f8c765fdd36407aa34aed2e6772a8b7013af82/docs/about.html" target="_blank">62f8c76</a>
+<a href="https://github.com/ysfoo/sparsefactor/blob/3a0b20fe4c251213915a5d785e7b85cdff71dc98/analysis/license.Rmd" target="_blank">3a0b20f</a>
 </td>
 <td>
 Yong See Foo
@@ -590,7 +546,7 @@ Yong See Foo
 2019-12-31
 </td>
 <td>
-Build site.
+wflow_remove(“analysis/license.Rmd”)
 </td>
 </tr>
 <tr>
@@ -598,7 +554,24 @@ Build site.
 html
 </td>
 <td>
-<a href="https://rawcdn.githack.com/ysfoo/sparsefactor/042f318467c92872c93530901ed11639112384db/docs/about.html" target="_blank">042f318</a>
+<a href="https://rawcdn.githack.com/ysfoo/sparsefactor/3a0b20fe4c251213915a5d785e7b85cdff71dc98/docs/license.html" target="_blank">3a0b20f</a>
+</td>
+<td>
+Yong See Foo
+</td>
+<td>
+2019-12-31
+</td>
+<td>
+wflow_remove(“analysis/license.Rmd”)
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/ysfoo/sparsefactor/e76047eee500879315421c7a4a6e7f8791bc74a1/docs/license.html" target="_blank">e76047e</a>
 </td>
 <td>
 Yong See Foo
@@ -615,92 +588,7 @@ Build site.
 Rmd
 </td>
 <td>
-<a href="https://github.com/ysfoo/sparsefactor/blob/7056ff3e2eaac2742686e6db7e6bf4ae3ebc8d49/analysis/about.Rmd" target="_blank">7056ff3</a>
-</td>
-<td>
-Yong See Foo
-</td>
-<td>
-2019-12-31
-</td>
-<td>
-Updated home page
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/ysfoo/sparsefactor/9ffb459777d3b579997a3942c6c462b756270064/docs/about.html" target="_blank">9ffb459</a>
-</td>
-<td>
-Yong See Foo
-</td>
-<td>
-2019-12-31
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/ysfoo/sparsefactor/bc0f4da454a57d4cdabf4c4b16b811c4b5304c65/docs/about.html" target="_blank">bc0f4da</a>
-</td>
-<td>
-Yong See Foo
-</td>
-<td>
-2019-12-31
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/ysfoo/sparsefactor/blob/e79061d86b3549898e272645d48d4c72e0512ce5/analysis/about.Rmd" target="_blank">e79061d</a>
-</td>
-<td>
-Yong See Foo
-</td>
-<td>
-2019-12-31
-</td>
-<td>
-Updated home page
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/ysfoo/sparsefactor/e76047eee500879315421c7a4a6e7f8791bc74a1/docs/about.html" target="_blank">e76047e</a>
-</td>
-<td>
-Yong See Foo
-</td>
-<td>
-2019-12-31
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/ysfoo/sparsefactor/blob/df8a6789c59330f2f77a10dfdcc9efae8135e42a/analysis/about.Rmd" target="_blank">df8a678</a>
+<a href="https://github.com/ysfoo/sparsefactor/blob/df8a6789c59330f2f77a10dfdcc9efae8135e42a/analysis/license.Rmd" target="_blank">df8a678</a>
 </td>
 <td>
 Yong See Foo
@@ -719,8 +607,10 @@ Start workflowr project.
 </div>
 </div>
 </div>
-<p>This research project, ‘A Comparison of Bayesian Inference Techniques for Sparse Factor Models’, is supported by the <a href="https://vrs.amsi.org.au/">AMSI Vacation Research Scholarships</a>. In particular, MCMC and variational inference approaches are explored for performing inference on a Bayesian formulation of sparse factor models. An application of this model is to leverage gene expression data with the aim of analysing gene regulatory networks. This project is conducted at The University of Melbourne, and supervised by Dr Heejung Shim.</p>
-<p>This project is licensed under the MIT License.</p>
+<p>Copyright 2021 Yong See Foo</p>
+<p>Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:</p>
+<p>The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</p>
+<p>THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
 
 
 <!-- Adjust MathJax settings so that all math formulae are shown using
@@ -738,6 +628,8 @@ footer is added to webpages before the MathJax javascript. -->
 
 
 
+</div>
+</div>
 
 </div>
 
@@ -770,6 +662,35 @@ $(document).ready(function () {
 
 <!-- code folding -->
 
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
