@@ -9,4 +9,4 @@ editor_options:
 
 This research project, 'A Comparison of Bayesian Inference Techniques for Sparse Factor Models', is supported by the [AMSI Vacation Research Scholarships](https://vrs.amsi.org.au/). In particular, MCMC and variational inference approaches are explored for performing inference on a Bayesian formulation of sparse factor models. An application of this model is to leverage gene expression data with the aim of analysing gene regulatory networks. This project is conducted at The University of Melbourne, and supervised by Dr Heejung Shim.
 
-This project is licensed under the BSD-2 License.
+This project is licensed under the MIT License.

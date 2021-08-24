@@ -36,8 +36,6 @@ The main goal of this project is to compare the performance of these two techniq
 
 - [Research proposal](assets/proposal.pdf)
 
-- [Project roadmap](roadmap.html)
-
 # Derivations
 [MCMC and variational inference for sparse factor models](assets/derivation.pdf)
 
