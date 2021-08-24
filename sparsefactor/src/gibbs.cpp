@@ -28,8 +28,9 @@ double calc_pz(arma::uword i, arma::mat &ymat, arma::umat &vmat, arma::umat &zma
                double tau, arma::vec &alphavec);
 
 
+//' entry point for MCMC, handles NAs
+//' @export
 // [[Rcpp::export]]
-// entry point for MCMC, handles NAs
 List gibbs(int n_samples, arma::mat ymat, arma::vec &pivec,
            double ptaushape, double ptaurate,
            double palphashape, double palpharate,

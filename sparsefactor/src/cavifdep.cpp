@@ -44,14 +44,15 @@ double calc_elbo_fdep(arma::mat &ymat, arma::vec &pivec,
                  double ptaushape, double ptaurate,
                  double palphashape, double palpharate);
 
+//' VI entry point, assumes no NAs
+//' unlike the other two CAVIs, the variational parameters of variance of F is not one for each F-entry
+//' instead, dependency is estimated, so a covriance matrix is stored as a variational parameter (same for each column)
+//' `check` is how often elbo is calculated and checked for convergence as full elbo calculation is expensive
+//' `save` is how often the parameters are saved
+//' algorithm terminates if max difference of z between two iterations is below `tol_z`
+//' `tol_z` of 0 means the above is effectively not checked for
+//' @export
 // [[Rcpp::export]]
-// VI entry point, assumes no NAs
-// unlike the other two CAVIs, the variational parameters of variance of F is not one for each F-entry
-// instead, dependency is estimated, so a covriance matrix is stored as a variational parameter (same for each column)
-// `check` is how often elbo is calculated and checked for convergence as full elbo calculation is expensive
-// `save` is how often the parameters are saved
-// algorithm terminates if max difference of z between two iterations is below `tol_z`
-// `tol_z` of 0 means the above is effectively not checked for
 List cavi_fdep(arma::mat &ymat, arma::vec &pivec,
           double ptaushape, double ptaurate,
           double palphashape, double palpharate,

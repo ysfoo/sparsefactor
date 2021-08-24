@@ -45,13 +45,13 @@ double calc_elbo(arma::mat &ymat, arma::umat &vmat, arma::vec &pivec,
                  double ptaushape, double ptaurate,
                  double palphashape, double palpharate);
 
-
+//' VI entry point, handles NAs
+//' `check` is how often elbo is calculated and checked for convergence as full elbo calculation is expensive
+//' `save` is how often the parameters are saved
+//' algorithm terminates if max difference of z between two iterations is below `tol_z`
+//' `tol_z` of 0 means the above is effectively not checked for'
+//' @export
 // [[Rcpp::export]]
-// VI entry point, handles NAs
-// `check` is how often elbo is calculated and checked for convergence as full elbo calculation is expensive
-// `save` is how often the parameters are saved
-// algorithm terminates if max difference of z between two iterations is below `tol_z`
-// `tol_z` of 0 means the above is effectively not checked for
 List cavi(arma::mat ymat, arma::vec &pivec,
           double ptaushape, double ptaurate,
           double palphashape, double palpharate,

@@ -9,6 +9,7 @@ using namespace Rcpp;
 double update_lap(arma::mat &nus, arma::umat &sigmas, int t, arma::cube &fmats,
                   arma::mat &mf, arma::mat &sf, bool print_mat=false);
 
+//' @export
 // [[Rcpp::export]]
 List relabel(List samples, double tol=1e-8,
              bool print_action=false, bool print_cost=false,
@@ -86,6 +87,7 @@ List relabel(List samples, double tol=1e-8,
                         Named("time")=times);
 }
 
+//' @export
 // [[Rcpp::export]]
 List relabel_truth(List truth, arma::mat &fmeans, arma::mat &fsigs,
                    bool print_mat=false) {

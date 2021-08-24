@@ -6,6 +6,11 @@
 
 using namespace Rcpp;
 
+#ifdef RCPP_USE_GLOBAL_ROSTREAM
+Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
+Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
+#endif
+
 // cavi
 List cavi(arma::mat ymat, arma::vec& pivec, double ptaushape, double ptaurate, double palphashape, double palpharate, int check, int save, int max_iter, double tol_elbo, double tol_z, int seed);
 RcppExport SEXP _sparsefactor_cavi(SEXP ymatSEXP, SEXP pivecSEXP, SEXP ptaushapeSEXP, SEXP ptaurateSEXP, SEXP palphashapeSEXP, SEXP palpharateSEXP, SEXP checkSEXP, SEXP saveSEXP, SEXP max_iterSEXP, SEXP tol_elboSEXP, SEXP tol_zSEXP, SEXP seedSEXP) {
