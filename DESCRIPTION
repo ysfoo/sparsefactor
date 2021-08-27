@@ -5,7 +5,7 @@ Version: 1.0
 Date: 2020-01-19
 Author: Yong See Foo [aut, cre]
 Maintainer: Yong See Foo <fooy1@student.unimelb.edu.au>
-Description: This packages provides two approaches to inference for sparse factor models: Gibbs sampling and variational inference. Additionally, a relabelling algorithm is implemented to address issues which arise from label switching and sign switching.
+Description: This package provides two approaches to inference for sparse factor models: Gibbs sampling and variational inference. Additionally, a relabelling algorithm is implemented to address issues which arise from label switching and sign switching.
 License: MIT
 Imports: 
     matrixStats,
