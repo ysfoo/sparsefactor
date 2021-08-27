@@ -15,7 +15,7 @@ get.zacc(true.z, zmeans)
 The sum of true positives and true negatives (in proportions).
 }
 \description{
-Proportion of correctly predicted entries of the connectivity structure
+Proportion of correctly predicted entries of the connectivity structure.
 }
 \details{
 The order of factors must match, relabel first if needed.

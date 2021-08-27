@@ -1,6 +1,6 @@
 #' Confusion matrix for connectivity structure predictions
 #'
-#' Generates a confusion matrix consisting of proportions of true positives/negatives and false positives/negatives
+#' Generates a confusion matrix consisting of proportions of true positives/negatives and false positives/negatives.
 #'
 #' The order of factors must match, relabel first if needed.
 #' 
@@ -24,7 +24,7 @@ get.conf.mat <- function(true.z, zmeans) {
 
 #' Accuracy of connectivity structure predictions
 #'
-#' Proportion of correctly predicted entries of the connectivity structure
+#' Proportion of correctly predicted entries of the connectivity structure.
 #'
 #' The order of factors must match, relabel first if needed.
 #' 
@@ -43,16 +43,16 @@ get.zacc <- function(true.z, zmeans) {
 
 #' Prediction errors of inferred matrices of the sparse factor model
 #'
-#' Relative root-mean-square error of 
+#' Relative root-mean-square error of point estimates of model matrices.
 #'
 #' The order of factors must match, relabel (including signflips) first if needed. Note that after relabelling, the likelihood is still invariant under rescaling of factors. For a fair comparison, rows of the posterior mean of \strong{F} are scaled to have the same norm as that of the true \strong{F}, and the columns of the posterior mean of \strong{L} are scaled correspondingly (an inverse scaling).
 #' 
 #' @param true.l Matrix of loading factors used in data simulation.
-#' @param true.f Matrix of factor activations used in data simulation.
+#' @param true.f Matrix of activation weights used in data simulation.
 #' @param lmeans Posterior mean of loading factors. 
-#' @param fmeans Posterior mean of factor activations. 
+#' @param fmeans Posterior mean of activation weights. 
 #'
-#' @return Vector of three relative root-mean-square errors for \strong{L},\strong{F},\strong{LF}.
+#' @return Vector of three relative root-mean-square errors for \strong{L}, \strong{F}, and \strong{LF}.
 #'
 #' @export
 

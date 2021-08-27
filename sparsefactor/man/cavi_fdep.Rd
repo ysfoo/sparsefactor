@@ -2,13 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{cavi_fdep}
 \alias{cavi_fdep}
-\title{VI entry point, assumes no NAs
-unlike the other two CAVIs, the variational parameters of variance of F is not one for each F-entry
-instead, dependency is estimated, so a covriance matrix is stored as a variational parameter (same for each column)
-`check` is how often elbo is calculated and checked for convergence as full elbo calculation is expensive
-`save` is how often the parameters are saved
-algorithm terminates if max difference of z between two iterations is below `tol_z`
-`tol_z` of 0 means the above is effectively not checked for}
+\title{Variational inference for the sparse factor model with factor dependency for activation weights}
 \usage{
 cavi_fdep(
   ymat,
@@ -20,17 +14,14 @@ cavi_fdep(
   check = 100L,
   save = 0L,
   max_iter = 5000L,
-  tol_elbo = 1e-14,
+  tol_elbo = 1e-10,
   tol_z = 0,
   seed = -1L
 )
 }
 \description{
-VI entry point, assumes no NAs
-unlike the other two CAVIs, the variational parameters of variance of F is not one for each F-entry
-instead, dependency is estimated, so a covriance matrix is stored as a variational parameter (same for each column)
-`check` is how often elbo is calculated and checked for convergence as full elbo calculation is expensive
-`save` is how often the parameters are saved
-algorithm terminates if max difference of z between two iterations is below `tol_z`
-`tol_z` of 0 means the above is effectively not checked for
+Runs coordinate ascent variational inference (CAVI) assuming a mean-field approximation, where factor dependency is modelled for the activation weights.
+}
+\details{
+Same functionality as \code{\link{cavi}}, except each column of the activation weights has a variational approximation, instead of each entry. These variational approximations are multivariate normal distributions, and share the same covariance matrix across columns. Dependency between factors is modelled, however, \code{ymat} must have no \code{NA}s.
 }

@@ -9,17 +9,17 @@ get.lferr(true.l, true.f, lmeans, fmeans)
 \arguments{
 \item{true.l}{Matrix of loading factors used in data simulation.}
 
-\item{true.f}{Matrix of factor activations used in data simulation.}
+\item{true.f}{Matrix of activation weights used in data simulation.}
 
 \item{lmeans}{Posterior mean of loading factors.}
 
-\item{fmeans}{Posterior mean of factor activations.}
+\item{fmeans}{Posterior mean of activation weights.}
 }
 \value{
-Vector of three relative root-mean-square errors for \strong{L},\strong{F},\strong{LF}.
+Vector of three relative root-mean-square errors for \strong{L}, \strong{F}, and \strong{LF}.
 }
 \description{
-Relative root-mean-square error of
+Relative root-mean-square error of point estimates of model matrices.
 }
 \details{
 The order of factors must match, relabel (including signflips) first if needed. Note that after relabelling, the likelihood is still invariant under rescaling of factors. For a fair comparison, rows of the posterior mean of \strong{F} are scaled to have the same norm as that of the true \strong{F}, and the columns of the posterior mean of \strong{L} are scaled correspondingly (an inverse scaling).

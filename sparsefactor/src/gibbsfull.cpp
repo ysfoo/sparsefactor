@@ -26,7 +26,11 @@ void sample_alpha_full(arma::mat &lmat, arma::umat &zmat, arma::vec &alphavec,
 double calc_pz_full(arma::uword i, arma::mat &ymat, arma::umat &zmat, arma::mat &fmat,
                double tau, arma::vec &alphavec);
 
-// entry point for MCMC, assumes no NAs present
+//' MCMC for the sparse factor model with no missing data
+//'
+//' Runs a MCMC using a collapsed Gibbs sampler, where \strong{L} is marginalised out of the conditional distribution of \strong{Z}.
+//'
+//' Same functionality as \code{\link{gibbs}}, except that \code{ymat} must have no \code{NA}s.
 List gibbs_full(int n_samples, arma::mat &ymat, arma::vec &pivec,
            double ptaushape, double ptaurate,
            double palphashape, double palpharate,

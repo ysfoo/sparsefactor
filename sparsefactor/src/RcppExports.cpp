@@ -55,28 +55,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// cavi_full
-List cavi_full(arma::mat& ymat, arma::vec& pivec, double ptaushape, double ptaurate, double palphashape, double palpharate, int check, int save, int max_iter, double tol_elbo, double tol_z, int seed);
-RcppExport SEXP _sparsefactor_cavi_full(SEXP ymatSEXP, SEXP pivecSEXP, SEXP ptaushapeSEXP, SEXP ptaurateSEXP, SEXP palphashapeSEXP, SEXP palpharateSEXP, SEXP checkSEXP, SEXP saveSEXP, SEXP max_iterSEXP, SEXP tol_elboSEXP, SEXP tol_zSEXP, SEXP seedSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< arma::mat& >::type ymat(ymatSEXP);
-    Rcpp::traits::input_parameter< arma::vec& >::type pivec(pivecSEXP);
-    Rcpp::traits::input_parameter< double >::type ptaushape(ptaushapeSEXP);
-    Rcpp::traits::input_parameter< double >::type ptaurate(ptaurateSEXP);
-    Rcpp::traits::input_parameter< double >::type palphashape(palphashapeSEXP);
-    Rcpp::traits::input_parameter< double >::type palpharate(palpharateSEXP);
-    Rcpp::traits::input_parameter< int >::type check(checkSEXP);
-    Rcpp::traits::input_parameter< int >::type save(saveSEXP);
-    Rcpp::traits::input_parameter< int >::type max_iter(max_iterSEXP);
-    Rcpp::traits::input_parameter< double >::type tol_elbo(tol_elboSEXP);
-    Rcpp::traits::input_parameter< double >::type tol_z(tol_zSEXP);
-    Rcpp::traits::input_parameter< int >::type seed(seedSEXP);
-    rcpp_result_gen = Rcpp::wrap(cavi_full(ymat, pivec, ptaushape, ptaurate, palphashape, palpharate, check, save, max_iter, tol_elbo, tol_z, seed));
-    return rcpp_result_gen;
-END_RCPP
-}
 // gibbs
 List gibbs(int n_samples, arma::mat ymat, arma::vec& pivec, double ptaushape, double ptaurate, double palphashape, double palpharate, int burn_in, int thin, int seed);
 RcppExport SEXP _sparsefactor_gibbs(SEXP n_samplesSEXP, SEXP ymatSEXP, SEXP pivecSEXP, SEXP ptaushapeSEXP, SEXP ptaurateSEXP, SEXP palphashapeSEXP, SEXP palpharateSEXP, SEXP burn_inSEXP, SEXP thinSEXP, SEXP seedSEXP) {
@@ -97,9 +75,9 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// relabel
-List relabel(List samples, double tol, bool print_action, bool print_cost, bool to_clone);
-RcppExport SEXP _sparsefactor_relabel(SEXP samplesSEXP, SEXP tolSEXP, SEXP print_actionSEXP, SEXP print_costSEXP, SEXP to_cloneSEXP) {
+// relabel_samples
+List relabel_samples(List samples, double tol, bool print_action, bool print_cost, bool to_clone);
+RcppExport SEXP _sparsefactor_relabel_samples(SEXP samplesSEXP, SEXP tolSEXP, SEXP print_actionSEXP, SEXP print_costSEXP, SEXP to_cloneSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -108,21 +86,21 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< bool >::type print_action(print_actionSEXP);
     Rcpp::traits::input_parameter< bool >::type print_cost(print_costSEXP);
     Rcpp::traits::input_parameter< bool >::type to_clone(to_cloneSEXP);
-    rcpp_result_gen = Rcpp::wrap(relabel(samples, tol, print_action, print_cost, to_clone));
+    rcpp_result_gen = Rcpp::wrap(relabel_samples(samples, tol, print_action, print_cost, to_clone));
     return rcpp_result_gen;
 END_RCPP
 }
-// relabel_truth
-List relabel_truth(List truth, arma::mat& fmeans, arma::mat& fsigs, bool print_mat);
-RcppExport SEXP _sparsefactor_relabel_truth(SEXP truthSEXP, SEXP fmeansSEXP, SEXP fsigsSEXP, SEXP print_matSEXP) {
+// relabel_params
+List relabel_params(List params, arma::mat& fmeans, arma::mat& fsigs, bool print_mat);
+RcppExport SEXP _sparsefactor_relabel_params(SEXP paramsSEXP, SEXP fmeansSEXP, SEXP fsigsSEXP, SEXP print_matSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< List >::type truth(truthSEXP);
+    Rcpp::traits::input_parameter< List >::type params(paramsSEXP);
     Rcpp::traits::input_parameter< arma::mat& >::type fmeans(fmeansSEXP);
     Rcpp::traits::input_parameter< arma::mat& >::type fsigs(fsigsSEXP);
     Rcpp::traits::input_parameter< bool >::type print_mat(print_matSEXP);
-    rcpp_result_gen = Rcpp::wrap(relabel_truth(truth, fmeans, fsigs, print_mat));
+    rcpp_result_gen = Rcpp::wrap(relabel_params(params, fmeans, fsigs, print_mat));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -130,10 +108,9 @@ END_RCPP
 static const R_CallMethodDef CallEntries[] = {
     {"_sparsefactor_cavi", (DL_FUNC) &_sparsefactor_cavi, 12},
     {"_sparsefactor_cavi_fdep", (DL_FUNC) &_sparsefactor_cavi_fdep, 12},
-    {"_sparsefactor_cavi_full", (DL_FUNC) &_sparsefactor_cavi_full, 12},
     {"_sparsefactor_gibbs", (DL_FUNC) &_sparsefactor_gibbs, 10},
-    {"_sparsefactor_relabel", (DL_FUNC) &_sparsefactor_relabel, 5},
-    {"_sparsefactor_relabel_truth", (DL_FUNC) &_sparsefactor_relabel_truth, 4},
+    {"_sparsefactor_relabel_samples", (DL_FUNC) &_sparsefactor_relabel_samples, 5},
+    {"_sparsefactor_relabel_params", (DL_FUNC) &_sparsefactor_relabel_params, 4},
     {NULL, NULL, 0}
 };
 

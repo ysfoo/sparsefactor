@@ -9,11 +9,33 @@ using namespace Rcpp;
 double update_lap(arma::mat &nus, arma::umat &sigmas, int t, arma::cube &fmats,
                   arma::mat &mf, arma::mat &sf, bool print_mat=false);
 
+//' Relabel factors within MCMC samples
+//'
+//' Takes a list of samples and relabels the factors such that each entry of F resembles a normal distribution.
+//'
+//' The negative log-likelihood is iteratively minimised by solving linear assignment problems via the Jonker-Volgenant algorithm. The algorithm is implemented by Tomas Kazmar (https://github.com/gatagat/lap).
+//'
+//' @param samples A list of \eqn{T} MCMC samples as returned by \code{\link{gibbs}}.
+//' \describe{
+//' \item{lmat}{\eqn{T}-by-\eqn{G}-by-\eqn{K} array of the sampled loading factors.}
+//' \item{fmat}{\eqn{T}-by-\eqn{K}-by-\eqn{N} array of the sampled activation weights.}
+//' \item{zmat}{\eqn{T}-by-\eqn{G}-by-\eqn{K} array of the sampled connectivity structures.}
+//' \item{tau}{\eqn{T}-by-\eqn{G} matrix of the sampled feature-specific precisions of the noise.}
+//' \item{alpha}{\eqn{T}-by-\eqn{K} matrix of the sampled factor-specific precisions of the loading factors.}
+//' \item{time}{Vector of sampling times of when samples were generated.}
+//' }
+//' @param tol Relabelling algorithm terminates when the change in likelihood is smaller than \code{tol}.
+//' @param print_action Boolean for whether to print the final means and variances of the target normal distributions.
+//' @param print_cost Boolean for whether to print the negative log-likelihood at each iteration.
+//' @param to_clone Boolean for whether to copy \code{samples}.
+//'
+//' @return A modified copy of \code{samples} with relabelled factors.
+//'
 //' @export
 // [[Rcpp::export]]
-List relabel(List samples, double tol=1e-8,
-             bool print_action=false, bool print_cost=false,
-             bool to_clone=true) {
+List relabel_samples(List samples, double tol=1e-8,
+                     bool print_action=false, bool print_cost=false,
+                     bool to_clone=true) {
     if(to_clone) samples = clone(samples);
 
     arma::cube lmats = samples["lmat"];
@@ -87,16 +109,34 @@ List relabel(List samples, double tol=1e-8,
                         Named("time")=times);
 }
 
+//' Relabel factors of a sample to match a target
+//'
+//' Takes a set of model parameters and relabels the factors such that each entry of F resembles a normal distribution with target means and variances.
+//'
+//' The negative log-likelihood is minimised by solving a linear assignment problem via the Jonker-Volgenant algorithm. The algorithm is implemented by Tomas Kazmar (https://github.com/gatagat/lap).
+//'
+//' @param params A list of model parameters. The naming follows the return value of \code{\link{sim.sfm}}.
+//' \describe{
+//' \item{lmat}{Matrix of loading factors.}
+//' \item{fmat}{Matrix of activation weights.}
+//' \item{zmat}{Binary matrix for the connectivity structure. Entries that are zero should enforce corresponding entries of \code{lmat} to be zero as well.}
+//' \item{tauvec}{Vector of feature-specific precisions of the noise.}
+//' \item{alphavec}{Vector of factor-specific precisions of the loading factors.}
+//' }
+//' @param print_mat Boolean for whether to print the cost matrix of the underlying linear assignment problem.
+//'
+//' @return A modified copy of \code{sample} with relabelled factors. Note that \code{ymat} is not returned even if provided in \code{params}.
+//'
 //' @export
 // [[Rcpp::export]]
-List relabel_truth(List truth, arma::mat &fmeans, arma::mat &fsigs,
-                   bool print_mat=false) {
-    truth = clone(truth);
-    arma::mat lmat = truth["lmat"];
-    arma::mat fmat = truth["fmat"];
-    arma::umat zmat = truth["zmat"];
-    arma::vec tauvec = truth["tauvec"];
-    arma::vec alphavec = truth["alphavec"];
+List relabel_params(List params, arma::mat &fmeans, arma::mat &fsigs,
+                    bool print_mat=false) {
+    params = clone(params);
+    arma::mat lmat = params["lmat"];
+    arma::mat fmat = params["fmat"];
+    arma::umat zmat = params["zmat"];
+    arma::vec tauvec = params["tauvec"];
+    arma::vec alphavec = params["alphavec"];
 
     // define dimensions
     arma::uword G = lmat.n_rows;
@@ -113,7 +153,7 @@ List relabel_truth(List truth, arma::mat &fmeans, arma::mat &fsigs,
     int* x = new int[K];
     int* y = new int[K];
 
-    cost_t BAD = LARGE / (K + 1);
+    // cost_t BAD = LARGE / (K + 1);
 
     arma::rowvec tnorms(K), snorms(K), tmpvec;
     for(int k = 0; k < K; k++) {
@@ -186,7 +226,7 @@ double update_lap(arma::mat &nus, arma::umat &sigmas, int t, arma::cube &fmats,
     int* x = new int[K];
     int* y = new int[K];
 
-    cost_t BAD = LARGE / (K + 1);
+    // cost_t BAD = LARGE / (K + 1);
 
     // calculate cost matrix
     double pcost, ncost;

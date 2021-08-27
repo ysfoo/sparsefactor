@@ -45,18 +45,16 @@ double calc_elbo_full(arma::mat &ymat, arma::vec &pivec,
                  double palphashape, double palpharate);
 
 
-//' VI entry point, assumes no NAs present
-//' `check` is how often elbo is calculated and checked for convergence as full elbo calculation is expensive
-//' `save` is how often the parameters are saved
-//' algorithm terminates if max difference of z between two iterations is below `tol_z`
-//' `tol_z` of 0 means the above is effectively not checked for
-//' @export
-// [[Rcpp::export]]
+//' Variational inference for the sparse factor model with no missing data
+//'
+//' Runs coordinate ascent variational inference (CAVI) assuming a mean-field approximation.
+//'
+//' Same functionality as \code{\link{cavi}}, except that \code{ymat} must have no \code{NA}s.
 List cavi_full(arma::mat &ymat, arma::vec &pivec,
           double ptaushape, double ptaurate,
           double palphashape, double palpharate,
           int check=100, int save=0, int max_iter=5000,
-          double tol_elbo=1e-14, double tol_z=0, int seed=-1) {
+          double tol_elbo=1e-10, double tol_z=0, int seed=-1) {
     Timer timer;
 
     // exit if NAs are present
@@ -226,6 +224,8 @@ List cavi_full(arma::mat &ymat, arma::vec &pivec,
                               Named("iter")=siter,
                               Named("time")=(NumericVector)(timer) / 1e9);
     } else {
+        m++;
+        timer.step(std::to_string(m));
         params = List::create(Named("lmean")=lmeans,
                               Named("lsig")=lsigs,
                               Named("fmean")=fmeans,
@@ -236,7 +236,8 @@ List cavi_full(arma::mat &ymat, arma::vec &pivec,
                               Named("alphashape")=alphashapes,
                               Named("alpharate")=alpharates,
                               Named("elbo")=curr_elbo,
-                              Named("iter")=iter);
+                              Named("iter")=iter,
+                              Named("time")=(NumericVector)(timer) / 1e9);
     }
 
     return params;
@@ -308,11 +309,13 @@ void update_lz_full(arma::mat &ymat, arma::vec &pivec,
         pmax = arma::max(poff.col(k), pon);
         zmeans.col(k) = arma::exp(pon - pmax - arma::log(arma::exp(poff.col(k) - pmax)
                                                              + arma::exp(pon - pmax)));
+        // debugging
         for(int i = 0; i < G; i++) {
-            if(!(zmeans(i, k) > -1)) {
+            assert(zmeans(i, k) > 1);
+            /*if(!(zmeans(i, k) > -1)) {
                 Rcerr << i << " " << k << " " << lsigs(i, k) << "\n" << tmpvec << '\n';
                 return;
-            }
+            }*/
         }
     }
 }

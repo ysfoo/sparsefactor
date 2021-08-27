@@ -1,10 +1,10 @@
 #' Simulate for a sparse factor model
 #'
-#' Simulates a dataset according to the sparse factor model
+#' Simulates a dataset according to the sparse factor model.
 #'
 #' @param lmat Matrix of loading factors. If specified, \code{zmat} must also be specified. Otherwise, this will be simulated.
-#' @param tauvec Vector of feature-specific precisions of the data. If \code{NULL}, this will be simulated.
-#' @param fmat Matrix of factor activations. If \code{NULL}, this will be simulated.
+#' @param tauvec Vector of feature-specific precisions of the noise. If \code{NULL}, this will be simulated.
+#' @param fmat Matrix of activation weights. If \code{NULL}, this will be simulated.
 #' @param zmat Binary matrix for the connectivity structure. Entries that are zero should enforce corresponding entries of \code{lmat} to be zero as well. If \code{NULL}, this will be simulated.
 #' @param alphavec Vector of factor-specific precisions of the loading factors. If \code{NULL}, this will be simulated.
 #' @param G Number of features.
@@ -12,19 +12,19 @@
 #' @param K Number of factors.
 #' @param pivec Factor-specific sparsity hyperparameters. If \code{NULL}, this will be set to 0.9 and 0.1 for the first half and second half of the vectors respectively.
 #' @param snr Signal-to-noise ratio when simulating \eqn{\tau}. If \code{NULL}, \eqn{\tau} will instead be simulated from a gamma distribution.
-#' @param taushape Shape parameter of the gamma distribution for simulating the feature-specific precision of the data.
-#' @param taurate Rate parameter of the gamma distribution for simulating the feature-specific precision of the data.
-#' @param alphashape Shape parameter of the gamma distribution for simulating the factor-specific precision of the loading factors.
-#' @param alpharate Rate parameter of the gamma distribution for simulating the factor-specific precision of the loading factors.
+#' @param taushape Shape hyperparameter of the gamma prior for simulating the feature-specific precision of the noise.
+#' @param taurate Rate hyperparameter of the gamma prior for simulating the feature-specific precision of the noise.
+#' @param alphashape Shape hyperparameter of the gamma prior for simulating the factor-specific precision of the loading factors.
+#' @param alpharate Rate hyperparameter of the gamma prior for simulating the factor-specific precision of the loading factors.
 #'
 #' @return A list of all parameters (hyperparameters excluded), whether simulated or provided.
-#' \itemize{
-#' \item ymat - Data matrix with noise included.
-#' \item lmat - Matrix of loading factors.
-#' \item fmat - Matrix of factor activations.
-#' \item zmat - Binary matrix for the connectivity structure. Entries that are zero should enforce corresponding entries of \code{lmat} to be zero as well.
-#' \item tauvec - Vector of feature-specific precisions of the data.
-#' \item alphavec -Vector of factor-specific precisions of the loading factors.
+#' \describe{
+#' \item{ymat}{Data matrix with noise included.}
+#' \item{lmat}{Matrix of loading factors.}
+#' \item{fmat}{Matrix of activation weights.}
+#' \item{zmat}{Binary matrix for the connectivity structure. Entries that are zero should enforce corresponding entries of \code{lmat} to be zero as well.}
+#' \item{tauvec}{Vector of feature-specific precisions of the noise.}
+#' \item{alphavec}{Vector of factor-specific precisions of the loading factors.}
 #' }
 #'
 #' @export

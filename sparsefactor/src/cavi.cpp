@@ -5,6 +5,7 @@
 #include <Rcpp/Benchmark/Timer.h>
 #include <gsl/gsl_math.h>
 #include <cmath>
+#include <assert.h>
 #include <vector>
 #include "cavifull.h"
 #include "digamma.h"
@@ -45,18 +46,48 @@ double calc_elbo(arma::mat &ymat, arma::umat &vmat, arma::vec &pivec,
                  double ptaushape, double ptaurate,
                  double palphashape, double palpharate);
 
-//' VI entry point, handles NAs
-//' `check` is how often elbo is calculated and checked for convergence as full elbo calculation is expensive
-//' `save` is how often the parameters are saved
-//' algorithm terminates if max difference of z between two iterations is below `tol_z`
-//' `tol_z` of 0 means the above is effectively not checked for'
+//' Variational inference for the sparse factor model
+//'
+//' Runs coordinate ascent variational inference (CAVI) assuming a mean-field approximation.
+//'
+//' The mean-field approximation is almost fully factorised, except that the dependency between corresponding entries of \strong{L} and \strong{Z} cannot be removed.
+//'
+//' @param ymat Data matrix, rows corresponding to features and columns corresponding to samples. May contain \code{NA}s.
+//' @param pivec Vector of sparsity hyperparameters for each factor.
+//' @param ptaushape Shape hyperparameter of the gamma prior for the feature-specific precision of the noise.
+//' @param ptaurate Rate hyperparameter of the gamma prior for the feature-specific precision of the noise.
+//' @param palphashape Shape hyperparameter of the gamma prior for the factor-specific precision of the loading factors.
+//' @param palpharate Rate hyperparameter of the gamma prior for simulating the factor-specific precision of the loading factors.
+//' @param check Convergence is checked once every \code{check} iterations. This is done because the ELBO is rather expensive to calculate.
+//' @param save Variational parameters are stored (to be returned) once every \code{save} iterations. This is done to save memory. If \code{save} is \code{0}, only the final set of variational parameters is returned.
+//' @param max_iter Maximum number of iterations to run.
+//' @param tol_elbo Optimisation terminates when the difference in ELBO is less than \code{tol_elbo}.
+//' @param tol_z Additional option for optimisation to terminate when the maximum difference in the variational parameter for \strong{Z} is less than \code{tol_z}.
+//' @param seed Random seed. No seed is set when \code{seed} is \code{-1}.
+//'
+//' @return A list of variational parameters for each iteration saved.
+//' \describe{
+//' \item{lmean}{Mean of the normal variational approximation for the nonzero loading factors.}
+//' \item{lsig}{Variance of the normal variational approximation for the nonzero loading factors.}
+//' \item{fmean}{Mean of the normal variational approximation for the activation weights.}
+//' \item{fsig}{Variance of the normal variational approximation for the activation weights.}
+//' \item{zmean}{Mean of the Bernoulli variational approximation for the connectivity structure.}
+//' \item{taushape}{Shape parameter of the gamma variational approximation for the feature-specific precision of the noise.}
+//' \item{taurate}{Rate parameter of the gamma variational approximation for the feature-specific precision of the noise.}
+//' \item{alphashape}{Shape parameter of the gamma variational approximation for the factor-specific precision of the loading factors.}
+//' \item{alpharate}{Rate parameter of the gamma variational approximation for the factor-specific precision of the loading factors.}
+//' \item{elbo}{Evidence lower bound.}
+//' \item{iter}{Iteration number.}
+//' \item{time}{Time when this iteration finished (in seconds).}
+//' }
+//'
 //' @export
 // [[Rcpp::export]]
 List cavi(arma::mat ymat, arma::vec &pivec,
           double ptaushape, double ptaurate,
           double palphashape, double palpharate,
           int check=100, int save=0, int max_iter=5000,
-          double tol_elbo=1e-14, double tol_z=0, int seed=-1) {
+          double tol_elbo=1e-10, double tol_z=0, int seed=-1) {
     Timer timer;
 
     // handle NAs
@@ -236,6 +267,8 @@ List cavi(arma::mat ymat, arma::vec &pivec,
                               Named("iter")=siter,
                               Named("time")=(NumericVector)(timer) / 1e9);
     } else {
+        m++;
+        timer.step(std::to_string(m));
         params = List::create(Named("lmean")=lmeans,
                               Named("lsig")=lsigs,
                               Named("fmean")=fmeans,
@@ -246,7 +279,8 @@ List cavi(arma::mat ymat, arma::vec &pivec,
                               Named("alphashape")=alphashapes,
                               Named("alpharate")=alpharates,
                               Named("elbo")=curr_elbo,
-                              Named("iter")=iter);
+                              Named("iter")=iter,
+                              Named("time")=(NumericVector)(timer) / 1e9);
     }
 
     return params;
@@ -347,16 +381,17 @@ void update_lz(arma::mat &ymat, arma::umat &vmat, arma::vec &pivec,
         pon = log(pivec(k)) + 0.5 * (digammal(alphashapes(k)) - log(2 * M_PI * alpharates(k))
                                          + arma::square(lmeans.col(k)) / lsigs.col(k)
                                          + arma::log(lsigs.col(k)) + log(2 * M_PI));
-                                         pmax = arma::max(poff.col(k), pon);
-                                         zmeans.col(k) = arma::exp(pon - pmax - arma::log(arma::exp(poff.col(k) - pmax)
-                                                                                              + arma::exp(pon - pmax)));
-                                         // debugging
-                                         for(int i = 0; i < G; i++) {
-                                             if(!(zmeans(i, k) > -1)) {
-                                                 Rcerr << i << " " << k << " " << lsigs(i, k) << "\n" << tmpvec << '\n';
-                                                 return;
-                                             }
-                                         }
+        pmax = arma::max(poff.col(k), pon);
+        zmeans.col(k) = arma::exp(pon - pmax - arma::log(arma::exp(poff.col(k) - pmax)
+                                                              + arma::exp(pon - pmax)));
+        // debugging
+        for(int i = 0; i < G; i++) {
+            assert(zmeans(i, k) > 1);
+            /*if(!(zmeans(i, k) > -1)) {
+                Rcerr << i << " " << k << " " << lsigs(i, k) << "\n" << tmpvec << '\n';
+                return;
+            }*/
+        }
     }
 }
 

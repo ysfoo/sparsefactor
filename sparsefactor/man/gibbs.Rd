@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{gibbs}
 \alias{gibbs}
-\title{entry point for MCMC, handles NAs}
+\title{MCMC for the sparse factor model}
 \usage{
 gibbs(
   n_samples,
@@ -17,6 +17,38 @@ gibbs(
   seed = -1L
 )
 }
+\arguments{
+\item{n_samples}{Number of samples in MCMC chain, excluding burn-in samples.}
+
+\item{ymat}{Data matrix, rows corresponding to features and columns corresponding to samples. May contain \code{NA}s.}
+
+\item{pivec}{Vector of sparsity hyperparameters for each factor.}
+
+\item{ptaushape}{Shape hyperparameter of the gamma prior for the feature-specific precision of the noise.}
+
+\item{ptaurate}{Rate hyperparameter of the gamma prior for the feature-specific precision of the noise.}
+
+\item{palphashape}{Shape hyperparameter of the gamma prior for the factor-specific precision of the loading factors.}
+
+\item{palpharate}{Rate hyperparameter of the gamma prior for simulating the factor-specific precision of the loading factors.}
+
+\item{burn_in}{Number of burn-in samples (these are discarded).}
+
+\item{thin}{Discard all but one sample for every \code{thin} samples generated.}
+
+\item{seed}{Random seed. No seed is set when \code{seed} is \code{-1}.}
+}
+\value{
+A list of \code{n_samples} MCMC samples.
+\describe{
+\item{lmat}{\eqn{T}-by-\eqn{G}-by-\eqn{K} array of the sampled loading factors.}
+\item{fmat}{\eqn{T}-by-\eqn{K}-by-\eqn{N} array of the sampled activation weights.}
+\item{zmat}{\eqn{T}-by-\eqn{G}-by-\eqn{K} array of the sampled connectivity structures.}
+\item{tau}{\eqn{T}-by-\eqn{G} matrix of the sampled feature-specific precisions of the noise.}
+\item{alpha}{\eqn{T}-by-\eqn{K} matrix of the sampled factor-specific precisions of the loading factors.}
+\item{time}{Vector of sampling times (in seconds) of when samples were generated.}
+}
+}
 \description{
-entry point for MCMC, handles NAs
+Runs a MCMC using a collapsed Gibbs sampler, where \strong{L} is marginalised out of the conditional distribution of \strong{Z}.
 }

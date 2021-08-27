@@ -15,7 +15,7 @@ get.conf.mat(true.z, zmeans)
 A 2-by-2 matrix of proportions of [[true positive, false negatives], [false positives, true negatives]].
 }
 \description{
-Generates a confusion matrix consisting of proportions of true positives/negatives and false positives/negatives
+Generates a confusion matrix consisting of proportions of true positives/negatives and false positives/negatives.
 }
 \details{
 The order of factors must match, relabel first if needed.
