@@ -12,7 +12,7 @@ One specific application of sparse factor models is the analysis of gene express
 
  The gene expression level of gene *i* of individual *j* can be modelled as
 
- <p style="text-align:center"><img src="https://render.githubusercontent.com/render/math?math=y_{ij} = \sum_{k=1}^K l_{ik}f_{kj} + e_{ij},"></p>
+ <p style="text-align:center"><img src="https://render.githubusercontent.com/render/math?math=y_{ij} = \sum_{k=1}^K l_{ik}f_{kj}%2Be_{ij},"></p>
 
 where *l*<sub><i>ik</i></sub> is the regulation strength of factor *k* on gene *i*, *f*<sub><i>kj</i></sub> is the activation weight of factor *k* for individual *j*, and *e*<sub><i>ij</i></sub> is a noise term. To achieve sparsity, *l*<sub><i>ik</i></sub> is set to zero if gene *i* is not regulated by factor *k*. Further detail can be found in `docs/assets/report.pdf`.
 
