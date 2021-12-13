@@ -11,10 +11,12 @@ If it is desired for some factors to govern only a small subset of attributes, t
 One specific application of sparse factor models is the analysis of gene expression data. Biological theory expects that gene expression levels to be regulated by different mechanisms, which may be difficult to observe directly. Sparse factor analysis is an appropriate approach to analyse these processes, as most mechanisms (e.g. transcription factors) are each responsible for regulating only a small subset of genes. Successful inference may then shed light on the underlying gene regulatory network.
 
  The gene expression level of gene *i* of individual *j* can be modelled as
-  <img src="https://render.githubusercontent.com/render/math?math=y_{ij} = \sum_{k=1}^K l_{ik}f_{kj} + e_{ij},">
-where *l*<sub>ik</sub> is the regulation strength of factor *k* on gene *i*, *f*<sub>kj</sub> is the activation weight of factor *k* for individual *j*, and *e*<sub>ij</sub> is a noise term. To achieve sparsity, *l*<sub>ik</sub> is set to zero if gene *i* is not regulated by factor *k*. Further detail can be found in `docs/assets/report.pdf`.
 
-Following a Bayesian approach, the posterior distributions of the parameters of interest (e.g. *l*<sub>ik</sub> and *f*<sub>kj</sub>) are intractable to calculate directly. Two techniques are implemented:
+  <img src="https://render.githubusercontent.com/render/math?math=y_{ij} = \sum_{k=1}^K l_{ik}f_{kj} + e_{ij},">
+
+where *l*<sub><i>ik</i></sub> is the regulation strength of factor *k* on gene *i*, *f*<sub><i>kj</i></sub> is the activation weight of factor *k* for individual *j*, and *e*<sub><i>ij</i></sub> is a noise term. To achieve sparsity, *l*<sub><i>ik</i></sub> is set to zero if gene *i* is not regulated by factor *k*. Further detail can be found in `docs/assets/report.pdf`.
+
+Following a Bayesian approach, the posterior distributions of the parameters of interest (e.g. *l*<sub><i>ik</i></sub> and *f*<sub><i>kj</i></sub>) are intractable to calculate directly. Two techniques are implemented:
 
 1. **Markov Chain Monte Carlo (MCMC).** The posterior distribution is approximated by simulating samples from a Markov chain which converges to the desired distribution. When successful, the target distribution will be accurately caputred, but this approach is known to be computationally intensive. Specifically, I implemented a Gibbs sampler.
 
