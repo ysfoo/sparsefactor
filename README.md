@@ -4,9 +4,9 @@ This project provides two approaches to inference for sparse factor models: Mark
 
 ## Background
 
-With the rise of high-dimensional data, various dimension reduction techniques have emerged, with the aim of identifying underlying structures which govern the data. One of these techniques is *factor analysis*, an approach which aims to discover latent variables (factors) that explain the data. Given a large number of observations, each consisting of a large number of attributes, factor analysis seeks to quantify the associations between these attributes and some factors, and also the weight of each factor for each observation. Dimension reduction is achieved by having a number of factors that is far smaller than the number of attributes/observations.
+In dimension reduction, *factor analysis* is an approach that discovers latent variables (factors) that explain the data. Given a large number of observations, each consisting of a large number of features, factor analysis seeks to quantify the associations between these features and some factors, and also the weight of each factor for each observation. Dimension reduction is achieved by having a number of factors that is far smaller than the number of features/observations.
 
-If it is desired for some factors to govern only a small subset of attributes, the approach is then known as *sparse factor analysis*. This is because the matrix connecting the attributes to the factors will contain a significant proportion of zeros, making this loading matrix a sparse matrix.
+If it is desired for some factors to govern only a small subset of features, the approach is then known as *sparse factor analysis*. This is because the matrix connecting the features to the factors will contain a significant proportion of zeros, making this loading matrix a sparse matrix. This is desirable as the resulting factors are easier to interpret.
 
 One specific application of sparse factor models is the analysis of gene expression data. Biological theory expects that gene expression levels to be regulated by different mechanisms, which may be difficult to observe directly. Sparse factor analysis is an appropriate approach to analyse these processes, as most mechanisms (e.g. transcription factors) are each responsible for regulating only a small subset of genes. Successful inference may then shed light on the underlying gene regulatory network.
 
@@ -14,7 +14,7 @@ One specific application of sparse factor models is the analysis of gene express
 
  <p align="center"><img src="https://render.githubusercontent.com/render/math?math=y_{ij} = \sum_{k=1}^K l_{ik}f_{kj}%2Be_{ij},"></p>
 
-where *l*<sub><i>ik</i></sub> is the regulation strength of factor *k* on gene *i*, *f*<sub><i>kj</i></sub> is the activation weight of factor *k* for individual *j*, and *e*<sub><i>ij</i></sub> is a noise term. To achieve sparsity, *l*<sub><i>ik</i></sub> is set to zero if gene *i* is not regulated by factor *k*. Further detail can be found in `docs/assets/report.pdf`.
+where *l*<sub><i>ik</i></sub> is the regulation strength of factor *k* on gene *i*, *f*<sub><i>kj</i></sub> is the activation weight of factor *k* for individual *j*, and *e*<sub><i>ij</i></sub> is a noise term. To achieve sparsity, *l*<sub><i>ik</i></sub> should be zero if gene *i* is not regulated by factor *k*. Further detail can be found in `docs/assets/report.pdf`.
 
 Following a Bayesian approach, the posterior distributions of the parameters of interest (e.g. *l*<sub><i>ik</i></sub> and *f*<sub><i>kj</i></sub>) are intractable to calculate directly. Two techniques are implemented:
 
