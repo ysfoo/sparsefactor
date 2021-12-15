@@ -109,11 +109,11 @@ List relabel_samples(List samples, double tol=1e-8,
                         Named("time")=times);
 }
 
-//' Relabel factors of posterior summary to match a target
+//' Relabelling factors for posterior summary to match a target
 //'
 //' Takes posterior mean and variance of the activation matrix and finds the relabelling needed for it to match a target (e.g. simualted dataset).
 //'
-//' The negative log-likelihood is minimised by solving a linear assignment problem via the Jonker-Volgenant algorithm. The algorithm is implemented by Tomas Kazmar (https://github.com/gatagat/lap).
+//' This is done by minimising a loss function via solving a linear assignment problem via the Jonker-Volgenant algorithm. The algorithm is implemented by Tomas Kazmar (https://github.com/gatagat/lap).
 //'
 //' @param fmeans Posterior mean of the activation matrix.
 //' @param fsigs Posterior variance of the activation matrix.
@@ -121,22 +121,22 @@ List relabel_samples(List samples, double tol=1e-8,
 //' @param print_mat Boolean for whether to print the cost matrix of the underlying linear assignment problem.
 //'
 //' @return A list of the permutation and signflips needed for the posterior summary to match the target. The permutation should be applied before the signflips.
-//' \item{permutation}{Permutation to apply to the factors of the posterior summary.}
+//' \item{permutation}{Permutation (of 1 to K) to apply to the factors of the posterior summary.}
 //' \item{sign}{Vector of 1s and -1s to multiply to the factors of the posterior summary after applying the permutation.}
 //'
 //' @export
 // [[Rcpp::export]]
-List relabel_params(arma::mat &fmeans, arma::mat &fsigs, arma::mat &fmat,
-                    bool print_mat=false) {
-    params = clone(params);
-    arma::mat lmat = params["lmat"];
-    arma::mat fmat = params["fmat"];
-    arma::umat zmat = params["zmat"];
-    arma::vec tauvec = params["tauvec"];
-    arma::vec alphavec = params["alphavec"];
+List get_relabelling(arma::mat &fmeans, arma::mat &fsigs, arma::mat &fmat,
+                     bool print_mat=false) {
+    // params = clone(params);
+    // arma::mat lmat = params["lmat"];
+    // arma::mat fmat = params["fmat"];
+    // arma::umat zmat = params["zmat"];
+    // arma::vec tauvec = params["tauvec"];
+    // arma::vec alphavec = params["alphavec"];
 
-    // define dimensions
-    arma::uword G = lmat.n_rows;
+    // // define dimensions
+    // arma::uword G = lmat.n_rows;
     arma::uword N = fmat.n_cols;
     arma::uword K = fmat.n_rows;
 
@@ -189,7 +189,7 @@ List relabel_params(arma::mat &fmeans, arma::mat &fsigs, arma::mat &fmat,
     if(print_mat) Rcout << "by row: ";
     for(int k = 0; k < K; k++) {
         if(print_mat) Rcout << x[k] << ' ';
-        sig(x[k]) = k;
+        sig(x[k]) = k+1;
         nu(x[k]) = tmpnus(k, x[k]);
         cost += costmat[k][x[k]];
     }
@@ -200,13 +200,13 @@ List relabel_params(arma::mat &fmeans, arma::mat &fsigs, arma::mat &fmat,
     delete[] x;
     delete[] y;
 
-    lmat = (lmat.each_row() % nu.t()).cols(sig);
-    fmat = (fmat.each_col() % nu).rows(sig);
-    zmat = zmat.cols(sig);
-    alphavec = alphavec.elem(sig);
+    // lmat = (lmat.each_row() % nu.t()).cols(sig);
+    // fmat = (fmat.each_col() % nu).rows(sig);
+    // zmat = zmat.cols(sig);
+    // alphavec = alphavec.elem(sig);
 
     return List::create(Named("permutation")=sig,
-                        Named("sign")=nu)
+                        Named("sign")=nu);
 }
 
 double update_lap(arma::mat &nus, arma::umat &sigmas, int t, arma::cube &fmats,

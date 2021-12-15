@@ -90,17 +90,17 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// relabel_params
-List relabel_params(List params, arma::mat& fmeans, arma::mat& fsigs, bool print_mat);
-RcppExport SEXP _sparsefactor_relabel_params(SEXP paramsSEXP, SEXP fmeansSEXP, SEXP fsigsSEXP, SEXP print_matSEXP) {
+// get_relabelling
+List get_relabelling(arma::mat& fmeans, arma::mat& fsigs, arma::mat& fmat, bool print_mat);
+RcppExport SEXP _sparsefactor_get_relabelling(SEXP fmeansSEXP, SEXP fsigsSEXP, SEXP fmatSEXP, SEXP print_matSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< List >::type params(paramsSEXP);
     Rcpp::traits::input_parameter< arma::mat& >::type fmeans(fmeansSEXP);
     Rcpp::traits::input_parameter< arma::mat& >::type fsigs(fsigsSEXP);
+    Rcpp::traits::input_parameter< arma::mat& >::type fmat(fmatSEXP);
     Rcpp::traits::input_parameter< bool >::type print_mat(print_matSEXP);
-    rcpp_result_gen = Rcpp::wrap(relabel_params(params, fmeans, fsigs, print_mat));
+    rcpp_result_gen = Rcpp::wrap(get_relabelling(fmeans, fsigs, fmat, print_mat));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -110,7 +110,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_sparsefactor_cavi_fdep", (DL_FUNC) &_sparsefactor_cavi_fdep, 12},
     {"_sparsefactor_gibbs", (DL_FUNC) &_sparsefactor_gibbs, 10},
     {"_sparsefactor_relabel_samples", (DL_FUNC) &_sparsefactor_relabel_samples, 5},
-    {"_sparsefactor_relabel_params", (DL_FUNC) &_sparsefactor_relabel_params, 4},
+    {"_sparsefactor_get_relabelling", (DL_FUNC) &_sparsefactor_get_relabelling, 4},
     {NULL, NULL, 0}
 };
 

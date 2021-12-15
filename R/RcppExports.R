@@ -123,26 +123,23 @@ relabel_samples <- function(samples, tol = 1e-8, print_action = FALSE, print_cos
     .Call(`_sparsefactor_relabel_samples`, samples, tol, print_action, print_cost, to_clone)
 }
 
-#' Relabel factors of a sample to match a target
+#' Relabelling factors for posterior summary to match a target
 #'
-#' Takes a set of model parameters and relabels the factors such that each entry of F resembles a normal distribution with target means and variances.
+#' Takes posterior mean and variance of the activation matrix and finds the relabelling needed for it to match a target (e.g. simualted dataset).
 #'
-#' The negative log-likelihood is minimised by solving a linear assignment problem via the Jonker-Volgenant algorithm. The algorithm is implemented by Tomas Kazmar (https://github.com/gatagat/lap).
+#' This is done by minimising a loss function via solving a linear assignment problem via the Jonker-Volgenant algorithm. The algorithm is implemented by Tomas Kazmar (https://github.com/gatagat/lap).
 #'
-#' @param params A list of model parameters. The naming follows the return value of \code{\link{sim.sfm}}.
-#' \describe{
-#' \item{lmat}{Matrix of loading factors.}
-#' \item{fmat}{Matrix of activation weights.}
-#' \item{zmat}{Binary matrix for the connectivity structure. Entries that are zero should enforce corresponding entries of \code{lmat} to be zero as well.}
-#' \item{tauvec}{Vector of feature-specific precisions of the noise.}
-#' \item{alphavec}{Vector of factor-specific precisions of the loading factors.}
-#' }
+#' @param fmeans Posterior mean of the activation matrix.
+#' @param fsigs Posterior variance of the activation matrix.
+#' @param fmat Target activation matrix.
 #' @param print_mat Boolean for whether to print the cost matrix of the underlying linear assignment problem.
 #'
-#' @return A modified copy of \code{sample} with relabelled factors. Note that \code{ymat} is not returned even if provided in \code{params}.
+#' @return A list of the permutation and signflips needed for the posterior summary to match the target. The permutation should be applied before the signflips.
+#' \item{permutation}{Permutation (of 1 to K) to apply to the factors of the posterior summary.}
+#' \item{sign}{Vector of 1s and -1s to multiply to the factors of the posterior summary after applying the permutation.}
 #'
 #' @export
-relabel_params <- function(params, fmeans, fsigs, print_mat = FALSE) {
-    .Call(`_sparsefactor_relabel_params`, params, fmeans, fsigs, print_mat)
+get_relabelling <- function(fmeans, fsigs, fmat, print_mat = FALSE) {
+    .Call(`_sparsefactor_get_relabelling`, fmeans, fsigs, fmat, print_mat)
 }
 
