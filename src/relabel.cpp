@@ -109,27 +109,24 @@ List relabel_samples(List samples, double tol=1e-8,
                         Named("time")=times);
 }
 
-//' Relabel factors of a sample to match a target
+//' Relabel factors of posterior summary to match a target
 //'
-//' Takes a set of model parameters and relabels the factors such that each entry of F resembles a normal distribution with target means and variances.
+//' Takes posterior mean and variance of the activation matrix and finds the relabelling needed for it to match a target (e.g. simualted dataset).
 //'
 //' The negative log-likelihood is minimised by solving a linear assignment problem via the Jonker-Volgenant algorithm. The algorithm is implemented by Tomas Kazmar (https://github.com/gatagat/lap).
 //'
-//' @param params A list of model parameters. The naming follows the return value of \code{\link{sim.sfm}}.
-//' \describe{
-//' \item{lmat}{Matrix of loading factors.}
-//' \item{fmat}{Matrix of activation weights.}
-//' \item{zmat}{Binary matrix for the connectivity structure. Entries that are zero should enforce corresponding entries of \code{lmat} to be zero as well.}
-//' \item{tauvec}{Vector of feature-specific precisions of the noise.}
-//' \item{alphavec}{Vector of factor-specific precisions of the loading factors.}
-//' }
+//' @param fmeans Posterior mean of the activation matrix.
+//' @param fsigs Posterior variance of the activation matrix.
+//' @param fmat Target activation matrix.
 //' @param print_mat Boolean for whether to print the cost matrix of the underlying linear assignment problem.
 //'
-//' @return A modified copy of \code{sample} with relabelled factors. Note that \code{ymat} is not returned even if provided in \code{params}.
+//' @return A list of the permutation and signflips needed for the posterior summary to match the target. The permutation should be applied before the signflips.
+//' \item{permutation}{Permutation to apply to the factors of the posterior summary.}
+//' \item{sign}{Vector of 1s and -1s to multiply to the factors of the posterior summary after applying the permutation.}
 //'
 //' @export
 // [[Rcpp::export]]
-List relabel_params(List params, arma::mat &fmeans, arma::mat &fsigs,
+List relabel_params(arma::mat &fmeans, arma::mat &fsigs, arma::mat &fmat,
                     bool print_mat=false) {
     params = clone(params);
     arma::mat lmat = params["lmat"];
@@ -192,7 +189,7 @@ List relabel_params(List params, arma::mat &fmeans, arma::mat &fsigs,
     if(print_mat) Rcout << "by row: ";
     for(int k = 0; k < K; k++) {
         if(print_mat) Rcout << x[k] << ' ';
-        sig(k) = x[k];
+        sig(x[k]) = k;
         nu(x[k]) = tmpnus(k, x[k]);
         cost += costmat[k][x[k]];
     }
@@ -208,11 +205,8 @@ List relabel_params(List params, arma::mat &fmeans, arma::mat &fsigs,
     zmat = zmat.cols(sig);
     alphavec = alphavec.elem(sig);
 
-    return List::create(Named("lmat")=lmat,
-                        Named("fmat")=fmat,
-                        Named("zmat")=zmat,
-                        Named("tauvec")=tauvec,
-                        Named("alphavec")=alphavec);
+    return List::create(Named("permutation")=sig,
+                        Named("sign")=nu)
 }
 
 double update_lap(arma::mat &nus, arma::umat &sigmas, int t, arma::cube &fmats,
