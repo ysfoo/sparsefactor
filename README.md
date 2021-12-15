@@ -1,6 +1,6 @@
 # sparsefactor: Bayesian inference techniques for sparse factor models
 
-This project provides two approaches to inference for sparse factor models: Gibbs sampling and variational inference. Additionally, a relabelling algorithm is implemented to address issues which arise from label switching and sign switching.
+This project provides two approaches to inference for sparse factor models: Markov chain Monte Carlo (MCMC) and variational inference (VI). Additionally, a relabelling algorithm is implemented to address issues which arise from label switching and sign switching.
 
 ## Background
 
@@ -18,9 +18,9 @@ where *l*<sub><i>ik</i></sub> is the regulation strength of factor *k* on gene *
 
 Following a Bayesian approach, the posterior distributions of the parameters of interest (e.g. *l*<sub><i>ik</i></sub> and *f*<sub><i>kj</i></sub>) are intractable to calculate directly. Two techniques are implemented:
 
-1. **Markov Chain Monte Carlo (MCMC).** The posterior distribution is approximated by simulating samples from a Markov chain which converges to the desired distribution. When successful, the target distribution will be accurately caputred, but this approach is known to be computationally intensive. Specifically, I implemented a Gibbs sampler.
+1. **Markov chain Monte Carlo (MCMC).** The posterior distribution is approximated by simulating samples from a Markov chain which converges to the desired distribution. When successful, the target distribution will be accurately caputred, but this approach is known to be computationally intensive. Specifically, I implemented a Gibbs sampler.
 
-2. **Variational Inference (VI).** As the posterior distribution involves complex dependencies between the model parameters, we instead search for an approximate distribution from a family of much simpler distributions. Solving this optimisation problem is computationally more efficient than MCMC, at the cost of fidelity due to the use of simpler distributions. Specifically, I used an mean-field approximation and implemented coordinate ascent variational inference (CAVI).
+2. **Variational inference (VI).** As the posterior distribution involves complex dependencies between the model parameters, we instead search for an approximate distribution from a family of much simpler distributions. Solving this optimisation problem is computationally more efficient than MCMC, at the cost of fidelity due to the use of simpler distributions. Specifically, I used an mean-field approximation and implemented coordinate ascent variational inference (CAVI).
 
 It is expected that VI should have an advantage of being the faster approach without sacrificing too much accuracy.
 
@@ -34,6 +34,8 @@ The functionality can be accessed by building an `R` package:
    install_github("ysfoo/sparsefactor")
    library(sparsefactor)
    ```
+
+If you run into a non-zero exit status error while installing, try running `Sys.setenv(R_REMOTES_NO_ERRORS_FROM_WARNINGS=TRUE)` first as per [this post](https://stackoverflow.com/questions/64993205/failing-to-install-github-package-had-non-zero-exit-status-error).
 
 The main functions are described below:
 - `sim.sfm` simulates model parameters and data from a sparse factor model.
