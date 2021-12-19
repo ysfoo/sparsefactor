@@ -2,6 +2,8 @@
 
 This project provides two approaches to inference for sparse factor models: Markov chain Monte Carlo (MCMC) and variational inference (VI). Additionally, a relabelling algorithm is implemented to address issues which arise from label switching and sign switching.
 
+The GTEx eQTL summary data is provided as `gtexEQTL_zscore.rds` in the root directory.
+
 ## Background
 
 In dimension reduction, *factor analysis* is an approach that discovers latent variables (factors) that explain the data. Given a large number of observations, each consisting of a large number of features, factor analysis seeks to quantify the associations between these features and some factors, and also the weight of each factor for each observation. Dimension reduction is achieved by having a number of factors that is far smaller than the number of features/observations.
