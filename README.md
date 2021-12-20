@@ -28,7 +28,7 @@ It is expected that VI should have an advantage of being the faster approach wit
 
 ## Usage
 
-The functionality can be accessed by building an `R` package:
+Please ensure that [GNU Scientific Library (GSL)](https://www.gnu.org/software/gsl/) is installed. The functionality can be accessed by building an `R` package:
 
    ```R
    install.packages("devtools")
@@ -37,7 +37,11 @@ The functionality can be accessed by building an `R` package:
    library(sparsefactor)
    ```
 
-If you run into a non-zero exit status error while installing, try running `Sys.setenv(R_REMOTES_NO_ERRORS_FROM_WARNINGS=TRUE)` first as per [this post](https://stackoverflow.com/questions/64993205/failing-to-install-github-package-had-non-zero-exit-status-error).
+Some known errors:
+
+- There is a known error involving `-lgfortran` or `-lquadmath` with installing `RcppArmadillo` (a dependency of the package) on macOS. Please follow the solution [here](https://thecoatlessprofessor.com/programming/cpp/rcpp-rcpparmadillo-and-os-x-mavericks-lgfortran-and-lquadmath-error/).
+
+- If you run into a non-zero exit status error while installing, try running `Sys.setenv(R_REMOTES_NO_ERRORS_FROM_WARNINGS=TRUE)` first as per [this post](https://stackoverflow.com/questions/64993205/failing-to-install-github-package-had-non-zero-exit-status-error).
 
 The main functions are described below:
 - `sim.sfm` simulates model parameters and data from a sparse factor model.

@@ -15,5 +15,6 @@ Imports:
     RcppGSL,
     roxygen2
 LinkingTo: Rcpp, RcppArmadillo
+SystemRequirements: GNU Scientific Library (>=2.0)
 RoxygenNote: 7.1.1
 Encoding: UTF-8
